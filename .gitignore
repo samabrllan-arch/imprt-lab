@@ -10,3 +10,18 @@ temp_*.py
 temp_inspection/
 test_*.png
 shot_lab_updated.png
+
+# Exclusiones del repositorio exclusivo de Frontend
+agents/
+docs/
+server/
+tests/
+tools/
+scripts/
+AGENTS.md
+CLAUDE.md
+.claudeignore
+Dockerfile
+.dockerignore
+ARQUITECTURA_MOVIMIENTO_Y_CORTE.md
+Abrir_Tienda_3D.bat
