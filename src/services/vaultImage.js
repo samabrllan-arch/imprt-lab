@@ -13,6 +13,7 @@ const MIN_EDGE = 480;
 export function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error('No se pudo leer la imagen.'));
     img.src = src;

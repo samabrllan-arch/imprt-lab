@@ -2,7 +2,7 @@ import { authService } from '../services/authService.js';
 import { authModal } from './authModal.js';
 import { openVaultModal } from './vaultModal.js';
 import { renderLookbookCard } from './lookbookCard.js';
-import { allDesigns, latestDesigns, findDesign, LANDING_LATEST } from './designCatalog.js';
+import { allDesigns, findDesign } from './designCatalog.js';
 import { bindCardActions } from './lookbookActions.js';
 import '../styles/lookbookCommunity.css';
 
@@ -17,8 +17,7 @@ export function initLookbook(container) {
   if (!container) return;
 
   function render() {
-    const items = latestDesigns(LANDING_LATEST);
-    const total = allDesigns().length;
+    const items = allDesigns();
 
     container.innerHTML = `
       <section class="lookbook-section" id="trabajos">
@@ -32,18 +31,14 @@ export function initLookbook(container) {
           </div>
 
           <div class="lookbook-toolbar-row">
-            <span class="lookbook-latest-label">🆕 Los ${items.length} más recientes</span>
+            <span class="lookbook-latest-label">🔥 Diseños Exclusivos Listos para Estampar</span>
             <button type="button" class="btn-community-upload" id="btn-community-drop" title="Sube tu arte y compártelo o úsalo privado">
               <span>✨ Subir a Biblioteca</span>
               <span class="btn-drop-subtag">(Público / Privado)</span>
             </button>
           </div>
 
-          <div class="lookbook-grid has-gallery-cta">${items.map(renderLookbookCard).join('')}</div>
-
-          <div class="lookbook-gallery-cta">
-            <a href="#galeria" class="btn-gallery-cta" data-action="open-gallery">Explorar Galería Completa (${total} ${total === 1 ? 'diseño' : 'diseños'}) →</a>
-          </div>
+          <div class="lookbook-grid">${items.map(renderLookbookCard).join('')}</div>
         </div>
       </section>
     `;
