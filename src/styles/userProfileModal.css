@@ -1,0 +1,109 @@
+@import './checkoutTokens.css';
+
+/**
+ * Modal de perfil y datos de envío (NODE-025). Tokens `--ck-*` (oscuro/claro) de checkoutTokens.css.
+ */
+.modal-overlay .profile-modal-card {
+  max-width: 600px;
+  max-height: 92vh;
+  background: var(--ck-surface);
+  border-color: var(--ck-bd);
+}
+.profile-modal-card .modal-header,
+.profile-modal-card .modal-footer { border-color: var(--ck-bd); }
+.profile-modal-card .modal-badge { color: var(--ck-accent-text); }
+.profile-modal-card .modal-title { color: var(--ck-t1); }
+.profile-modal-card .btn-close-modal { background: var(--ck-surface-2); color: var(--ck-t2); border: 1px solid var(--ck-bd); }
+.profile-modal-card .btn-close-modal:hover { color: var(--ck-t1); border-color: var(--ck-bd-hi); }
+
+.pf-body { padding: 18px 24px; gap: 14px; overflow-x: hidden; }
+.pf-intro { margin: 0; font-size: 0.82rem; line-height: 1.5; color: var(--ck-t2); }
+.pf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pf-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.pf-full { grid-column: 1 / -1; }
+.pf-field label { font-size: 0.74rem; font-weight: 700; color: var(--ck-t2); }
+.pf-opt { font-weight: 500; color: var(--ck-t3); }
+
+.pf-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd-hi);
+  border-radius: 10px;
+  color: var(--ck-t1);
+  font: inherit;
+  font-size: 0.86rem;
+  transition: border-color var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.pf-input::placeholder { color: var(--ck-t3); }
+.pf-input:focus { outline: none; border-color: var(--ck-accent); box-shadow: 0 0 0 3px var(--ck-glow); }
+.pf-input[readonly] { color: var(--ck-t2); cursor: not-allowed; border-style: dashed; background: transparent; }
+.pf-input[readonly]:focus { box-shadow: none; border-color: var(--ck-bd-hi); }
+.pf-input.is-invalid { border-color: var(--ck-danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ck-danger) 18%, transparent); }
+.pf-textarea { resize: vertical; min-height: 58px; max-height: 140px; line-height: 1.45; }
+
+.pf-msg { margin: 0; min-height: 0; font-size: 0.72rem; font-weight: 600; color: var(--ck-danger); }
+.pf-msg:empty { display: none; }
+.pf-msg.is-hint { font-weight: 500; color: var(--ck-t3); }
+
+/* ---------- Consentimiento legal ---------- */
+.pf-consent {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ck-warn) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ck-warn) 32%, transparent);
+}
+.pf-consent.is-invalid { border-color: var(--ck-danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ck-danger) 16%, transparent); }
+.pf-check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.pf-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pf-check-box {
+  flex-shrink: 0;
+  width: 20px; height: 20px; margin-top: 1px;
+  display: grid; place-items: center;
+  border-radius: 6px;
+  border: 1.5px solid var(--ck-bd-hi);
+  background: var(--ck-surface);
+  color: transparent;
+  transition: background var(--dur-micro) ease, border-color var(--dur-micro) ease, color var(--dur-micro) ease, transform var(--dur-micro) var(--ease-out);
+}
+.pf-check:hover .pf-check-box { border-color: var(--ck-accent); }
+.pf-check input:checked + .pf-check-box { background: var(--ck-grad); border-color: transparent; color: #ffffff; transform: scale(1.05); }
+.pf-check input:focus-visible + .pf-check-box { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+.pf-check-text { font-size: 0.8rem; line-height: 1.45; color: var(--ck-t1); }
+.pf-link {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 2px;
+  background: none; border: none; cursor: pointer;
+  font-size: 0.76rem; font-weight: 700;
+  color: var(--ck-accent-text);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.pf-link:hover { color: var(--ck-t1); }
+.pf-link:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Pie ---------- */
+.pf-footer { gap: 12px; padding: 14px 24px; border-top: 1px solid var(--ck-bd); }
+.pf-cancel { flex: 1; transition: transform var(--dur-micro) ease; }
+.pf-cancel:hover { transform: translateY(-2px); }
+.pf-save {
+  flex: 2;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-size: 0.9rem; font-weight: 800;
+  background: var(--ck-grad);
+  box-shadow: 0 10px 24px -10px var(--ck-glow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) ease, filter var(--dur-micro) ease;
+}
+.pf-save:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.pf-save:active { transform: scale(0.99); }
+.pf-save:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+  .pf-body { padding: 14px 16px; }
+  .pf-grid { grid-template-columns: minmax(0, 1fr); }
+  .pf-footer { padding: 12px 16px; flex-direction: column-reverse; }
+}

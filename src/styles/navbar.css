@@ -1,0 +1,283 @@
+/* ==========================================================================
+   NAVBAR LANDING — CYBER-LUXURY ATELIER (NODE-015)
+   Cristal esmerilado (frosted glass) · dock flotante · CTA insignia · Light/Dark coherentes.
+
+   Todos los selectores cuelgan de `.landing-nav`: polish.css y auth.css se cargan DESPUÉS y
+   re-estilan `.nav-link` y `.btn-nav-login`; la mayor especificidad evita guerras de cascada.
+   Los colores viven en tokens locales (--nav-*): cada tema solo redefine el bloque de variables.
+   ========================================================================== */
+
+.landing-nav {
+  /* Modo oscuro: obsidiana translúcida, texto níveo, acento cyber discreto */
+  --nav-h: 68px;
+  --nav-bg: rgba(10, 11, 16, 0.8);
+  --nav-line: rgba(255, 255, 255, 0.08);
+  --nav-line-strong: rgba(255, 255, 255, 0.15);
+  --nav-drawer-bg: rgba(10, 11, 16, 0.86);
+  --nav-shadow: 0 12px 32px -20px rgba(0, 0, 0, 0.9);
+  --nav-fg: #f8fafc;
+  --nav-fg-soft: #a3adbf;
+  --nav-fill: rgba(255, 255, 255, 0.05);
+  --nav-fill-hover: rgba(255, 255, 255, 0.1);
+  --nav-focus: #5eead4;
+  --nav-cta-bg: linear-gradient(135deg, #ff6a3d 0%, #ff2d78 100%);
+  --nav-cta-fg: #ffffff;
+  --nav-cta-arrow: #ffffff;
+  --nav-cta-shadow: 0 6px 18px -6px rgba(255, 70, 90, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  --nav-cta-shadow-hover: 0 12px 26px -8px rgba(255, 70, 90, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-h); z-index: 1000;
+  display: flex; align-items: center;
+  border-bottom: 1px solid var(--nav-line);
+  box-shadow: var(--nav-shadow);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+/* El cristal vive en un pseudo-elemento: un ancestro con backdrop-filter anularía el blur del drawer móvil */
+.landing-nav::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: background-color 0.25s ease;
+}
+
+/* Modo claro: mármol travertino satinado, grafito profundo, CTA negro de lujo con flecha de acento */
+[data-theme="light"] .landing-nav {
+  --nav-bg: rgba(237, 233, 224, 0.82);
+  --nav-line: #dcd7cc;
+  --nav-line-strong: rgba(30, 25, 20, 0.15);
+  --nav-drawer-bg: rgba(237, 233, 224, 0.95);
+  --nav-shadow: 0 12px 32px -22px rgba(30, 25, 20, 0.15);
+  --nav-fg: #1a1c22;
+  --nav-fg-soft: #4a4d57;
+  --nav-fill: rgba(30, 25, 20, 0.04);
+  --nav-fill-hover: rgba(30, 25, 20, 0.08);
+  --nav-focus: #0f766e;
+  --nav-cta-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  --nav-cta-arrow: #ff8a5c;
+  --nav-cta-shadow: 0 6px 16px -6px rgba(15, 23, 42, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --nav-cta-shadow-hover: 0 12px 24px -8px rgba(15, 23, 42, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Layout expandido y espacioso: en pantallas amplias se expande con elegancia */
+.landing-nav .landing-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: min(96vw, 1540px);
+  margin: 0 auto;
+  padding: 0 2rem;
+  gap: 1.5rem;
+}
+.landing-nav .nav-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.landing-nav :is(a, button):focus-visible { outline: 2px solid var(--nav-focus); outline-offset: 2px; }
+
+/* ---------- Identidad de marca: Cyberpunk Kinetic Glow ---------- */
+.landing-nav .brand-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.landing-nav .brand-logo-frame {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.landing-nav .brand-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.4)) drop-shadow(0 2px 6px rgba(255, 87, 34, 0.35));
+  transition: transform 0.3s var(--ease-out), filter 0.3s ease;
+}
+
+.landing-nav .brand-box:hover .brand-logo-img {
+  transform: scale(1.08) rotate(-4deg);
+  filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.65)) drop-shadow(0 2px 8px rgba(255, 87, 34, 0.5));
+}
+
+.landing-nav .brand-text-stack {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.landing-nav .brand-title {
+  font-family: var(--font-display, 'Syne', 'Space Grotesk', sans-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  background: linear-gradient(135deg, #ffffff 40%, #ff5722 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 87, 34, 0.25));
+  white-space: nowrap;
+}
+
+[data-theme="light"] .landing-nav .brand-title {
+  background: linear-gradient(135deg, #0f172a 40%, #ea580c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+
+.landing-nav .brand-lab-cyan {
+  font-family: var(--font-mono, 'Space Grotesk', monospace);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: #00f0ff;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.45));
+}
+
+[data-theme="light"] .landing-nav .brand-lab-cyan {
+  color: #0284c7;
+  filter: none;
+}
+
+/* ---------- Navegación central pulida (Sin óvalo, expandida y con aire) ---------- */
+.landing-nav .nav-links-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.landing-nav .nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.2rem, 2.4vw, 2.8rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.landing-nav .nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.4rem;
+  text-decoration: none;
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--nav-fg-soft);
+  white-space: nowrap;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.landing-nav .nav-link:hover {
+  color: var(--nav-fg);
+  transform: translateY(-1px);
+}
+
+.landing-nav .nav-link.is-active {
+  color: var(--nav-fg);
+  font-weight: 700;
+}
+
+/* Indicador de acento inferior en hover / activo (sutil barra neón) */
+.landing-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ff5722 0%, #00f0ff 100%);
+  box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.24s var(--ease-out);
+}
+
+.landing-nav .nav-link:hover::after,
+.landing-nav .nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+
+/* ---------- Acciones (derecha) ---------- */
+.landing-nav .nav-auth-container { display: flex; align-items: center; }
+
+.landing-nav .btn-nav-login,
+.landing-nav .nav-user-chip {
+  height: 36px; display: inline-flex; align-items: center; gap: 8px; padding: 0 0.95rem;
+  background: transparent; border: 1px solid var(--nav-line-strong); border-radius: 999px;
+  font-size: 0.8125rem; font-weight: 500; line-height: 1; color: var(--nav-fg);
+  cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease-out);
+}
+.landing-nav .nav-login-icon { flex: none; width: 16px; height: 16px; opacity: 0.85; }
+.landing-nav .nav-user-chip { padding: 0 0.85rem 0 4px; }
+.landing-nav .btn-nav-login:hover,
+.landing-nav .nav-user-chip:hover {
+  background: var(--nav-fill-hover); border-color: var(--nav-fg-soft); color: var(--nav-fg);
+  box-shadow: none; transform: translateY(-1px);
+}
+
+.landing-nav .btn-theme-toggle,
+.landing-nav .btn-mobile-menu {
+  width: 36px; height: 36px; padding: 0; border-radius: 50%; flex: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: transparent; border: 1px solid var(--nav-line-strong); color: var(--nav-fg-soft);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.landing-nav .btn-theme-toggle:hover,
+.landing-nav .btn-mobile-menu:hover {
+  background: var(--nav-fill-hover); border-color: var(--nav-fg-soft); color: var(--nav-fg); transform: none;
+}
+.landing-nav .btn-theme-toggle svg { transition: transform 0.5s var(--ease-out); }
+.landing-nav .btn-theme-toggle:hover svg { transform: rotate(90deg); }
+[data-theme="light"] .landing-nav .btn-theme-toggle:hover svg { transform: rotate(-18deg) scale(1.06); }
+.landing-nav .btn-mobile-menu { display: none; }
+
+/* CTA insignia */
+.landing-nav .btn-nav-glow {
+  position: relative; overflow: hidden; height: 38px; padding: 0 1.15rem;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--nav-cta-bg); color: var(--nav-cta-fg); border: none; border-radius: 999px;
+  font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.01em; cursor: pointer;
+  box-shadow: var(--nav-cta-shadow);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s ease;
+}
+.landing-nav .btn-nav-glow::after {   /* destello diagonal al pasar el cursor */
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.22) 50%, transparent 70%);
+  transform: translateX(-120%); transition: transform 0.6s var(--ease-out);
+}
+.landing-nav .btn-nav-glow:hover { transform: translateY(-1px); box-shadow: var(--nav-cta-shadow-hover); }
+.landing-nav .btn-nav-glow:hover::after { transform: translateX(120%); }
+.landing-nav .btn-nav-glow:active { transform: translateY(0) scale(0.98); }
+.landing-nav .btn-cta-text-full,
+.landing-nav .btn-cta-text-mobile,
+.landing-nav .btn-mobile-studio-cta > span { display: inline-flex; align-items: center; gap: 7px; }
+.landing-nav .btn-cta-text-mobile { display: none; }
+.landing-nav .cta-arrow { flex: none; color: var(--nav-cta-arrow); transition: transform 0.25s var(--ease-out); }
+.landing-nav :is(.btn-nav-glow, .btn-mobile-studio-cta):hover .cta-arrow { transform: translate(2px, -2px); }
+

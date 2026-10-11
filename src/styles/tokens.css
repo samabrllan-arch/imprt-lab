@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&family=Kaushan+Script&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+  /* Paleta Base: Dark Luxury Studio */
+  --bg-dark: #090a0e;
+  --bg-surface: rgba(16, 18, 25, 0.82);
+  --bg-surface-elevated: rgba(23, 26, 36, 0.92);
+  --bg-card: rgba(255, 255, 255, 0.025);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+
+  /* Acentos Vibrantes: Naranja Fuego, Rosa Neón & Cyber Violet */
+  --primary: #ff5722;
+  --primary-hover: #ff7043;
+  --primary-glow: rgba(255, 87, 34, 0.42);
+  --gradient-brand: linear-gradient(135deg, #ff5722 0%, #ff007f 55%, #7928ca 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);
+  --gradient-cyan: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+
+  /* Acentos Complementarios */
+  --secondary: #e2e8f0;
+  --secondary-glow: rgba(226, 232, 240, 0.2);
+  --color-gold: #f59e0b;
+  --color-violet: #8b5cf6;
+  --color-cyan: #06b6d4;
+  --color-accent: #ff5722;
+  --color-accent-subtle: rgba(255, 87, 34, 0.16);
+  --transition-fast: 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Indicadores Funcionales */
+  --success: #22c55e;
+  --danger: #f43f5e;
+  --info: #38bdf8;
+
+  /* Bordes & Glassmorphism Pulido */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-active: rgba(230, 90, 45, 0.55);
+  --border-focus: rgba(255, 255, 255, 0.22);
+  --glass-blur: blur(20px);
+
+  /* Jerarquía Tipográfica Refinada Cyber-Luxury */
+  --font-headline: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-display: 'Outfit', -apple-system, sans-serif;
+  --font-calligraphy: 'Kaushan Script', cursive;
+  --font-editorial: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* Escala de Textos */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Sombras y Elevaciones */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.75);
+  --shadow-glow: 0 0 20px var(--primary-glow);
+
+  /* Radios de Esquina */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* 🎯 Curvas y Tiempos de Interaction-Design Skill */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);     /* Decelerate - entrada limpia */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);     /* Accelerate - salida */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* Movimiento continuo */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);   /* Overshoot / resorte elástico */
+
+  --dur-micro: 120ms;  /* Feedback táctil (hovers, active) */
+  --dur-medium: 240ms; /* Segmented tabs, toggles */
+  --dur-macro: 360ms;  /* Modales, drawers */
+}
+
+/* Modo Claro / Light Theme Tokens (Mármol Suave / Travertino Alabastro) */
+[data-theme="light"] {
+  --bg-dark: #f4f1ea;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #eae6dd;
+  --gradient-card: linear-gradient(145deg, #ffffff 0%, #f7f4ed 100%);
+
+  --secondary: #1e293b;
+  --secondary-glow: rgba(30, 41, 59, 0.12);
+
+  --border-subtle: #dcd7cc;
+  --border-active: rgba(255, 87, 34, 0.7);
+  --border-focus: rgba(15, 23, 42, 0.25);
+
+  --text-primary: #1a1c22;
+  --text-secondary: #4a4d57;
+  --text-muted: #636674;
+
+  --shadow-sm: 0 2px 8px rgba(30, 25, 20, 0.04);
+  --shadow-lg: 0 20px 40px -15px rgba(30, 25, 20, 0.08);
+  --shadow-glow: 0 0 25px rgba(255, 87, 34, 0.2);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: visible; /* el scroll del viewport lo gestiona <html>: un body con overflow rompería position: sticky */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--dur-medium) ease, color var(--dur-medium) ease;
+}
+
+/* Carril de scroll permanente (NODE-015): <html> siempre reserva y pinta el carril, sin auto-ocultarse ni mover el layout.
+   Se aplica solo a <html>: con overflow-y: scroll también en <body> aparecería un segundo carril vacío y se rompería position: sticky. */
+html {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+/* En pantallas táctiles y móviles, restaurar el scroll natural del viewport (asynchronous tile compositor) */
+@media (max-width: 960px), (hover: none) and (pointer: coarse) {
+  html {
+    overflow-y: auto !important;
+    scrollbar-gutter: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* Las vistas a pantalla completa (estudio, login, galería, conócenos) gestionan su propio scroll: sin carril muerto en el viewport */
+html.route-studio, html.route-auth, html.route-gallery, html.route-about {
+  overflow-y: hidden;
+  scrollbar-gutter: auto;
+}
+
+/* Scrollbar Personalizado Cyber-Luxury: carril visible + pulgar con presencia (también sin hover ni scroll) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background var(--dur-micro) ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  border-color: transparent;
+  background-clip: padding-box;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.28);
+  background-clip: padding-box;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  background-clip: padding-box;
+}
+
+/* Firefox y motores sin ::-webkit-scrollbar usan las propiedades estándar. En Chrome/Edge/Safari NO se declaran:
+   al definir scrollbar-color/-width, Chrome ≥ 121 ignora los ::-webkit-scrollbar (se perdería el hover naranja y, en macOS,
+   volvería el scrollbar superpuesto que se auto-oculta). */
+@supports not selector(::-webkit-scrollbar) {
+  html, body, * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.28) rgba(255, 255, 255, 0.04);
+  }
+  [data-theme="light"], [data-theme="light"] * {
+    scrollbar-color: rgba(15, 23, 42, 0.28) rgba(15, 23, 42, 0.05);
+  }
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+}
+
+/* ---------- Identidad Global: Cyberpunk Kinetic Glow ---------- */
+.brand-kinetic {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.brand-kinetic .brand-title {
+  font-family: var(--font-display, 'Syne', 'Space Grotesk', sans-serif);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 87, 34, 0.25));
+  white-space: nowrap;
+}
+
+[data-theme="light"] .brand-kinetic .brand-title {
+  background: linear-gradient(135deg, #0f172a 40%, #ea580c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+
+.brand-kinetic .brand-lab-cyan {
+  font-family: var(--font-mono, 'Space Grotesk', monospace);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: #00f0ff;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.45));
+}
+
+[data-theme="light"] .brand-kinetic .brand-lab-cyan {
+  color: #0284c7;
+  filter: none;
+}

@@ -1,0 +1,60 @@
+/**
+ * Tokens compartidos del flujo Checkout Atelier (NODE-015 / NODE-024):
+ * checkout, Auth Gate, Mis Pedidos, perfil de cliente y TyC (NODE-025). Paleta de marca: Sunset Flame + éxito esmeralda.
+ * Oscuro = Obsidian Studio (#10121d) · Claro = Travertino/Blanco (#ffffff, bordes #e2e8f0).
+ */
+.checkout-modal-card,
+.orders-modal-card,
+.order-gate-card,
+.profile-modal-card,
+.legal-modal-card,
+.vault-modal-card {
+  --ck-surface: #10121d;
+  --ck-surface-2: rgba(255, 255, 255, 0.035);
+  --ck-bd: rgba(255, 255, 255, 0.08);
+  --ck-bd-hi: rgba(255, 255, 255, 0.16);
+  --ck-t1: #f8fafc;
+  --ck-t2: #94a3b8;
+  --ck-t3: #8a97ad; /* AA (≥ 4.5:1) sobre #10121d */
+  --ck-accent: #ff5722;
+  --ck-accent-text: #ff7043;
+  --ck-accent-soft: rgba(255, 87, 34, 0.12);
+  --ck-glow: rgba(255, 87, 34, 0.38);
+  --ck-grad: linear-gradient(135deg, #ff7043 0%, #ff5722 55%, #ea580c 100%);
+  --ck-wa: #25d366;
+  --ck-ok: #22c55e;
+  --ck-danger: #f43f5e;
+  --ck-info: #38bdf8;
+  --ck-warn: #fbbf24;
+}
+
+[data-theme="light"] .checkout-modal-card,
+[data-theme="light"] .orders-modal-card,
+[data-theme="light"] .order-gate-card,
+[data-theme="light"] .profile-modal-card,
+[data-theme="light"] .legal-modal-card,
+[data-theme="light"] .vault-modal-card {
+  --ck-surface: #ffffff;
+  --ck-surface-2: #f8fafc;
+  --ck-bd: #e2e8f0;
+  --ck-bd-hi: #cbd5e1;
+  --ck-t1: #0f172a;
+  --ck-t2: #475569;
+  --ck-t3: #64748b;
+  --ck-accent-text: #c2410c;
+  --ck-accent-soft: rgba(255, 87, 34, 0.09);
+  --ck-glow: rgba(255, 87, 34, 0.28);
+  --ck-ok: #16a34a;
+  --ck-danger: #e11d48;
+  --ck-info: #0369a1;
+  --ck-warn: #b45309;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-modal-card *,
+  .orders-modal-card *,
+  .order-gate-card *,
+  .profile-modal-card *,
+  .legal-modal-card *,
+  .vault-modal-card * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

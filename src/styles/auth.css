@@ -1,0 +1,234 @@
+@import './authFullscreen.css';
+
+/* ==========================================================================
+   ESTILOS DE AUTENTICACIÓN & 2FA TELEGRAM (<250 Líneas)
+   ========================================================================== */
+
+/* Botón de Usuario en Navbar */
+.nav-auth-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+
+.btn-nav-login {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-hover, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+  color: var(--text-primary, #ffffff);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-nav-login:hover {
+  background: rgba(255, 87, 34, 0.15);
+  border-color: #ff5722;
+  color: var(--primary, #ff7043);
+}
+
+.nav-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(18, 22, 34, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 4px 12px 4px 6px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.nav-user-chip:hover {
+  border-color: #00f0ff;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+}
+
+.nav-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff5722, #00f0ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fff;
+  object-fit: cover;
+}
+
+.nav-user-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dropdown de Perfil: movido a userMenu.css (NODE-025) */
+
+/* Modal de Autenticación */
+.auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(6, 8, 14, 0.85);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.auth-modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.auth-modal-card {
+  position: relative;
+  width: 90%;
+  max-width: 440px;
+  background: rgba(14, 18, 28, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 87, 34, 0.12);
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px;
+}
+.auth-modal-close:hover { color: #fff; }
+
+.auth-tabs-header {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.5rem;
+}
+.auth-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.auth-tab-btn.active {
+  color: #ff5722;
+  border-bottom-color: #ff5722;
+}
+
+/* Formularios */
+.auth-form-group { margin-bottom: 1rem; }
+.auth-form-label {
+  display: block;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-family: var(--font-mono, monospace);
+}
+.auth-form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.88rem;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.auth-form-input:focus {
+  outline: none;
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.auth-tg-helper {
+  font-size: 0.7rem;
+  color: #00f0ff;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.auth-tg-helper a { color: #00f0ff; text-decoration: underline; }
+
+.btn-auth-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #ff5722, #ff007f);
+  color: #fff;
+  border: none;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 0.8rem;
+  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.35);
+  transition: all 0.2s ease;
+}
+.btn-auth-submit:hover { opacity: 0.95; transform: translateY(-1px); }
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.2rem 0;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.auth-divider span { padding: 0 10px; }
+
+/* Botón Oficial Google */
+.btn-google-auth {
+  width: 100%;
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.btn-google-auth:hover { background: #f3f4f6; }
+
+/* Pantalla de Validación 2FA */
+.auth-2fa-screen { text-align: center; }
+.auth-2fa-icon { font-size: 2.2rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 10px #00f0ff); }
+.auth-2fa-title { font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+.auth-2fa-desc { font-size: 0.8rem; color: #94a3b8; margin-bottom: 1.5rem; line-height: 1.4; }
+
+.auth-otp-input {
+  letter-spacing: 0.6em; font-size: 1.8rem; text-align: center;
+  font-weight: 800; font-family: var(--font-mono, monospace);
+  padding: 8px 12px; color: #00f0ff; border-color: #00f0ff;
+  background: rgba(0, 240, 255, 0.05);
+}
+
+.auth-timer-tag {
+  font-family: var(--font-mono, monospace); font-size: 0.72rem;
+  color: #f59e0b; margin-top: 10px;
+}

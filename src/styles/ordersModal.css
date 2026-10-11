@@ -1,0 +1,182 @@
+@import './checkoutTokens.css';
+
+/**
+ * Mis Pedidos (NODE-024): tarjetas de pedido, estados de pago, datos bancarios y comprobante.
+ */
+.modal-overlay .orders-modal-card {
+  max-width: 700px;
+  max-height: 88vh;
+  background: var(--ck-surface);
+  border-color: var(--ck-bd);
+}
+.orders-modal-card .mp-body { padding: 16px 20px; gap: 14px; overflow-x: hidden; }
+.orders-modal-card .mp-footer { justify-content: flex-end; border-top-color: var(--ck-bd); }
+.orders-modal-card .mp-footer .btn-secondary { flex: 0 0 auto; padding: 10px 22px; }
+
+/* ---------- Tarjeta de pedido ---------- */
+.mp-card {
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  transition: border-color var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.mp-card.is-highlight { border-color: var(--ck-accent); animation: mpGlow 1.8s var(--ease-out) 1; }
+@keyframes mpGlow { 0% { box-shadow: 0 0 0 0 var(--ck-glow); } 40% { box-shadow: 0 0 0 6px var(--ck-glow); } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+.mp-card-main { display: flex; gap: 14px; align-items: flex-start; }
+.mp-thumb { width: 96px; height: 96px; flex-shrink: 0; border-radius: 12px; object-fit: cover; background: #0c0d15; border: 1px solid var(--ck-bd); }
+.mp-thumb-empty { display: grid; place-items: center; font-size: 2rem; }
+.mp-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.mp-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mp-id { font-family: var(--font-mono, monospace); font-weight: 700; font-size: 0.78rem; color: var(--ck-accent-text); }
+.mp-title { font-size: 0.92rem; font-weight: 600; color: var(--ck-t1); }
+.mp-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.74rem; color: var(--ck-t2); }
+.mp-date { color: var(--ck-t3); }
+.mp-total { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--ck-t1); font-variant-numeric: tabular-nums; }
+
+.mp-decals { list-style: none; margin: 0; padding: 8px 10px; border-radius: 10px; background: color-mix(in srgb, var(--ck-t3) 10%, transparent); font-size: 0.74rem; color: var(--ck-t2); display: flex; flex-direction: column; gap: 3px; }
+.mp-decals strong { color: var(--ck-t1); font-variant-numeric: tabular-nums; }
+.mp-zone { font-weight: 700; color: var(--ck-accent-text); }
+.mp-customer { font-size: 0.74rem; color: var(--ck-t2); }
+
+/* ---------- Estado ---------- */
+.mp-status {
+  --tone: var(--ck-accent-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tone) 38%, transparent);
+}
+.mp-status[data-tone="review"] { --tone: var(--ck-info); }
+.mp-status[data-tone="paid"] { --tone: var(--ck-ok); }
+.mp-status-hint { margin: 0; font-size: 0.74rem; color: var(--ck-t2); }
+.mp-status-hint[data-tone="paid"] { color: var(--ck-ok); }
+
+/* ---------- Acciones y botones ---------- */
+.mp-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ck-bd-hi);
+  background: transparent;
+  color: var(--ck-t1);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) ease, background var(--dur-micro) ease, border-color var(--dur-micro) ease;
+}
+.mp-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--ck-accent); }
+.mp-btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+.mp-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.mp-btn:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+.mp-btn-primary { background: var(--ck-grad); border-color: transparent; color: #ffffff; box-shadow: 0 8px 20px -10px var(--ck-glow); }
+.mp-btn-primary:hover:not(:disabled) { border-color: transparent; box-shadow: 0 12px 26px -10px var(--ck-glow); }
+.mp-btn-wa { background: var(--ck-wa); border-color: transparent; color: #ffffff; box-shadow: 0 8px 20px -10px rgba(37, 211, 102, 0.55); }
+.mp-btn-wa:hover:not(:disabled) { border-color: transparent; }
+.mp-btn-danger { color: var(--ck-danger); border-color: color-mix(in srgb, var(--ck-danger) 35%, transparent); margin-left: auto; }
+.mp-btn-danger:hover:not(:disabled) { border-color: var(--ck-danger); background: color-mix(in srgb, var(--ck-danger) 8%, transparent); }
+
+/* ---------- Panel de pago ---------- */
+.mp-pay {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--ck-surface);
+  border: 1px solid color-mix(in srgb, var(--ck-accent) 30%, var(--ck-bd));
+  animation: mpPayIn 0.22s var(--ease-out);
+}
+@keyframes mpPayIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Banner de validación ---------- */
+.mp-validation-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ck-info) 14%, var(--ck-surface-2));
+  border: 1px solid color-mix(in srgb, var(--ck-info) 40%, transparent);
+}
+.mp-validation-icon { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
+.mp-validation-text strong { display: block; font-size: 0.82rem; color: var(--ck-info); margin-bottom: 2px; }
+.mp-validation-text p { margin: 0; font-size: 0.74rem; color: var(--ck-t2); line-height: 1.45; }
+.mp-validation-text p strong { display: inline; color: var(--ck-t1); }
+
+.mp-step { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 700; color: var(--ck-t1); }
+.mp-step-n { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: var(--ck-grad); color: #ffffff; font-size: 0.68rem; font-weight: 800; }
+.mp-hint { margin: 0; font-size: 0.72rem; color: var(--ck-t3); }
+
+.mp-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.mp-method {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px solid var(--ck-bd);
+  background: var(--ck-surface-2);
+  color: var(--ck-t1);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out), border-color var(--dur-micro) ease, background var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.mp-method:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--ck-accent) 55%, transparent); }
+.mp-method.active { border-color: var(--ck-accent); background: var(--ck-accent-soft); color: var(--ck-accent-text); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ck-accent) 18%, transparent); }
+
+.mp-bank { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; background: var(--ck-surface-2); border: 1px dashed var(--ck-bd-hi); }
+.mp-bank-title { font-size: 0.8rem; font-weight: 800; color: var(--ck-t1); }
+.mp-field { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; }
+.mp-field-label { min-width: 118px; color: var(--ck-t3); }
+.mp-field-value { flex: 1; min-width: 0; overflow-wrap: anywhere; font-weight: 700; color: var(--ck-t1); font-variant-numeric: tabular-nums; }
+.mp-field-empty { flex: 1; font-style: italic; color: var(--ck-t3); }
+.mp-copy { padding: 3px 9px; border-radius: 8px; border: 1px solid var(--ck-bd-hi); background: transparent; color: var(--ck-accent-text); font-size: 0.68rem; font-weight: 700; cursor: pointer; }
+.mp-copy:hover { background: var(--ck-accent-soft); border-color: var(--ck-accent); }
+
+/* ---------- Subida de comprobante ---------- */
+.mp-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 112px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--ck-bd-hi);
+  background: var(--ck-surface-2);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) ease, background var(--dur-micro) ease, transform var(--dur-micro) var(--ease-out);
+}
+.mp-drop:hover { border-color: var(--ck-accent); background: var(--ck-accent-soft); transform: translateY(-2px); }
+.mp-drop-icon { font-size: 1.8rem; }
+.mp-drop-cta { font-size: 0.8rem; font-weight: 700; color: var(--ck-t1); }
+.mp-drop-sub { font-size: 0.68rem; color: var(--ck-t3); }
+.mp-proof-img { max-width: 100%; max-height: 190px; border-radius: 10px; object-fit: contain; border: 1px solid var(--ck-bd); }
+.mp-pay-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 520px) {
+  .mp-pay-actions { grid-template-columns: minmax(0, 1fr); }
+  .mp-card-main { flex-direction: column; }
+  .mp-thumb { width: 100%; height: 150px; }
+  .mp-field-label { min-width: 96px; }
+}
+
+/* ---------- Estados vacíos ---------- */
+.mp-empty { text-align: center; padding: 40px 20px; color: var(--ck-t2); display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.mp-empty-icon { font-size: 3rem; }
+.mp-empty h4 { margin: 0; color: var(--ck-t1); font-size: 1rem; }
+.mp-empty p { margin: 0 0 6px; font-size: 0.82rem; }

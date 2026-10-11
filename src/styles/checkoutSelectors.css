@@ -1,0 +1,113 @@
+@import './checkoutTokens.css';
+
+/**
+ * Opciones del checkout (Talla / Material / Gramaje) — NODE-011 / NODE-015.
+ *
+ * Estado SELECCIONADO inequívoco y sin overflow: borde iluminado + fondo cálido + insignia ✓ DENTRO de la
+ * tarjeta (antes sobresalía −8px y generaba la barra de scroll horizontal). El hover solo sugiere con elevación
+ * (translateY(-2px), compositor-only → 60 FPS); nunca imita el estado activo.
+ */
+.btn-checkout-size,
+.btn-checkout-mat,
+.btn-checkout-gram {
+  position: relative;
+  min-width: 0;
+  background: var(--ck-surface-2);
+  border: 1.5px solid var(--ck-bd);
+  border-radius: 12px;
+  cursor: pointer;
+  will-change: transform;
+  transition: transform var(--dur-micro) var(--ease-out), border-color var(--dur-micro) ease,
+              background var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+
+/* ---------- Tallas ---------- */
+.checkout-sizes-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.btn-checkout-size { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 9px 4px; }
+.size-letter { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--ck-t1); }
+.size-sub { font-size: 0.6rem; color: var(--ck-t3); white-space: nowrap; }
+.size-addon-badge { margin-top: 2px; font-size: 0.58rem; font-weight: 700; color: var(--ck-accent-text); }
+@media (max-width: 420px) { .checkout-sizes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ---------- Materiales ---------- */
+.checkout-materials-row,
+.checkout-grammages-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 420px) {
+  .checkout-materials-row,
+  .checkout-grammages-row { grid-template-columns: minmax(0, 1fr); }
+}
+.btn-checkout-mat { display: flex; align-items: center; gap: 10px; padding: 11px 36px 11px 12px; text-align: left; }
+.mat-icon { font-size: 1.4rem; flex-shrink: 0; }
+.mat-info-text { display: flex; flex-direction: column; min-width: 0; }
+.mat-name { font-size: 0.82rem; color: var(--ck-t1); }
+.mat-desc { font-size: 0.68rem; color: var(--ck-t3); }
+
+/* ---------- Gramajes ---------- */
+.btn-checkout-gram { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 36px 10px 12px; text-align: left; }
+.gram-title { font-size: 0.8rem; color: var(--ck-t1); }
+.gram-mod { font-size: 0.68rem; color: var(--ck-t3); }
+
+/* ---------- Hover: invita a elegir sin parecer seleccionado ---------- */
+.btn-checkout-size:not(.active):hover,
+.btn-checkout-mat:not(.active):hover,
+.btn-checkout-gram:not(.active):hover {
+  transform: translateY(-2px);
+  background: var(--ck-accent-soft);
+  border-color: color-mix(in srgb, var(--ck-accent) 55%, transparent);
+  box-shadow: 0 10px 20px -12px var(--ck-glow);
+}
+.btn-checkout-size:active,
+.btn-checkout-mat:active,
+.btn-checkout-gram:active { transform: translateY(0) scale(0.98); }
+
+/* ---------- Seleccionado: borde iluminado + insignia armónica ---------- */
+.btn-checkout-size.active,
+.btn-checkout-mat.active,
+.btn-checkout-gram.active {
+  background: linear-gradient(150deg, var(--ck-accent-soft), color-mix(in srgb, var(--ck-accent) 4%, transparent));
+  border-color: var(--ck-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ck-accent) 20%, transparent), 0 12px 24px -14px var(--ck-glow);
+}
+.btn-checkout-size.active .size-letter,
+.btn-checkout-mat.active .mat-name,
+.btn-checkout-gram.active .gram-title { color: var(--ck-accent-text); }
+.btn-checkout-size.active .size-sub { color: var(--ck-t2); }
+
+/* Insignia ✓ integrada (dentro de la tarjeta, sin superponerse al contenido) */
+.btn-checkout-size.active::after,
+.btn-checkout-mat.active::after,
+.btn-checkout-gram.active::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 17px;
+  height: 17px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ck-grad);
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 2px 8px -2px var(--ck-glow);
+  animation: ckBadgeIn 0.22s var(--ease-out);
+}
+.btn-checkout-size.active::after { top: 4px; right: 4px; width: 14px; height: 14px; font-size: 0.55rem; }
+@keyframes ckBadgeIn { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.btn-checkout-size:focus-visible,
+.btn-checkout-mat:focus-visible,
+.btn-checkout-gram:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+
+/* ---------- Modo claro: mayor especificidad para que nunca pisen el estado activo ---------- */
+[data-theme="light"] .btn-checkout-size,
+[data-theme="light"] .btn-checkout-mat,
+[data-theme="light"] .btn-checkout-gram { background: #f8fafc; border-color: #e2e8f0; color: #0f172a; }
+[data-theme="light"] .btn-checkout-size:not(.active):hover,
+[data-theme="light"] .btn-checkout-mat:not(.active):hover,
+[data-theme="light"] .btn-checkout-gram:not(.active):hover { background: #fff7f3; border-color: rgba(255, 87, 34, 0.6); }
+[data-theme="light"] .btn-checkout-size.active,
+[data-theme="light"] .btn-checkout-mat.active,
+[data-theme="light"] .btn-checkout-gram.active { background: linear-gradient(150deg, #fff1ec, #ffffff); border-color: var(--ck-accent); }

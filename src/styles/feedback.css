@@ -1,0 +1,277 @@
+/**
+ * Estilos para el Buzón de Quejas, Sugerencias y Retroalimentación
+ */
+.feedback-section {
+  position: relative;
+  padding: 100px 0;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.feedback-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 250px;
+  background: radial-gradient(ellipse at center, rgba(255, 87, 34, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.feedback-card-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 2;
+}
+
+/* Selector de Categoría / Tipo */
+.feedback-types-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1rem;
+}
+
+.feedback-type-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--dur-micro);
+}
+
+.feedback-type-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.feedback-type-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+/* Campos de Formulario */
+.feedback-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .form-row-dual {
+    grid-template-columns: 1fr;
+  }
+  .feedback-card-wrapper {
+    padding: 1.5rem;
+  }
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-field-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-field-input,
+.form-field-textarea {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  transition: all var(--dur-micro);
+  outline: none;
+}
+
+.form-field-input:focus,
+.form-field-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.form-field-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Estrellas Interactivas */
+.star-rating-box {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0;
+}
+
+.rating-star-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s, transform 0.15s;
+  line-height: 1;
+}
+
+.rating-star-btn:hover {
+  transform: scale(1.2);
+}
+
+.rating-star-btn.active,
+.rating-star-btn.hovered {
+  color: #f59e0b;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.rating-label-hint {
+  margin-left: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+/* Botones de Acción */
+.feedback-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-submit-feedback {
+  background: var(--gradient-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.85rem 1.8rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 20px var(--primary-glow);
+  transition: all var(--dur-micro);
+}
+
+.btn-submit-feedback:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 87, 34, 0.6);
+}
+
+.btn-direct-whatsapp {
+  background: rgba(37, 211, 102, 0.12);
+  color: #25d366;
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  border-radius: var(--radius-full);
+  padding: 0.85rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all var(--dur-micro);
+}
+
+.btn-direct-whatsapp:hover {
+  background: rgba(37, 211, 102, 0.22);
+  border-color: #25d366;
+  transform: translateY(-1px);
+}
+
+/* Estado de Éxito */
+.feedback-success-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feedback-success-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  border: 2px solid #22c55e;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.3);
+}
+
+.feedback-success-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.feedback-success-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Modo Claro Adaptación (Travertino Mármol Cálido #ede9e0) */
+[data-theme="light"] .feedback-section { background: #ede9e0; border-top-color: #dcd7cc; }
+[data-theme="light"] .feedback-card-wrapper { background: #ffffff; box-shadow: 0 15px 40px rgba(30, 25, 20, 0.06); border-color: #dcd7cc; }
+[data-theme="light"] .form-field-input,
+[data-theme="light"] .form-field-textarea { background: #faf8f5; color: #1a1c22; border-color: #dcd7cc; }
+[data-theme="light"] .form-field-input:focus,
+[data-theme="light"] .form-field-textarea:focus { background: #ffffff; border-color: var(--primary); }
+[data-theme="light"] .feedback-type-btn { background: #eae6dd; border-color: #dcd7cc; color: #4a4d57; }
+[data-theme="light"] .feedback-type-btn:hover { background: #e2ddd2; color: #1a1c22; }
+[data-theme="light"] .feedback-type-btn.active { background: var(--primary); color: #ffffff; border-color: var(--primary); }
+[data-theme="light"] .rating-star-btn { color: #dcd7cc; }
+[data-theme="light"] .feedback-success-title { color: #1a1c22; }

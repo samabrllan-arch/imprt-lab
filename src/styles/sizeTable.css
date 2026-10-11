@@ -1,0 +1,59 @@
+/**
+ * Tabla comparativa por talla (NODE-009 / NODE-017)
+ * Permite previsualizar cómo se adapta el estampado en las distintas tallas de confección.
+ */
+.size-table-head { display: flex; align-items: baseline; justify-content: space-between; margin-top: 2px; }
+.size-table-head span { font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); }
+.size-table-head small { font-size: 0.64rem; color: var(--text-muted); }
+.size-table { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+
+.size-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 2px 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-micro) var(--ease-out);
+}
+.size-cell:hover { background: rgba(255, 255, 255, 0.09); transform: translateY(-2px); }
+.size-cell:active { transform: scale(0.95); }
+.size-cell-label { font-family: var(--font-display); font-size: 0.82rem; font-weight: 800; color: var(--text-primary); }
+.size-cell-dim { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.size-cell.active {
+  background: linear-gradient(160deg, rgba(255, 87, 34, 0.28), rgba(229, 46, 113, 0.16));
+  border-color: var(--primary);
+  box-shadow: 0 0 14px rgba(255, 87, 34, 0.25);
+}
+.size-cell.active .size-cell-dim { color: #ffccbc; }
+.size-cell.is-reduced::after {
+  content: '!';
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #1a1206;
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+[data-theme="light"] .size-cell { background: #f8fafc; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .size-cell:hover { background: #f1f5f9; color: #0f172a; }
+[data-theme="light"] .size-cell.active { background: #0f172a; border-color: #0f172a; color: #ffffff; box-shadow: 0 3px 10px rgba(15, 23, 42, 0.25); }
+[data-theme="light"] .size-cell.active .size-cell-label { color: #ffffff; }
+[data-theme="light"] .size-cell.active .size-cell-dim { color: #94a3b8; }
+[data-theme="light"] .size-cell-label { color: #0f172a; }
+
+@media (max-width: 420px) {
+  .size-table { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .size-cell-dim { font-size: 0.54rem; }
+}

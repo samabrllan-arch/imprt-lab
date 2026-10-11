@@ -1,0 +1,195 @@
+/**
+ * Estilos para la línea de tiempo y rastreo del pedido (NODE-024)
+ * Estética Atelier Cyber-Luxury con nodos conectores, badges dinámicos y simulación fluida.
+ */
+.mp-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--ck-surface, #141721);
+  border: 1px solid var(--ck-bd, rgba(255, 255, 255, 0.08));
+  animation: mpTimelineFade 0.25s var(--ease-out, ease);
+}
+@keyframes mpTimelineFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.mp-timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--ck-bd, rgba(255, 255, 255, 0.08));
+}
+
+.mp-timeline-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--ck-t1, #ffffff);
+  letter-spacing: 0.02em;
+}
+
+.mp-timeline-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ck-info, #00f0ff);
+  box-shadow: 0 0 8px var(--ck-info, #00f0ff);
+  animation: mpDotPulse 1.6s infinite ease-in-out;
+}
+@keyframes mpDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.mp-sim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--ck-info, #00f0ff) 40%, transparent);
+  background: color-mix(in srgb, var(--ck-info, #00f0ff) 10%, transparent);
+  color: var(--ck-info, #00f0ff);
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--dur-micro, 0.15s) ease;
+}
+.mp-sim-btn:hover {
+  background: color-mix(in srgb, var(--ck-info, #00f0ff) 22%, transparent);
+  border-color: var(--ck-info, #00f0ff);
+  transform: translateY(-1px);
+}
+
+.mp-timeline-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-top: 2px;
+}
+
+.mp-timeline-step {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  min-height: 48px;
+}
+
+.mp-step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.mp-step-node {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  background: var(--ck-surface-2, #1b202e);
+  border: 1.5px solid var(--ck-bd, rgba(255, 255, 255, 0.12));
+  color: var(--ck-t3, #8e9bb0);
+  transition: all var(--dur-micro, 0.2s) ease;
+  z-index: 2;
+}
+
+.mp-step-line {
+  flex: 1;
+  width: 2px;
+  background: var(--ck-bd, rgba(255, 255, 255, 0.1));
+  margin: 2px 0;
+}
+
+.mp-step-content {
+  flex: 1;
+  padding-bottom: 12px;
+  min-width: 0;
+}
+
+.mp-step-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mp-step-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ck-t2, #c3cad6);
+  transition: color var(--dur-micro, 0.2s) ease;
+}
+
+.mp-step-desc {
+  margin: 2px 0 0;
+  font-size: 0.7rem;
+  color: var(--ck-t3, #8e9bb0);
+  line-height: 1.35;
+}
+
+.mp-step-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Estados del stepper */
+.mp-timeline-step.is-done .mp-step-node {
+  background: var(--ck-ok, #22c55e);
+  border-color: var(--ck-ok, #22c55e);
+  color: #ffffff;
+  font-weight: 900;
+}
+.mp-timeline-step.is-done .mp-step-line {
+  background: var(--ck-ok, #22c55e);
+}
+.mp-timeline-step.is-done .mp-step-label {
+  color: var(--ck-t1, #ffffff);
+}
+.mp-timeline-step.is-done .mp-step-badge.done {
+  background: color-mix(in srgb, var(--ck-ok, #22c55e) 15%, transparent);
+  color: var(--ck-ok, #22c55e);
+  border: 1px solid color-mix(in srgb, var(--ck-ok, #22c55e) 30%, transparent);
+}
+
+.mp-timeline-step.is-current .mp-step-node {
+  background: var(--ck-info, #00f0ff);
+  border-color: #ffffff;
+  color: #0b0f19;
+  box-shadow: 0 0 12px var(--ck-info, #00f0ff);
+  animation: mpCurrentBounce 2s infinite ease;
+}
+@keyframes mpCurrentBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.mp-timeline-step.is-current .mp-step-label {
+  color: var(--ck-info, #00f0ff);
+  font-weight: 800;
+}
+.mp-timeline-step.is-current .mp-step-badge {
+  background: color-mix(in srgb, var(--ck-info, #00f0ff) 20%, transparent);
+  color: var(--ck-info, #00f0ff);
+  border: 1px solid var(--ck-info, #00f0ff);
+}
+
+.mp-timeline-step.is-upcoming {
+  opacity: 0.55;
+}

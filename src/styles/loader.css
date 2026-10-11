@@ -1,0 +1,280 @@
+/**
+ * Estilos para el Loader Cyber-Luxury de Alta Fidelidad
+ * Holograma Blueprint de Camiseta 3D, Láser de Escaneo y HUD de Telemetría
+ */
+.studio-cyber-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s ease;
+  transform: scale(1.02);
+}
+
+.studio-cyber-loader.visible { opacity: 1; pointer-events: all; transform: scale(1); }
+.studio-cyber-loader.fade-out { opacity: 0; transform: scale(1.04); }
+.studio-cyber-loader.hidden { display: none; }
+
+/* Fondo con rejilla técnica y brillos de atelier */
+.loader-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(14, 17, 26, 0.98) 0%, rgba(4, 5, 8, 0.99) 100%);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  overflow: hidden;
+}
+
+.loader-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 80%);
+}
+
+.loader-ambient-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  opacity: 0.18;
+}
+
+.loader-ambient-primary {
+  top: 20%; left: 30%;
+  background: var(--primary);
+  animation: floatAmbient 6s ease-in-out infinite alternate;
+}
+
+.loader-ambient-secondary {
+  bottom: 20%; right: 30%;
+  background: #00f0ff;
+  animation: floatAmbient 7s ease-in-out infinite alternate-reverse;
+}
+
+/* Ventana HUD de Telemetría */
+.loader-content-box {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 92%;
+  max-width: 480px;
+  padding: 2.2rem 2rem;
+  background: rgba(14, 18, 28, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 87, 34, 0.15);
+}
+
+.loader-hud-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-color: var(--primary);
+  border-style: solid;
+  pointer-events: none;
+}
+.corner-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; border-top-left-radius: 8px; }
+.corner-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; border-top-right-radius: 8px; }
+.corner-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; border-bottom-left-radius: 8px; }
+.corner-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; border-bottom-right-radius: 8px; }
+
+.loader-top-meta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.loader-meta-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  background: rgba(255, 87, 34, 0.12);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 87, 34, 0.25);
+}
+
+.loader-chip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  animation: pulseDot 1s infinite alternate;
+}
+
+.loader-meta-coord {
+  color: #00f0ff;
+  font-weight: 600;
+  background: rgba(0, 240, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* Escenario Holográfico Central (Imagen IA + Escáner Láser) */
+.loader-hologram-stage {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.35rem;
+  animation: holoFloat 4s ease-in-out infinite;
+}
+
+.hologram-asset-img {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+  position: relative;
+  z-index: 2;
+  display: block;
+  flex-shrink: 0;
+  animation: pulseHoloGlow 3.5s ease-in-out infinite;
+}
+
+.loader-hologram-stage.orbit-theme .hologram-asset-img {
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.45), 0 0 55px rgba(0, 240, 255, 0.35);
+}
+
+.loader-hologram-scanner {
+  position: absolute;
+  inset: 0;
+  width: 170px;
+  height: 170px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 240, 255, 0.45);
+  animation: spinSlow 10s linear infinite;
+  pointer-events: none;
+}
+
+.loader-hologram-scanner-inner {
+  position: absolute;
+  inset: 9px;
+  width: 152px;
+  height: 152px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1px dotted rgba(255, 87, 34, 0.45);
+  animation: spinSlow 7s linear infinite reverse;
+  pointer-events: none;
+}
+
+.loader-scanline-laser {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f0ff 30%, #fff 50%, #00f0ff 70%, transparent);
+  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+  z-index: 5;
+  animation: scanSweep 2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+/* Tipografía de Carga */
+.loader-headline {
+  font-family: var(--font-display);
+  font-size: 1.25rem; font-weight: 800;
+  letter-spacing: 0.02em; color: #ffffff;
+  margin: 0 0 0.4rem 0;
+}
+
+.loader-status-stream {
+  font-family: var(--font-mono);
+  font-size: 0.8rem; color: var(--text-secondary);
+  min-height: 1.3rem; margin-bottom: 1.2rem;
+}
+
+/* Cuadrícula de 4 Fases */
+.loader-phases-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px; width: 100%;
+  margin-bottom: 1.4rem;
+}
+
+.phase-pill {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; padding: 5px 4px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  transition: all 0.25s ease;
+}
+
+.phase-idx { font-weight: 700; opacity: 0.6; }
+.phase-pill.active { background: rgba(255, 87, 34, 0.12); border-color: rgba(255, 87, 34, 0.4); color: #ff914d; }
+.phase-pill.current {
+  background: rgba(0, 240, 255, 0.15); border-color: #00f0ff; color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+}
+
+/* Módulo de Barra de Progreso */
+.loader-progress-module { width: 100%; }
+.loader-progress-track {
+  width: 100%; height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 999px; overflow: hidden;
+  position: relative;
+}
+
+.loader-progress-bar {
+  width: 0%; height: 100%;
+  background: linear-gradient(90deg, #ff5722 0%, #ff007f 50%, #00f0ff 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.6);
+  position: relative;
+  transition: width 0.08s linear;
+}
+
+.progress-bar-head {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 10px; background: #ffffff;
+  border-radius: 999px; filter: blur(1px);
+}
+
+.loader-progress-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+.loader-specs-tag { color: var(--text-muted); letter-spacing: 0.04em; }
+.loader-number-readout { font-weight: 800; color: #00f0ff; font-size: 0.88rem; }
+
+@keyframes scanSweep {
+  0% { top: 5%; opacity: 0.2; }
+  50% { top: 92%; opacity: 1; }
+  100% { top: 5%; opacity: 0.2; }
+}
+
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes pulseDot { from { transform: scale(0.85); opacity: 0.6; } to { transform: scale(1.25); opacity: 1; } }
+@keyframes floatAmbient { 0% { transform: translate(0, 0); } 100% { transform: translate(25px, -20px); } }
+@keyframes holoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes pulseHoloGlow { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.02); filter: brightness(1.08); } }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio de Diseños de Login & Registro | 3D Shirt Studio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👕</text></svg>">
+  <link rel="stylesheet" href="./src/styles/tokens.css">
+  <link rel="stylesheet" href="./src/styles/authPreview.css">
+  <link rel="stylesheet" href="./src/styles/authPreviewVariants.css">
+</head>
+<body class="auth-lab-body">
+
+  <!-- Barra Superior del Laboratorio -->
+  <header class="lab-topbar">
+    <div class="lab-title-box">
+      <img src="/assets/logo.svg" alt="Logo" width="26" height="26" />
+      <span style="font-weight: 800; font-size: 0.95rem;">LABORATORIO DE AUTH</span>
+      <span class="lab-badge">PROTOTIPOS 60 FPS</span>
+    </div>
+
+    <nav class="lab-switcher-dock">
+      <button type="button" class="lab-tab-btn active" data-concept="sliding">
+        🔀 1. Panel Deslizante (Recomendado)
+      </button>
+      <button type="button" class="lab-tab-btn" data-concept="flip3d">
+        🌌 2. 3D Flip Parallax
+      </button>
+      <button type="button" class="lab-tab-btn" data-concept="runway">
+        ✨ 3. Luxury Runway
+      </button>
+      <button type="button" class="lab-tab-btn" data-concept="cyberhud">
+        ⚡ 4. Cyber HUD
+      </button>
+    </nav>
+
+    <div>
+      <a href="/#hero" class="lab-btn-back">← Volver a la Tienda</a>
+    </div>
+  </header>
+
+  <!-- Escenario Central Interactivo -->
+  <main class="lab-stage" id="lab-stage-mount">
+    <!-- Renderizado dinámicamente por authPreviewApp.js -->
+  </main>
+
+  <!-- Tarjeta Informativa Inferior -->
+  <footer class="lab-bottom-card">
+    <div class="lab-bottom-info">
+      <h4 id="lab-info-title">Concepto 1: Doble Panel Deslizante (El Favorito Interactivo)</h4>
+      <p id="lab-info-desc">
+        La imagen y el formulario cruzan fluidamente de lado con aceleración de 60 FPS sin recarga de pantalla.
+      </p>
+    </div>
+    <button type="button" class="btn-adopt-concept" id="btn-adopt-current">
+      ✅ Adoptar este Diseño
+    </button>
+  </footer>
+
+  <script type="module" src="./src/ui/authPreviewApp.js"></script>
+</body>
+</html>

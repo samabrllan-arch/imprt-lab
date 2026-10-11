@@ -1,0 +1,161 @@
+/**
+ * Vista dedicada #conocenos (NODE-028) + botón terciario del Hero. Oscuro por defecto; [data-theme="light"] redefine colores.
+ * Pensada para 60 FPS: sin backdrop-filter, animaciones solo de transform/opacity y shimmer en un pseudo-elemento con transform.
+ */
+.about-fullscreen-view {
+  --about-card-bg: rgba(16, 19, 29, 0.92);
+  --about-edge-a: rgba(255, 87, 34, 0.55);
+  --about-edge-b: rgba(255, 0, 127, 0.18);
+  --about-edge-legal-a: rgba(0, 240, 255, 0.5);
+  --about-edge-legal-b: rgba(121, 40, 202, 0.2);
+  --about-skeleton: rgba(255, 255, 255, 0.04);
+  --about-skeleton-shine: rgba(255, 255, 255, 0.075);
+  position: fixed; inset: 0; z-index: 5000; flex-direction: column;
+  background: var(--bg-dark); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+  scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+}
+html.route-about #landing-view { display: none !important; }
+html.route-about #about-view { display: flex !important; }
+
+/* Barra superior (misma base que #galeria: sin blur para no repintar al hacer scroll) */
+.about-topbar { position: sticky; top: 0; backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(10, 12, 18, 0.98); }
+[data-theme="light"] .about-topbar { background: rgba(255, 255, 255, 0.98); }
+.about-topbar .btn-back-to-store, .about-brand { white-space: nowrap; }
+.about-brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-headline); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.06em; color: var(--text-primary); }
+.about-brand-logo { width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255, 87, 34, 0.4)); }
+.about-badge { padding: 2px 9px; border-radius: var(--radius-full); font-size: 0.64rem; letter-spacing: 0.1em; color: #fdba74; background: rgba(255, 87, 34, 0.14); border: 1px solid rgba(255, 138, 76, 0.45); }
+[data-theme="light"] .about-badge { color: #c2410c; background: #fff7ed; border-color: rgba(194, 65, 12, 0.4); }
+
+.about-main {
+  width: 100%; max-width: 1180px; margin: 0 auto; padding: 3rem 1.5rem 4.5rem; box-sizing: border-box;
+  background: radial-gradient(ellipse 60% 38% at 50% 0%, rgba(255, 87, 34, 0.1) 0%, transparent 70%);
+}
+.about-hero { max-width: 820px; margin: 0 auto 3rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.9rem; }
+.about-title { font-family: var(--font-headline); font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; color: var(--text-primary); }
+.about-title { text-wrap: balance; }
+.about-nowrap { white-space: nowrap; }
+.about-title-glow {
+  background: var(--gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 22px var(--primary-glow));
+}
+.about-lead { max-width: 640px; font-size: 1rem; line-height: 1.65; color: var(--text-secondary); }
+.about-lead strong { color: var(--text-primary); }
+
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem; }
+
+/* Tarjeta: borde neón suave en degradé (padding-box + border-box), cuerpo translúcido */
+.about-card {
+  position: relative; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  background: linear-gradient(var(--about-card-bg), var(--about-card-bg)) padding-box,
+    linear-gradient(135deg, var(--about-edge-a), var(--about-edge-b)) border-box;
+  box-shadow: 0 14px 34px -16px rgba(0, 0, 0, 0.7);
+  transition: transform var(--dur-medium) var(--ease-out);
+  animation: about-rise 0.55s var(--ease-out) both;
+}
+.about-card:nth-child(2) { animation-delay: 0.07s; }
+.about-card:nth-child(3) { animation-delay: 0.14s; }
+.about-card:nth-child(4) { animation-delay: 0.21s; }
+.about-card::after { /* resplandor: se anima solo la opacidad */
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  box-shadow: 0 0 0 1px var(--about-edge-a), 0 18px 44px -12px var(--primary-glow);
+  transition: opacity var(--dur-medium) ease;
+}
+.about-card--legal { --about-edge-a: var(--about-edge-legal-a); --about-edge-b: var(--about-edge-legal-b); }
+.about-card--legal::after { box-shadow: 0 0 0 1px var(--about-edge-legal-a), 0 18px 44px -12px rgba(0, 240, 255, 0.3); }
+@media (hover: hover) {
+  .about-card:hover { transform: translateY(-4px); }
+  .about-card:hover::after { opacity: 1; }
+  .about-card:hover .about-card-img { transform: scale(1.05); }
+}
+@keyframes about-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Contenedor de imagen 16:9 con skeleton/shimmer mientras la ilustración no existe o carga */
+.about-card-image-box {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;
+  background: var(--about-skeleton); border-bottom: 1px solid var(--border-subtle);
+}
+.about-card-image-box::before { /* franja de brillo: translateX no fuerza layout ni repintado */
+  content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(100deg, transparent 20%, var(--about-skeleton-shine) 50%, transparent 80%);
+  animation: about-shimmer 1.8s ease-in-out infinite;
+}
+.about-card-image-box.is-ready::before { display: none; }
+.about-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out); }
+.about-card-image-box.is-loading .about-card-img { display: none; }
+.about-card-image-box.is-loading::after {
+  content: attr(data-label); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap;
+  padding: 5px 14px; border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em;
+  color: var(--text-muted); border: 1px dashed var(--border-focus);
+}
+@keyframes about-shimmer { to { transform: translateX(100%); } }
+
+.about-card-body { display: flex; flex-direction: column; gap: 0.95rem; flex: 1; padding: 1.5rem 1.6rem 1.7rem; }
+.about-card-badge-row { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; }
+.about-card-icon {
+  width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; border-radius: 12px;
+  background: rgba(255, 87, 34, 0.12); border: 1px solid rgba(255, 87, 34, 0.3);
+}
+.about-tag-pill {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; text-align: right;
+  border-radius: var(--radius-full); color: var(--text-secondary); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle);
+}
+.about-card--legal .about-card-icon { background: rgba(0, 240, 255, 0.1); border-color: rgba(0, 240, 255, 0.35); }
+.about-card--legal .about-tag-pill { color: #67e8f9; background: rgba(6, 182, 212, 0.1); border-color: rgba(103, 232, 249, 0.35); }
+.about-card-title { font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; color: var(--text-primary); }
+.about-card-desc { font-size: 0.92rem; line-height: 1.65; color: var(--text-secondary); }
+.about-card-desc strong { color: var(--text-primary); }
+.about-chips-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: auto; padding-top: 0.4rem; }
+.about-chip {
+  font-size: 0.72rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-sm); color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.about-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 3rem; }
+
+/* Botón terciario del Hero (NODE-014): fantasma con borde cian, hermano de .btn-hero-primary y .btn-hero-secondary */
+.btn-hero-tertiary {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.95rem 1.6rem; border-radius: var(--radius-full);
+  font-size: 0.95rem; font-weight: 600; text-decoration: none; color: var(--text-primary); cursor: pointer;
+  background: transparent; border: 1px solid rgba(0, 240, 255, 0.38);
+  transition: border-color var(--dur-micro) ease, background var(--dur-micro) ease, transform var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.btn-hero-tertiary:hover { background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.75); transform: translateY(-1px); box-shadow: 0 0 22px -6px rgba(0, 240, 255, 0.45); }
+.btn-hero-tertiary:focus-visible, .about-fullscreen-view a:focus-visible, .about-fullscreen-view button:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.6); }
+
+@media (max-width: 860px) {
+  .about-grid { grid-template-columns: 1fr; gap: 1.3rem; }
+  .about-main { padding: 2rem 1rem 3rem; }
+}
+@media (max-width: 640px) {
+  .about-topbar { padding: 0 0.75rem; }
+  .about-topbar .topbar-left-group { gap: 0.6rem; min-width: 0; }
+  .about-topbar .btn-back-to-store { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+  .about-brand-name { font-size: 0.78rem; }
+  .about-badge { display: none; }
+  .about-card-body { padding: 1.25rem 1.2rem 1.4rem; }
+  .about-cta-row > * { flex: 1 1 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-fullscreen-view { scroll-behavior: auto; }
+  .about-card { animation: none; }
+  .about-card-image-box::before { animation: none; }
+  .about-card, .about-card-img { transition: none; }
+}
+
+/* Modo claro */
+[data-theme="light"] .about-fullscreen-view {
+  --about-card-bg: #ffffff; --about-edge-a: rgba(255, 87, 34, 0.5); --about-edge-b: rgba(255, 0, 127, 0.14);
+  --about-edge-legal-a: rgba(14, 116, 144, 0.5); --about-edge-legal-b: rgba(121, 40, 202, 0.14);
+  --about-skeleton: #ece7dc; --about-skeleton-shine: rgba(255, 255, 255, 0.6);
+}
+[data-theme="light"] .about-card { box-shadow: 0 12px 30px -14px rgba(30, 25, 20, 0.16); }
+[data-theme="light"] .about-main { background: radial-gradient(ellipse 60% 38% at 50% 0%, rgba(255, 87, 34, 0.07) 0%, transparent 70%); }
+[data-theme="light"] .about-card-icon { background: #fff3ee; }
+[data-theme="light"] .about-card--legal .about-card-icon { background: #ecfeff; border-color: rgba(14, 116, 144, 0.35); }
+[data-theme="light"] .about-card--legal .about-tag-pill { color: #0e7490; background: #ecfeff; border-color: rgba(14, 116, 144, 0.35); }
+[data-theme="light"] .about-tag-pill, [data-theme="light"] .about-chip { color: #4a4d57; background: #f1ede4; border-color: #e2ddd3; }
+[data-theme="light"] .about-card-image-box { border-bottom-color: #e2ddd3; }
+[data-theme="light"] .about-fullscreen-view .btn-hero-secondary { color: #1a1c22; background: #ffffff; border-color: #dcd7cc; }
+[data-theme="light"] .btn-hero-tertiary { color: #0e7490; border-color: rgba(14, 116, 144, 0.45); }
+[data-theme="light"] .btn-hero-tertiary:hover { background: #ecfeff; border-color: #0e7490; box-shadow: 0 0 20px -8px rgba(14, 116, 144, 0.4); }

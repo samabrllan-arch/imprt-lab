@@ -1,0 +1,198 @@
+/**
+ * Perfeccionamiento de Estética Móvil (NODE-015 / NODE-028)
+ * Resuelve colisiones con el notch/dynamic island (safe-area), solapamientos en el visor 3D,
+ * y compacta barras de herramientas y modales en pantallas táctiles (<= 768px).
+ */
+
+/* ==========================================================================
+   1. TOPBAR DEL ESTUDIO 3D EN DISPOSITIVOS MÓVILES (Safe-Areas & Limpieza)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .studio-app-topbar,
+  .about-topbar,
+  .gallery-topbar {
+    height: auto !important;
+    min-height: calc(52px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: max(env(safe-area-inset-top, 0px), 8px) !important;
+    padding-bottom: 8px !important;
+    padding-left: max(env(safe-area-inset-left, 0px), 12px) !important;
+    padding-right: max(env(safe-area-inset-right, 0px), 12px) !important;
+    gap: 8px;
+  }
+
+  .topbar-left-group {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .btn-back-to-store {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    gap: 4px;
+  }
+
+  /* Ocultar texto largo 'Volver a la Tienda' en móviles para evitar colisión con el notch */
+  .btn-back-to-store span {
+    display: none;
+  }
+
+  .topbar-studio-title {
+    font-size: 0.86rem;
+    gap: 6px;
+  }
+
+  .topbar-studio-title img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  /* Ocultar badge grande ATELIER 3D en pantallas reducidas */
+  .topbar-badge-live {
+    display: none !important;
+  }
+
+  .topbar-right-group {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .btn-orders-history {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Mostrar solo icono 📦 en móvil */
+  .btn-orders-history span:last-child {
+    display: none;
+  }
+
+  .studio-app-topbar .btn-theme-toggle {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+/* ==========================================================================
+   2. VISOR 3D: ELIMINACIÓN DE SOLAPAMIENTOS Y CENTRADO DE CONTROLES
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Centrar el selector de silueta en la parte superior sin chocar con nada */
+  .viewer-top-left-dock {
+    top: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    max-width: 96vw !important;
+    justify-content: center !important;
+    z-index: 25 !important;
+  }
+
+  /* Ocultar hint de texto y badge flotante que causaban solapamiento */
+  .viewer-top-left-dock .interaction-hint,
+  .interaction-hint {
+    display: none !important;
+  }
+
+  .viewport-badge-top-right {
+    display: none !important;
+  }
+
+  .silhouette-viewport-dock {
+    padding: 3px 6px;
+    gap: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .btn-silhouette-top {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+    gap: 4px;
+  }
+
+  .btn-silhouette-top .sil-fit {
+    font-size: 0.66rem;
+  }
+
+  /* Barra inferior de vistas y 3D/Plano compacta */
+  .view-switcher-bar {
+    bottom: 10px !important;
+    padding: 4px 8px !important;
+    gap: 4px !important;
+    max-width: 95vw !important;
+  }
+
+  .view-btn {
+    padding: 6px 10px !important;
+    font-size: 0.74rem !important;
+    gap: 4px !important;
+  }
+
+  .mode-btn {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+/* ==========================================================================
+   3. (movida) Modal de tratamiento de imagen en móviles → imageEditorMobile.css (NODE-010 v2.12.0)
+   ========================================================================== */
+
+/* ==========================================================================
+   4. ESTUDIO 3D FULLSCREEN: DESBLOQUEO DE SCROLL FLUIDO EN MÓVILES (NODE-015)
+   Elimina la trampa de scroll anidado entre el canvas y los controles.
+   ========================================================================== */
+@media (max-width: 960px) {
+  .studio-fullscreen-view {
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  .studio-fullscreen-workspace {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
+    /* Alto por flexbox (NODE-015 v1.18.0): lo que sobra bajo la topbar, sea cual sea su medida real o la barra del navegador.
+       Antes un calc(100dvh - 54px ...) fijo desbordaba cuando la topbar medía más y el scroll peleaba con el flex. */
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 100vw !important;
+  }
+
+  /* El visor 3D se compacta para evitar empujar los controles fuera de pantalla */
+  .studio-fullscreen-workspace .viewer-section {
+    height: 38vh !important;
+    min-height: 250px !important;
+    max-height: 340px !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* La seccion lateral fluye libremente sin altura fija */
+  .studio-fullscreen-workspace .sidebar-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: min-content !important;
+    overflow: visible !important;
+    flex: none !important;
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 48px) !important;
+    /* Capa de composición propia en GPU: los controles se deslizan sin repintar el resto de la página */
+    transform: translateZ(0);
+    contain: content;
+  }
+
+  /* DESBLOQUEO CRITICO: el body de controles NO debe tener scroll anidado en moviles */
+  .studio-fullscreen-workspace .sidebar-scroll-body {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex: none !important;
+    padding: 16px 14px 28px !important;
+    contain: none !important;
+  }
+}
+

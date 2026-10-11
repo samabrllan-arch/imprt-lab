@@ -1,0 +1,259 @@
+/* ==========================================================================
+   LOADER PREVIEW BENCH - ESTILOS DEL LABORATORIO DE LOADERS (<300 Líneas)
+   ========================================================================== */
+
+.preview-page {
+  min-height: 100vh;
+  background: #07090e;
+  color: #f1f5f9;
+  font-family: var(--font-body, system-ui, sans-serif);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header del Banco de Pruebas */
+.preview-header {
+  padding: 1.1rem 2rem;
+  background: rgba(14, 18, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  z-index: 100;
+}
+
+.preview-title-group h1 {
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  font-size: 1.3rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.2rem 0;
+}
+
+.preview-badge {
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  background: rgba(255, 87, 34, 0.15);
+  color: #ff7043;
+  border: 1px solid rgba(255, 87, 34, 0.3);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.preview-subtitle {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* Barra de Acciones Globales */
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-preview-action {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-preview-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-preview-primary {
+  background: linear-gradient(135deg, #ff5722, #ff007f);
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+}
+
+/* Selector de Variantes (Tabs) */
+.preview-selector-strip {
+  background: rgba(10, 13, 20, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.75rem 2rem;
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+}
+
+.variant-tab-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.variant-tab-btn:hover { background: rgba(255, 255, 255, 0.07); color: #fff; }
+.variant-tab-btn.active {
+  background: rgba(255, 87, 34, 0.12);
+  border-color: #ff5722;
+  color: #ff7043;
+  box-shadow: 0 0 12px rgba(255, 87, 34, 0.2);
+}
+
+.variant-tab-tag {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.15);
+  color: #00f0ff;
+  font-family: var(--font-mono, monospace);
+}
+
+/* Área de Exhibición Central (Viewport) */
+.preview-workspace {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #0d121c 0%, #040508 100%);
+}
+
+.preview-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 85%);
+  pointer-events: none;
+}
+
+/* Efectos visuales de variantes */
+.hologram-visual-frame {
+  position: relative;
+  width: 170px; height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.hologram-visual-frame.gold-theme .hologram-asset-img {
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.45);
+}
+
+.hologram-visual-frame.orbit-theme .hologram-asset-img {
+  box-shadow: 0 0 35px rgba(255, 0, 127, 0.4), 0 0 60px rgba(0, 240, 255, 0.25);
+}
+
+/* Reactor Cinético Puro CSS */
+.kinetic-reactor-core {
+  position: relative;
+  width: 140px; height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.kinetic-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.ring-outer {
+  width: 130px; height: 130px;
+  border-top-color: #ff5722;
+  border-bottom-color: #00f0ff;
+  animation: spinSlow 3s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.ring-mid {
+  width: 95px; height: 95px;
+  border-left-color: #ff007f;
+  border-right-color: #00f0ff;
+  animation: spinSlow 2s linear infinite reverse;
+}
+
+.ring-inner {
+  width: 60px; height: 60px;
+  border-top-color: #ffffff;
+  border-left-color: #ff5722;
+  animation: spinSlow 1.2s ease-in-out infinite;
+}
+
+.kinetic-center-emblem {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 12px #00f0ff);
+  animation: pulseDot 1.5s ease-in-out infinite alternate;
+}
+
+/* Barra Flotante de Selección y Voto */
+.preview-verdict-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(14, 18, 28, 0.94);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 87, 34, 0.2);
+  z-index: 1000;
+}
+
+.verdict-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.verdict-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+.btn-apply-choice {
+  background: #22c55e;
+  color: #052e16;
+  border: none;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-apply-choice:hover { background: #4ade80; transform: scale(1.04); }

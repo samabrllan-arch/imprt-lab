@@ -1,0 +1,146 @@
+@import './navbar.css';
+
+/**
+ * Estilos para la Landing Page de Ventas, Contenedores y Encabezados (<120 Líneas)
+ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: clip; /* clip no crea contenedor de scroll: el viewport (<html>) ya recorta en X y position: sticky sigue funcionando */
+  margin: 0;
+}
+
+.landing-container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Encabezados de Sección Comunes */
+.section-header-box {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem auto;
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.section-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Modo Claro Adaptaciones para Landing (Travertino / Mármol Cálido #ede9e0) */
+[data-theme="light"] body,
+[data-theme="light"] #landing-view {
+  background-color: #ede9e0;
+  background-image: 
+    radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(circle at 88% 84%, rgba(220, 215, 204, 0.25) 0%, transparent 65%);
+}
+
+[data-theme="light"] .hero-title,
+[data-theme="light"] .hero-title-lead,
+[data-theme="light"] .stat-number,
+[data-theme="light"] .section-title {
+  color: #1a1c22;
+}
+
+[data-theme="light"] .hero-subtitle,
+[data-theme="light"] .section-description {
+  color: #4a4d57;
+}
+
+[data-theme="light"] .btn-hero-secondary {
+  background: #ffffff;
+  border-color: #dcd7cc;
+  color: #1a1c22;
+  box-shadow: 0 2px 8px rgba(30, 25, 20, 0.04);
+}
+
+[data-theme="light"] .btn-hero-secondary:hover {
+  background: #faf8f5;
+  border-color: #b8b1a2;
+}
+
+[data-theme="light"] .hero-pill-badge {
+  background: #ffffff;
+  border-color: rgba(255, 87, 34, 0.4);
+  box-shadow: 0 2px 12px rgba(255, 87, 34, 0.12);
+}
+
+[data-theme="light"] .hero-stats-grid {
+  border-top-color: #dcd7cc;
+}
+
+/* ---------- Optimización de Rendimiento Táctil & 60 FPS Móvil (NODE-015) ---------- */
+@media (max-width: 960px), (hover: none) and (pointer: coarse) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  body {
+    overflow-x: clip !important;
+  }
+
+  /* Desactivar costosos desenfoques en tiempo real (blur) sobre tarjetas repetidas */
+  .lookbook-card .card-badge,
+  .lookbook-card .card-author-chip,
+  .feature-card,
+  .feature-badge,
+  .feedback-card-wrapper {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Fondos sólidos de alta gama sin coste de GPU */
+  .lookbook-card .card-badge { background: rgba(0, 0, 0, 0.88) !important; }
+  .lookbook-card .card-author-chip { background: rgba(14, 16, 24, 0.88) !important; }
+  .feature-card { background: var(--bg-surface-elevated) !important; }
+  .feature-badge { background: rgba(15, 23, 42, 0.9) !important; }
+  .feedback-card-wrapper { background: var(--bg-surface-elevated) !important; }
+
+  /* Reemplazar filtro gaussian blur de ambiente por gradiente nativo cero-coste */
+  .card-artwork-ambient {
+    filter: none !important;
+  }
+
+  /* Capas de aceleración por hardware limpias y contención de layout para 60/120 FPS */
+  .lookbook-card {
+    transition: transform 0.2s ease, border-color 0.2s ease !important;
+    transform: translateZ(0);
+    contain: layout paint;
+  }
+
+  .feature-card {
+    transform: translateZ(0);
+    contain: layout paint;
+  }
+}
+
+

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.gemini/
+.agents/
+.env
+.env.*
+scratch_*.py
+temp_*.py
+temp_inspection/
+test_*.png
+shot_lab_updated.png

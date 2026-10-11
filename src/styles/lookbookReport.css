@@ -1,0 +1,37 @@
+/**
+ * Reporte de contenido en tarjetas del Lookbook y la Galería (NODE-027): botón 🚩, velo de "reportado".
+ * Oscuro por defecto; [data-theme="light"] redefine colores.
+ */
+.btn-report-design {
+  align-self: center; margin-top: 0.55rem; padding: 0.3rem 0.8rem; border-radius: var(--radius-full);
+  font-size: 0.72rem; font-weight: 700; color: var(--text-muted); background: transparent;
+  border: 1px solid transparent; transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease, background var(--dur-micro) ease;
+}
+.btn-report-design:hover:not(:disabled) { color: #fda4af; border-color: rgba(244, 63, 94, 0.45); background: rgba(244, 63, 94, 0.1); }
+.btn-report-design:focus-visible, .btn-reveal-reported:focus-visible { outline: 2px solid #00f0ff; outline-offset: 2px; }
+.btn-report-design:disabled { cursor: default; color: #fb7185; opacity: 0.85; }
+
+.lookbook-card.is-reported .card-artwork-frame { filter: blur(16px) grayscale(1); opacity: 0.35; transform: none; }
+.lookbook-card.is-reported:hover { transform: none; }
+.lookbook-card.is-reported .btn-load-preset { opacity: 0.45; cursor: not-allowed; }
+
+.card-reported-veil {
+  position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 1rem; text-align: center; background: rgba(9, 10, 14, 0.72);
+}
+.card-reported-veil .veil-title { font-size: 0.86rem; font-weight: 800; color: #fecdd3; }
+.card-reported-veil small { font-size: 0.72rem; line-height: 1.4; color: var(--text-secondary); }
+.btn-reveal-reported {
+  margin-top: 6px; padding: 0.4rem 0.9rem; border-radius: var(--radius-full); font-size: 0.72rem; font-weight: 700;
+  color: var(--text-primary); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.28);
+  transition: background var(--dur-micro) ease;
+}
+.btn-reveal-reported:hover { background: rgba(255, 255, 255, 0.2); }
+
+[data-theme="light"] .btn-report-design { color: #636674; }
+[data-theme="light"] .btn-report-design:hover:not(:disabled) { color: #be123c; border-color: rgba(190, 18, 60, 0.4); background: #fff1f2; }
+[data-theme="light"] .btn-report-design:disabled { color: #be123c; }
+[data-theme="light"] .card-reported-veil { background: rgba(244, 241, 234, 0.85); }
+[data-theme="light"] .card-reported-veil .veil-title { color: #9f1239; }
+[data-theme="light"] .card-reported-veil small { color: #4a4d57; }
+[data-theme="light"] .btn-reveal-reported { color: #1a1c22; background: #ffffff; border-color: #cbd5e1; }

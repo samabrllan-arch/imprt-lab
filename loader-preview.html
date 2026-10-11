@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio de Loaders 3D | Selección y Calibración Visual</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+  <link rel="stylesheet" href="./src/styles/tokens.css">
+  <link rel="stylesheet" href="./src/styles/loader.css">
+  <link rel="stylesheet" href="./src/styles/loaderPreview.css">
+</head>
+<body class="preview-page">
+
+  <!-- Header del Laboratorio -->
+  <header class="preview-header">
+    <div class="preview-title-group">
+      <h1>
+        <span>Laboratorio de Loaders 3D</span>
+        <span class="preview-badge">MODERN ATELIER v3.0</span>
+      </h1>
+      <p class="preview-subtitle">Compara los diferentes estilos visuales, animaciones de escaneo y activos IA generados.</p>
+    </div>
+
+    <div class="preview-actions">
+      <button id="btn-play-sim" class="btn-preview-action btn-preview-primary">
+        ▶ Simular Carga (1.4s)
+      </button>
+      <button id="btn-freeze-toggle" class="btn-preview-action">
+        ⏸ Congelar / Reanudar
+      </button>
+      <a href="./index.html" class="btn-preview-action" style="text-decoration: none;">
+        👕 Ir a la Tienda
+      </a>
+    </div>
+  </header>
+
+  <!-- Pestañas de Estilos -->
+  <nav class="preview-selector-strip">
+    <button class="variant-tab-btn active" data-variant="hologram">
+      <span>🔮 1. Holograma Cyber-Tech</span>
+      <span class="variant-tab-tag">IA + LÁSER</span>
+    </button>
+    <button class="variant-tab-btn" data-variant="cyberscan">
+      <span>🌐 2. Escaneo Cuántico Orbital</span>
+      <span class="variant-tab-tag">IA + CLO3D</span>
+    </button>
+    <button class="variant-tab-btn" data-variant="luxury">
+      <span>💎 3. Haute Couture Facetada</span>
+      <span class="variant-tab-tag">IA + ORO/CRISTAL</span>
+    </button>
+    <button class="variant-tab-btn" data-variant="kinetic">
+      <span>⚡ 4. Reactor Cinético Puro</span>
+      <span class="variant-tab-tag">100% CSS VECTOR</span>
+    </button>
+  </nav>
+
+  <!-- Controles de Calibración de Barra de Progreso -->
+  <div style="background: rgba(14, 18, 28, 0.6); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1.5rem; font-size: 0.8rem; font-family: var(--font-mono, monospace);">
+    <span style="color: #94a3b8;">Calibrador manual de fotograma:</span>
+    <input type="range" id="range-progress-scrubber" min="0" max="100" value="71" style="flex: 1; max-width: 320px; accent-color: #ff5722;">
+    <span id="scrubber-val" style="color: #00f0ff; font-weight: 700; width: 45px;">71%</span>
+    <span style="color: #64748b; font-size: 0.72rem;">Arrastra para inspeccionar cada etapa visual</span>
+  </div>
+
+  <!-- Escenario de Exhibición -->
+  <main class="preview-workspace">
+    <div class="preview-grid-bg"></div>
+    <div class="loader-ambient-glow loader-ambient-primary"></div>
+    <div class="loader-ambient-glow loader-ambient-secondary"></div>
+
+    <div id="loader-stage-container" style="position: relative; z-index: 10; width: 100%; display: flex; justify-content: center;">
+      <!-- El loader activo se inyecta dinámicamente aquí -->
+    </div>
+  </main>
+
+  <!-- Barra Flotante de Votación / Selección -->
+  <div class="preview-verdict-bar">
+    <div class="verdict-info">
+      <span class="verdict-dot"></span>
+      <span>Viendo: <strong id="active-variant-name" style="color: #fff;">Holograma Cyber-Tech 3D (IA)</strong></span>
+    </div>
+    <button id="btn-apply-choice" class="btn-apply-choice">
+      ✓ Dejar este Loader en la Tienda
+    </button>
+  </div>
+
+  <script type="module">
+    import { LoaderPreviewApp } from './src/ui/loaderPreviewApp.js';
+    window.previewApp = new LoaderPreviewApp();
+  </script>
+</body>
+</html>

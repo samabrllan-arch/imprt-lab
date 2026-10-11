@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco de Pruebas: Modelos de Logo & Header • IMPRNT [LAB]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700;800&family=Syne:wght@700;800&display=swap">
+  <link rel="stylesheet" href="./src/styles/brandPreview.css">
+  <link rel="stylesheet" href="./src/styles/brandModels.css">
+</head>
+<body>
+  <header class="bp-header-dock">
+    <div class="bp-header-title">
+      <h1>🔬 Laboratorio de Identidad de Marca: Modelos de Header</h1>
+      <p>Compara y prueba 6 alternativas tipográficas y estéticas para reemplazar el encabezado tosco.</p>
+    </div>
+    <div class="bp-controls-row">
+      <button type="button" class="btn-bp-theme" id="btn-theme-toggle">🌓 Cambiar Modo (Claro / Oscuro)</button>
+      <a href="/" class="btn-bp-apply" style="text-decoration: none;">🏠 Volver a la Tienda</a>
+    </div>
+  </header>
+
+  <main class="bp-container">
+    <!-- 1. SIMULADOR DE NAVBAR REAL EN VIVO -->
+    <section class="live-navbar-sim">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <span style="font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; color: var(--bp-primary); text-transform: uppercase;">
+          👁️ Vista Previa en Vivo de la Barra de Navegación Real
+        </span>
+        <span id="active-model-indicator" style="font-size: 0.76rem; color: var(--bp-text-muted);">
+          Modelo seleccionado: <strong>Modelo 1 (Minimal Monolith)</strong>
+        </span>
+      </div>
+
+      <div class="live-navbar-sim-bar">
+        <!-- Contenedor del Logo Interactivo -->
+        <div id="navbar-brand-mount">
+          <div class="brand-m1">
+            <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+            <span class="brand-title">IMPRNT</span>
+            <span class="brand-sep">·</span>
+            <span class="brand-lab">LAB</span>
+            <span class="badge-super">3D</span>
+          </div>
+        </div>
+
+        <!-- Enlaces centrales del Navbar -->
+        <nav class="sim-nav-links">
+          <span>Inicio</span>
+          <span>Estilos & Drops</span>
+          <span>Materiales & DTF</span>
+          <span>Quiénes Somos</span>
+          <span>Sugerencias</span>
+        </nav>
+
+        <!-- Acciones del Navbar -->
+        <div class="sim-nav-actions">
+          <span style="font-size: 0.78rem; color: var(--bp-text-muted);">👤 @usuario</span>
+          <button type="button" class="sim-btn-cta">Diseñar en 3D ↗</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CATÁLOGO DE PROPUESTAS DE DISEÑO -->
+    <section>
+      <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.4rem;">Selecciona tu Modelo Favorito</h2>
+      <p style="font-size: 0.85rem; color: var(--bp-text-muted); margin-bottom: 1.5rem;">
+        Haz clic en cualquier tarjeta para probarlo en el simulador superior o para ver cómo armoniza en ambos temas.
+      </p>
+
+      <div class="models-grid">
+        <!-- MODELO 1 -->
+        <div class="model-card is-active" data-model="1">
+          <div class="model-header">
+            <h3 class="model-name">Minimal Monolith</h3>
+            <span class="model-number">MODELO 01</span>
+          </div>
+          <p class="model-desc">Editorial contemporáneo de alta costura. Tipografía <strong>Syne 800</strong> con tracking generoso, punto medio y micro-superscript <strong>3D</strong>. Cero corchetes toscos.</p>
+          <div class="model-preview-box">
+            <div class="brand-m1">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <span class="brand-title">IMPRNT</span>
+              <span class="brand-sep">·</span>
+              <span class="brand-lab">LAB</span>
+              <span class="badge-super">3D</span>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+
+        <!-- MODELO 2 -->
+        <div class="model-card" data-model="2">
+          <div class="model-header">
+            <h3 class="model-name">Techwear Studio</h3>
+            <span class="model-number">MODELO 02</span>
+          </div>
+          <p class="model-desc">Inspiración Acronym / Off-White. Doble barra técnica <strong>//</strong> en color naranja neón y cápsula micro-badge <strong>ATELIER 3D</strong> de contorno fino.</p>
+          <div class="model-preview-box">
+            <div class="brand-m2">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <span class="brand-title">IMPRNT</span>
+              <span class="tech-slash">//</span>
+              <span class="tech-lab">LAB</span>
+              <span class="badge-atelier">ATELIER 3D</span>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+
+        <!-- MODELO 3 -->
+        <div class="model-card" data-model="3">
+          <div class="model-header">
+            <h3 class="model-name">Sculpted Glass Pill</h3>
+            <span class="model-number">MODELO 03</span>
+          </div>
+          <p class="model-desc">Cápsula aerodinámica de cristal esmerilado. El isotipo y el texto se integran en una sola pieza táctil continua con micro-etiqueta <strong>3D</strong>.</p>
+          <div class="model-preview-box">
+            <div class="brand-m3">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <span class="brand-title">IMPRNT LAB</span>
+              <span class="brand-tag">3D</span>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+
+        <!-- MODELO 4 -->
+        <div class="model-card" data-model="4">
+          <div class="model-header">
+            <h3 class="model-name">Cyberpunk Kinetic Glow</h3>
+            <span class="model-number">MODELO 04</span>
+          </div>
+          <p class="model-desc">Estilo Tokio Streetwear. Texto con degradado de titanio a naranja Sunset, isotipo con aura cian y corchetes estilizados ultra-finos en color cian.</p>
+          <div class="model-preview-box">
+            <div class="brand-m4">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <span class="brand-title">IMPRNT</span>
+              <span class="bracket-lab">[LAB]</span>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+
+        <!-- MODELO 5 -->
+        <div class="model-card" data-model="5">
+          <div class="model-header">
+            <h3 class="model-name">Architectural Stack</h3>
+            <span class="model-number">MODELO 05</span>
+          </div>
+          <p class="model-desc">Composición arquitectónica en dos líneas estilo A-COLD-WALL*. Nombre principal arriba y bajada de precisión <strong>3D TEXTILE LAB</strong> abajo.</p>
+          <div class="model-preview-box">
+            <div class="brand-m5">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <div class="stack-col">
+                <span class="brand-main">IMPRNT</span>
+                <span class="brand-sub">3D TEXTILE LAB</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+
+        <!-- MODELO 6 -->
+        <div class="model-card" data-model="6">
+          <div class="model-header">
+            <h3 class="model-name">Pure Emblem & Dot Pulse</h3>
+            <span class="model-number">MODELO 06</span>
+          </div>
+          <p class="model-desc">Simplicidad pura estilo NikeLab / Essentials. Isotipo flotante sin caja, kerning milimétrico y punto de pulso neón interactivo en vivo.</p>
+          <div class="model-preview-box">
+            <div class="brand-m6">
+              <img src="/assets/new_brand_logo.png" alt="Logo" class="logo-icon" />
+              <span class="brand-title">IMPRNT <span class="brand-lab-sub">LAB</span></span>
+              <span class="brand-dot"></span>
+            </div>
+          </div>
+          <button type="button" class="btn-select-model">Probar en Barra Superior</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Alternador de tema Claro / Oscuro
+    const btnTheme = document.getElementById('btn-theme-toggle');
+    btnTheme.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+    });
+
+    // Intercambio dinámico en la barra superior
+    const cards = document.querySelectorAll('.model-card');
+    const mount = document.getElementById('navbar-brand-mount');
+    const indicator = document.getElementById('active-model-indicator');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('is-active'));
+        card.classList.add('is-active');
+
+        const previewHtml = card.querySelector('.model-preview-box').innerHTML;
+        mount.innerHTML = previewHtml;
+
+        const name = card.querySelector('.model-name').textContent;
+        const num = card.querySelector('.model-number').textContent;
+        indicator.innerHTML = `Modelo seleccionado: <strong>${num} (${name})</strong>`;
+      });
+    });
+  </script>
+</body>
+</html>

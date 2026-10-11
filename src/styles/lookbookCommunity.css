@@ -1,0 +1,35 @@
+/**
+ * Lookbook comunitario (NODE-014 / NODE-026): tarjetas de diseños públicos con crédito @alias y estado vacío.
+ * Oscuro por defecto; [data-theme="light"] redefine colores.
+ */
+.lookbook-card.is-community .card-author-chip {
+  color: #67e8f9; border-color: rgba(103, 232, 249, 0.45); background: rgba(6, 182, 212, 0.16);
+  font-family: var(--font-mono, monospace); font-weight: 700;
+}
+.lookbook-card.is-community .card-title { overflow-wrap: anywhere; }
+.lookbook-card.is-community .card-artwork-png { background: transparent; }
+
+.lookbook-community-empty {
+  margin: 1.5rem auto 0; max-width: 560px; text-align: center; font-size: 0.9rem; line-height: 1.55;
+  color: var(--text-secondary); padding: 1.1rem 1.25rem; border-radius: 14px;
+  border: 1px dashed rgba(103, 232, 249, 0.45); background: rgba(6, 182, 212, 0.06);
+}
+.lookbook-community-empty strong { color: var(--text-primary); }
+
+[data-theme="light"] .lookbook-card.is-community .card-author-chip { color: #0e7490; border-color: rgba(14, 116, 144, 0.45); background: rgba(236, 254, 255, 0.95); }
+[data-theme="light"] .lookbook-community-empty { border-color: rgba(14, 116, 144, 0.45); background: rgba(236, 254, 255, 0.7); }
+
+/* Landing: solo los últimos 4 + CTA a la galería completa (NODE-014 v1.8.0) */
+.lookbook-section .lookbook-toolbar-row { margin-bottom: 2rem; }
+.lookbook-latest-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; color: var(--text-secondary); }
+.lookbook-grid.has-gallery-cta { margin-bottom: 2.4rem; }
+.lookbook-gallery-cta { display: flex; justify-content: center; }
+.btn-gallery-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.85rem 1.8rem; border-radius: var(--radius-full);
+  font-size: 0.92rem; font-weight: 800; letter-spacing: 0.01em; color: #ffffff; text-decoration: none;
+  background: linear-gradient(135deg, #c2410c 0%, #be123c 55%, #6d28d9 100%); box-shadow: 0 8px 24px rgba(194, 65, 12, 0.35);
+  transition: transform var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.btn-gallery-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(194, 65, 12, 0.5); }
+.btn-gallery-cta:focus-visible { outline: 2px solid #00f0ff; outline-offset: 3px; }
+[data-theme="light"] .lookbook-latest-label { color: #4a4d57; }

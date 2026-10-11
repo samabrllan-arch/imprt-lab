@@ -1,0 +1,127 @@
+/**
+ * Menú Móvil Desplegable y Reglas Responsive de la Navbar (NODE-015)
+ * Desacoplado para mantener navbar.css bajo el límite de 300 líneas.
+ */
+
+/* ---------- Safe-Area (Dynamic Island / Notch) ---------- */
+.landing-nav {
+  height: calc(var(--nav-h) + env(safe-area-inset-top, 0px)) !important;
+  padding-top: env(safe-area-inset-top, 0px) !important;
+  box-sizing: border-box !important;
+}
+
+/* ---------- Drawer móvil: cristal ahumado ---------- */
+.landing-nav .mobile-nav-drawer {
+  display: none;
+  position: absolute;
+  top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+  left: 0;
+  width: 100%;
+  max-height: calc(100dvh - var(--nav-h) - env(safe-area-inset-top, 0px));
+  overflow-y: auto;
+  padding: 0.9rem 1.25rem 1.25rem;
+  background: var(--nav-drawer-bg);
+  border-bottom: 1px solid var(--nav-line);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 24px 40px -24px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .landing-nav .mobile-nav-drawer {
+  box-shadow: 0 24px 40px -26px rgba(15, 23, 42, 0.3);
+}
+
+.landing-nav .mobile-nav-drawer.active {
+  display: flex;
+  flex-direction: column;
+  animation: navDrawerIn 0.24s var(--ease-out);
+}
+
+@keyframes navDrawerIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.landing-nav .mobile-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.landing-nav .mobile-nav-link {
+  display: block;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--nav-fg-soft);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.landing-nav .mobile-nav-link:hover {
+  background: var(--nav-fill-hover);
+  color: var(--nav-fg);
+}
+
+.landing-nav .btn-mobile-studio-cta {
+  width: 100%;
+  height: 46px;
+  margin-top: 0.6rem;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-fg);
+  border: none;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--nav-cta-shadow);
+  padding: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 961px) and (max-width: 1180px) {
+  .landing-nav .nav-link { padding: 0.45rem 0.6rem; font-size: 0.82rem; }
+  .landing-nav .btn-nav-login { width: 36px; padding: 0; justify-content: center; }
+  .landing-nav .nav-login-label, .landing-nav .nav-user-name { display: none; }
+}
+
+@media (max-width: 960px) {
+  .landing-nav .landing-nav-inner {
+    padding-left: max(env(safe-area-inset-left, 0px), 1.25rem);
+    padding-right: max(env(safe-area-inset-right, 0px), 1.25rem);
+  }
+  .landing-nav .nav-links-wrapper { display: none !important; }
+  .landing-nav .btn-mobile-menu { display: flex !important; }
+  .landing-nav .btn-cta-text-full { display: none !important; }
+  .landing-nav .btn-cta-text-mobile { display: inline-flex !important; }
+}
+
+@media (max-width: 560px) {
+  .landing-nav .landing-nav-inner { padding: 0 1rem; }
+  .landing-nav .nav-cta-group { gap: 0.4rem; }
+  .landing-nav .brand-title { font-size: 0.92rem; letter-spacing: 0.1em; }
+  .landing-nav .btn-nav-login { width: 36px; padding: 0; justify-content: center; }
+  .landing-nav .nav-login-label, .landing-nav .nav-user-name { display: none; }
+  .landing-nav .btn-nav-glow { padding: 0 0.9rem; }
+}
+
+@media (max-width: 400px) {
+  .landing-nav .brand-box { gap: 6px; }
+  .landing-nav .brand-logo-img { width: 22px; height: 22px; }
+  .landing-nav .brand-title { font-size: 0.84rem; letter-spacing: 0.06em; }
+  .landing-nav .brand-lab-cyan { font-size: 0.72rem; }
+  .landing-nav .nav-cta-group { gap: 0.3rem; }
+  .landing-nav :is(.btn-nav-login, .btn-theme-toggle, .btn-mobile-menu) { width: 32px; height: 32px; }
+  .landing-nav .btn-nav-glow { height: 34px; padding: 0 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-nav *, .landing-nav *::after { transition-duration: 0.01ms !important; animation: none !important; }
+}

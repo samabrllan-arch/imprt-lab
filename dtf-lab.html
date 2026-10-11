@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio de Preprensa DTF & Editor 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles/dtfLab.css" />
+</head>
+<body>
+  <div id="dtf-lab-app">
+    <!-- Barra Superior -->
+    <header class="lab-header">
+      <a href="/" class="btn-back">← Volver a la Tienda</a>
+      <div class="lab-header-title">
+        <span class="pill-badge">PREPRENSA INDUSTRIAL</span>
+        <h1>Laboratorio de Pruebas DTF • Mesa 2D & Visor 3D</h1>
+      </div>
+      <button id="btn-audit" class="btn-audit-trigger">⚠️ Diagnóstico Pre-Vuelo</button>
+    </header>
+
+    <!-- Espacio Dual de Trabajo -->
+    <div class="lab-workspace">
+      <!-- 1. Mesa de Trabajo 2D (Lienzo Interactivo de Arrastre) -->
+      <section class="panel-workbench">
+        <div class="panel-caption">
+          <h3>Mesa de Trabajo 2D</h3>
+          <span>Arrastra y posiciona el estampado libremente</span>
+        </div>
+        <div id="workbench-2d" class="canvas-wrapper"></div>
+      </section>
+
+      <!-- 2. Visor 3D en Tiempo Real -->
+      <section class="panel-3d">
+        <div class="panel-caption">
+          <h3>Visor Textil 3D</h3>
+          <span>Previsualización PBR del estampado aplicado</span>
+        </div>
+        <div id="viewport-3d" class="viewport-wrapper"></div>
+      </section>
+
+      <!-- 3. Barra Lateral de Herramientas DTF -->
+      <aside class="panel-sidebar">
+        <div class="sidebar-block">
+          <label class="block-label">Silueta & Modelo 3D</label>
+          <div class="btn-row">
+            <button class="btn-sil active" data-sil="woman">👗 Mujer (Slim Fit)</button>
+            <button class="btn-sil" data-sil="man">👕 Hombre (Boxy Fit)</button>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <label class="block-label">Color de Camiseta</label>
+          <div id="color-swatches" class="swatches-grid"></div>
+        </div>
+
+        <div class="sidebar-block">
+          <label class="block-label">Transformación del Decal</label>
+          <div class="slider-row">
+            <div class="slider-info"><span>Escala</span><span id="v-scale">85%</span></div>
+            <input type="range" id="sl-scale" min="0.3" max="1.8" step="0.05" value="0.85" />
+          </div>
+          <div class="slider-row">
+            <div class="slider-info"><span>Rotación</span><span id="v-rotation">0°</span></div>
+            <input type="range" id="sl-rotation" min="-180" max="180" step="5" value="0" />
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="flex-between">
+            <label class="block-label">Cama de Blanco & Choke</label>
+            <input type="checkbox" id="chk-white-layer" />
+          </div>
+          <div id="choke-controls" style="display: none; margin-top: 8px;">
+            <div class="slider-info"><span>Contracción (Choke Anti-Borde Blanco)</span><span id="v-choke">1.5 px</span></div>
+            <input type="range" id="sl-choke" min="0" max="4.0" step="0.5" value="1.5" />
+            <small class="hint-text">Encoge la base blanca para que no se asome debajo del color.</small>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <label class="block-label">Modo Knockout (Tacto Cero)</label>
+          <select id="sel-knockout" class="select-field">
+            <option value="none">Desactivado (Estampado completo)</option>
+            <option value="black">Knockout Negro (Usa la tela de la camisa)</option>
+            <option value="white">Knockout Blanco (Ahorra tinta blanca)</option>
+          </select>
+          <div class="slider-row" style="margin-top: 6px;">
+            <div class="slider-info"><span>Umbral de Eliminación</span><span id="v-threshold">25</span></div>
+            <input type="range" id="sl-threshold" min="5" max="80" step="2" value="25" />
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <label class="block-label">Micro-Halftone (Tramado de Puntos)</label>
+          <select id="sel-halftone" class="select-field">
+            <option value="0">Desactivado (Degradado continuo)</option>
+            <option value="45">45 LPI (Puntos grandes / Fuerte agarre)</option>
+            <option value="65">65 LPI (Puntos medios / Balance óptimo)</option>
+            <option value="100">100 LPI (Puntos finos de alta resolución)</option>
+          </select>
+          <small class="hint-text">Evita que los degradados transparentes se despeguen al lavar.</small>
+        </div>
+
+        <div class="sidebar-block">
+          <label class="block-label">Simulador de Planchado Térmico (160°C)</label>
+          <div class="slider-info"><span>Intensidad de Plancha</span><span id="v-press">0%</span></div>
+          <input type="range" id="sl-press" min="0" max="100" step="5" value="0" />
+          <small class="hint-text">Emula la saturación y contraste del curado en termofijadora.</small>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="flex-between">
+            <label class="block-label">Diseños de Prueba</label>
+            <label class="btn-file-upload">
+              📁 Subir Imagen
+              <input type="file" id="input-file" accept="image/*" style="display: none;" />
+            </label>
+          </div>
+          <div id="drops-grid" class="drops-grid"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Modal de Auditoría Pre-Vuelo -->
+    <div id="audit-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Diagnóstico Pre-Vuelo para DTF</h3>
+          <button id="btn-close-audit" class="modal-close-btn">✕</button>
+        </div>
+        <div id="audit-modal-body" class="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/dtf/dtfLabApp.js"></script>
+</body>
+</html>

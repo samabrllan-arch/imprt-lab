@@ -1,0 +1,241 @@
+/* Contenedor del Lienzo WebGL 3D */
+.viewer-canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: radial-gradient(circle at 50% 38%, #171922 0%, #08090d 80%);
+}
+
+.viewer-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  outline: none;
+}
+
+/* Indicador de Ayuda / Gestos */
+.interaction-hint {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 17, 26, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.viewport-badge-top-right {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 17, 26, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.pulse-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #22c55e; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+.hint-icon {
+  font-size: 1rem;
+}
+
+/* Barra Flotante de Ángulos de Cámara */
+.view-switcher-bar {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg);
+  z-index: 15;
+}
+
+.view-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+.view-btn.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary) 0%, #ff7700 100%);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.view-icon {
+  font-size: 1rem;
+}
+
+/* Divisor sutil en el HUD dock */
+.hud-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+  margin: 0 2px;
+}
+
+/* Selector de Modo: 3D vs Plano */
+.mode-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 3px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.mode-btn:hover {
+  color: var(--text-primary);
+}
+
+.mode-btn.active {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .mode-buttons-group {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .mode-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+/* Botón Circular de Auto-Giro */
+.action-circle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.action-circle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.action-circle-btn.active {
+  background: var(--secondary);
+  color: #000000;
+  box-shadow: 0 0 15px var(--secondary-glow);
+}
+
+@media (max-width: 900px) {
+  .view-switcher-bar {
+    bottom: 16px;
+    padding: 4px 6px;
+    max-width: 94%;
+  }
+
+  .view-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .view-text {
+    display: none;
+  }
+
+  .view-btn.active .view-text {
+    display: inline;
+  }
+}
+
+/* Modo Claro Adaptaciones */
+[data-theme="light"] .viewer-canvas-container { background: radial-gradient(circle at 50% 38%, #ffffff 0%, #e2e8f0 85%); }
+[data-theme="light"] .interaction-hint { background: rgba(255, 255, 255, 0.88); color: #475569; border-color: rgba(15, 23, 42, 0.08); box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); }
+[data-theme="light"] .view-switcher-bar { background: rgba(255, 255, 255, 0.95); border-color: rgba(15, 23, 42, 0.1); box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
+[data-theme="light"] .view-btn { color: #64748b; }
+[data-theme="light"] .view-btn:hover { color: #0f172a; background: #f1f5f9; }
+[data-theme="light"] .action-circle-btn { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .action-circle-btn:hover { background: #e2e8f0; color: #0f172a; }
+[data-theme="light"] .action-circle-btn.active { background: #1e293b; color: #ffffff; border-color: #1e293b; }
+[data-theme="light"] .viewport-badge-top-right { background: rgba(255, 255, 255, 0.9); color: #334155; border-color: rgba(15, 23, 42, 0.08); box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05); }
+
+/* Partículas - tooltip de estado */
+#btn-particles .particles-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+

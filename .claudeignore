@@ -1,0 +1,15 @@
+# Archivos y carpetas ignorados para ahorrar tokens en Claude Code
+node_modules/
+dist/
+.git/
+.gemini/
+public/models/
+*.glb
+*.gltf
+*.bin
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.zip
+*.log

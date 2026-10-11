@@ -1,0 +1,195 @@
+@import './checkoutTokens.css';
+
+/**
+ * Checkout Atelier — layout, recibo de precio, datos de entrega y pie (NODE-011 / NODE-015).
+ * Sin scroll horizontal: contenedores con `min-width: 0` + `overflow-x: hidden` y sin badges fuera de caja.
+ */
+.checkout-modal-overlay .checkout-modal-card {
+  max-width: 860px;
+  width: 95vw;
+  max-height: 92vh;
+  background: var(--ck-surface);
+  border-color: var(--ck-bd);
+}
+
+.checkout-modal-body {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px 24px;
+  overflow-x: hidden;
+}
+@media (max-width: 768px) {
+  .checkout-modal-body { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 14px 16px; }
+}
+
+/* ---------- Columna izquierda: vista previa y resumen ---------- */
+.checkout-preview-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+.checkout-preview-actions {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.checkout-preview-actions .btn-download-tag {
+  position: static;
+  transition: transform var(--dur-micro) ease, border-color var(--dur-micro) ease;
+}
+.checkout-preview-actions .btn-download-tag:hover { transform: translateY(-2px); border-color: var(--ck-accent); }
+.checkout-preview-actions .btn-download-dpi { color: var(--ck-ok); border-color: color-mix(in srgb, var(--ck-ok) 45%, transparent); }
+.checkout-preview-actions .btn-download-tag:disabled { opacity: 0.6; cursor: progress; }
+
+.checkout-garment-summary {
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.78rem;
+}
+.summary-chip-item { display: flex; align-items: center; gap: 8px; color: var(--ck-t2); min-width: 0; }
+.summary-chip-item strong { color: var(--ck-t1); overflow-wrap: anywhere; }
+.chip-label { min-width: 72px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ck-t3); }
+.color-dot-inline { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--ck-bd-hi); display: inline-block; flex-shrink: 0; }
+
+/* ---------- Columna derecha: configuración ---------- */
+.checkout-config-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  max-height: 70vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 4px 6px 8px 2px; /* aire para la elevación hover y las sombras sin recortes */
+  box-sizing: border-box;
+}
+@media (max-width: 768px) { .checkout-config-col { max-height: none; overflow-y: visible; } }
+
+.checkout-field-section { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.section-label-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.checkout-field-title { font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ck-accent-text); }
+.checkout-field-hint { font-size: 0.72rem; color: var(--ck-t3); }
+
+/* ---------- Atelier Receipt ---------- */
+.atelier-receipt {
+  position: relative;
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd);
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.receipt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.receipt-title { font-family: var(--font-display); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ck-accent-text); }
+.receipt-id { font-family: var(--font-mono, monospace); font-size: 0.68rem; color: var(--ck-t3); }
+
+.receipt-row { display: flex; align-items: baseline; gap: 8px; font-size: 0.8rem; color: var(--ck-t2); }
+.receipt-label { min-width: 0; overflow-wrap: anywhere; }
+.receipt-dots { flex: 1; min-width: 12px; border-bottom: 1px dotted var(--ck-bd-hi); transform: translateY(-3px); }
+.receipt-amount { color: var(--ck-t1); font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.receipt-tear { position: relative; margin: 6px -16px 2px; border-top: 1px dashed var(--ck-bd-hi); }
+.receipt-tear::before,
+.receipt-tear::after {
+  content: '';
+  position: absolute;
+  top: -7px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ck-surface);
+  border: 1px solid var(--ck-bd);
+}
+.receipt-tear::before { left: -7px; clip-path: inset(0 0 0 50%); }
+.receipt-tear::after { right: -7px; clip-path: inset(0 50% 0 0); }
+
+.receipt-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--ck-accent-soft), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--ck-accent) 32%, transparent);
+}
+.receipt-total-label { font-size: 0.82rem; font-weight: 700; color: var(--ck-t1); }
+.checkout-total-val {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ck-accent-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.receipt-note { margin: 0; font-size: 0.68rem; text-align: center; color: var(--ck-t3); }
+
+/* ---------- Datos de entrega ---------- */
+.checkout-contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 580px) { .checkout-contact-grid { grid-template-columns: minmax(0, 1fr); } }
+.checkout-contact-grid .input-field label { font-size: 0.72rem; font-weight: 600; color: var(--ck-t2); }
+/* Estilo completo y autónomo: no depende de los tokens del editor (imageEditorTools.css) */
+.checkout-contact-grid .text-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd-hi);
+  border-radius: 10px;
+  color: var(--ck-t1);
+  font-size: 0.85rem;
+  transition: border-color var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+}
+.checkout-contact-grid .text-input::placeholder { color: var(--ck-t3); }
+.checkout-contact-grid .text-input:focus { border-color: var(--ck-accent); box-shadow: 0 0 0 3px var(--ck-glow); }
+.checkout-contact-grid .text-input.is-invalid { border-color: var(--ck-danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ck-danger) 18%, transparent); }
+.checkout-form-error { margin: 0; font-size: 0.74rem; font-weight: 600; color: var(--ck-danger); }
+.checkout-form-error:empty { display: none; }
+
+/* ---------- Pie: aviso de cuenta + acciones ---------- */
+.checkout-modal-footer { flex-direction: column; align-items: stretch; gap: 10px; border-top-color: var(--ck-bd); }
+.checkout-footer-note { margin: 0; text-align: center; font-size: 0.74rem; color: var(--ck-t2); }
+.checkout-footer-note strong { color: var(--ck-t1); }
+.checkout-footer-actions { display: flex; gap: 12px; }
+.checkout-footer-actions .btn-secondary { transition: transform var(--dur-micro) ease, background var(--dur-micro) ease; }
+.checkout-footer-actions .btn-secondary:hover { transform: translateY(-2px); }
+
+.btn-confirm-primary {
+  flex: 2;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  background: var(--ck-grad);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px -10px var(--ck-glow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) ease, filter var(--dur-micro) ease;
+}
+.btn-confirm-primary:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 14px 30px -10px var(--ck-glow), inset 0 1px 0 rgba(255, 255, 255, 0.28); }
+.btn-confirm-primary:active:not(:disabled) { transform: translateY(0) scale(0.99); }
+.btn-confirm-primary:disabled { opacity: 0.7; cursor: progress; }
+.btn-confirm-primary:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+@media (max-width: 480px) { .checkout-footer-actions { flex-direction: column-reverse; } }
+
+/* ---------- Modo claro (superficies Travertino/Blanco) ---------- */
+[data-theme="light"] .checkout-modal-overlay .checkout-modal-card { background: #ffffff; }
+[data-theme="light"] .checkout-garment-summary,
+[data-theme="light"] .atelier-receipt { background: #f8fafc; border-color: #e2e8f0; }
+[data-theme="light"] .receipt-tear::before,
+[data-theme="light"] .receipt-tear::after { background: #ffffff; border-color: #e2e8f0; }
+[data-theme="light"] .checkout-preview-actions .btn-download-tag { background: rgba(255, 255, 255, 0.92); color: #0f172a; border-color: #cbd5e1; }

@@ -1,0 +1,180 @@
+/* Dock Inferior de Checkout y Tallas */
+.checkout-footer-dock {
+  padding: 16px 20px;
+  background: rgba(12, 14, 20, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Selector de Material y Gramaje */
+.material-dock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mat-chips-cluster, .grammage-chips-cluster {
+  display: flex;
+  gap: 4px;
+}
+
+.mat-chip {
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mat-chip:hover { background: rgba(255, 255, 255, 0.09); color: #ffffff; }
+.mat-chip.active {
+  background: rgba(255, 87, 34, 0.2);
+  color: #ff914d;
+  border-color: rgba(255, 87, 34, 0.5);
+  font-weight: 700;
+}
+
+.gram-chip {
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gram-chip:hover { background: rgba(255, 255, 255, 0.09); color: #ffffff; }
+.gram-chip.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  font-weight: 700;
+}
+
+/* Selector de Tallas Minimalista */
+.size-dock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dock-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.size-chips-cluster {
+  display: flex;
+  gap: 6px;
+}
+
+.size-chip {
+  width: 32px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.size-chip:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.size-chip.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Fila de Precio y Acción Principal */
+.checkout-dock-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dock-price-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dock-price-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.dock-price-val {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+/* Botón de Checkout Editorial */
+.btn-checkout-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #090a0e;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+.btn-checkout-primary:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+}
+
+.btn-checkout-primary:active {
+  transform: translateY(0);
+}
+
+/* Modo Claro Adaptaciones */
+[data-theme="light"] .checkout-footer-dock { background: #ffffff; border-top-color: rgba(15, 23, 42, 0.08); }
+[data-theme="light"] .size-chip { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .size-chip:hover { color: #0f172a; background: #e2e8f0; }
+[data-theme="light"] .size-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15); }
+[data-theme="light"] .dock-price-val { color: #0f172a; }
+[data-theme="light"] .btn-checkout-primary { background: #0f172a; color: #ffffff; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25); }
+[data-theme="light"] .btn-checkout-primary:hover { background: #1e293b; box-shadow: 0 6px 20px rgba(15, 23, 42, 0.35); }
+[data-theme="light"] .mat-chip, [data-theme="light"] .gram-chip { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .mat-chip.active { background: #fff7ed; color: #ea580c; border-color: #ea580c; }
+[data-theme="light"] .gram-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }

@@ -1,0 +1,57 @@
+/**
+ * Editor de imagen (NODE-010) — pestaña "Ajustes": tono, transformaciones y filtros streetwear.
+ * Usa los tokens --et-* del editor (definidos para oscuro y claro en imageEditorTools.css).
+ */
+
+/* Vista previa en vivo de los ajustes tonales: un canvas superpuesto mientras el lienzo real se oculta */
+.adjust-preview-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; display: none; }
+.editor-canvas-container.is-adjust-preview .adjust-preview-overlay { display: block; }
+.editor-canvas-container.is-adjust-preview #editor-canvas { opacity: 0; }
+#editor-canvas { transform-origin: 50% 50%; }
+
+.adjust-panel { display: flex; flex-direction: column; gap: 0.6rem; }
+.adj-block { display: flex; flex-direction: column; gap: 8px; }
+.adj-block .tool-group-title { display: flex; align-items: center; justify-content: space-between; margin: 0; }
+.adj-live {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #0e7490; background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.35);
+  padding: 1px 7px; border-radius: 9999px;
+}
+[data-theme="light"] .adj-live { color: #0e7490; background: rgba(8, 145, 178, 0.1); border-color: rgba(8, 145, 178, 0.4); }
+
+.adj-row { display: grid; grid-template-columns: 74px 1fr 40px; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--et-t2); }
+.adj-row b { text-align: right; color: var(--et-t1); font-size: 0.7rem; font-family: var(--font-mono, monospace); font-weight: 600; cursor: pointer; }
+.adj-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.adj-grid-4 .btn-tool-pill { padding: 8px 2px; font-size: 0.68rem; white-space: nowrap; }
+.adjust-panel .btn-tool-pill:disabled { opacity: 0.4; cursor: not-allowed; }
+.adjust-panel .btn-tool-pill.active:not(:disabled) { box-shadow: 0 6px 16px -4px rgba(255, 87, 34, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+
+/* Filtros: tarjetas con muestra de color */
+.adj-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.adj-filter {
+  display: flex; align-items: center; gap: 8px; text-align: left; cursor: pointer; min-width: 0;
+  background: var(--et-field); border: 1px solid var(--et-bd); color: var(--et-t1);
+  border-radius: 10px; padding: 7px;
+  transition: border-color var(--dur-micro) ease, background var(--dur-micro) ease, transform var(--dur-micro) ease;
+}
+.adj-filter:hover { border-color: var(--et-accent); background: rgba(255, 87, 34, 0.08); transform: translateY(-1px); }
+.adj-filter:focus-visible { outline: 2px solid var(--et-accent); outline-offset: 2px; }
+.adj-filter-swatch { flex: none; width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--et-bd-hi); }
+.adj-filter-text { display: flex; flex-direction: column; min-width: 0; }
+.adj-filter-text b { font-size: 0.72rem; font-weight: 700; line-height: 1.2; color: var(--et-t1); }
+.adj-filter-text small { font-size: 0.63rem; color: var(--et-t2); line-height: 1.25; }
+.adj-filter.is-busy { opacity: 0.6; pointer-events: none; animation: editorBusy 0.8s ease-in-out infinite; }
+
+/* Insignia de telemetría DTF (DPI) junto al estado del lienzo */
+.editor-stage-bottom-bar .dpi-badge { white-space: normal; line-height: 1.25; text-align: right; }
+.editor-dpi-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 0; max-width: 70%; }
+.editor-dpi-note { font-size: 0.66rem; color: var(--text-tertiary); }
+.editor-dpi-note:empty { display: none; }
+.editor-tab { white-space: nowrap; padding-left: 4px; padding-right: 4px; font-size: 0.72rem; }
+@media (max-width: 720px) {
+  .adj-filters { grid-template-columns: 1fr; }
+  .adj-row { grid-template-columns: 66px 1fr 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adj-filter, .adj-filter.is-busy { transition: none; animation: none; }
+}

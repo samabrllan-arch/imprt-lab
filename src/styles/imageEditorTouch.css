@@ -1,0 +1,93 @@
+/**
+ * Edición táctil del editor de imagen (NODE-010 v2.11.0): lupa flotante, barra "✓ Borrar", interruptor Mover/Editar
+ * y barra de zoom adaptada a pantallas pequeñas. La lógica vive en imageEditorTouch.js / imageEditorTouchLoupe.js.
+ */
+
+/* --- Lupa: flota por encima del dedo; solo se pinta mientras hay un dedo apuntando --- */
+.touch-loupe {
+  position: absolute; left: 0; top: 0; z-index: 7;
+  width: 104px; height: 104px; border-radius: 50%;
+  border: 2px solid #00f0ff;
+  background: #0b0f16;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 240, 255, 0.35);
+  pointer-events: none;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.12s ease, visibility 0s linear 0.12s;
+  will-change: transform;
+}
+.touch-loupe.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+/* --- Confirmación de la varita: aparece al soltar el dedo, nada se borra sin pulsarla --- */
+.touch-confirm-bar {
+  position: absolute; left: 50%; bottom: 12px; z-index: 8;
+  transform: translateX(-50%); width: max-content; max-width: calc(100% - 16px);
+  display: flex; gap: 8px; align-items: center;
+  padding: 6px; border-radius: var(--radius-full, 999px);
+  background: rgba(10, 14, 22, 0.88);
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  animation: touchBarIn 0.16s ease-out;
+}
+.touch-confirm-bar[hidden] { display: none; }
+.touch-confirm-bar button {
+  box-sizing: border-box; min-height: 44px; min-width: 44px; padding: 0 18px;
+  border: none; border-radius: var(--radius-full, 999px);
+  font-family: inherit; font-size: 0.9rem; font-weight: 800; cursor: pointer; white-space: nowrap;
+  touch-action: manipulation;
+}
+.touch-confirm-ok { color: #ffffff; background: linear-gradient(135deg, #f43f5e, #e52e71); }
+.touch-confirm-cancel { padding: 0 !important; color: var(--text-primary); background: rgba(255, 255, 255, 0.12); }
+@keyframes touchBarIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* --- Interruptor 🖐️ Mover / ✏️ Editar: solo con puntero táctil (o tras el primer toque en un híbrido) --- */
+.touch-mode-group { display: none; }
+@media (pointer: coarse) { .touch-mode-group { display: flex; } }
+.has-touch .touch-mode-group { display: flex; }
+.btn-touch-mode.active { background: rgba(0, 240, 255, 0.16); border-color: #00f0ff; color: #00f0ff; }
+.editor-viewport[data-touch-mode="move"] { cursor: grab; }
+
+/* --- Barra de zoom: en pantallas pequeñas se parte en filas y los botones llegan a 36 px --- */
+@media (max-width: 820px) {
+  /* Selector con .image-editor-modal-backdrop: gana a las reglas !important de studioMobile.css (scroll horizontal, alineado a la izquierda) */
+  .image-editor-modal-backdrop .editor-viewport-nav {
+    flex-wrap: wrap; justify-content: center !important; overflow: visible !important; gap: 6px 10px !important;
+    border-radius: var(--radius-md, 14px); padding: 6px 8px !important;
+  }
+  /* Lienzo de altura propia (no 100% de un padre automático): el arte y las herramientas caben en una o dos pantallas */
+  .editor-viewport { flex: none; height: min(52vh, 440px); min-height: 280px; }
+}
+@media (pointer: coarse), (max-width: 820px) {
+  .editor-viewport-nav .btn-zoom-ctrl { min-height: 36px; min-width: 36px; padding: 6px 11px; touch-action: manipulation; }
+  .editor-viewport-nav .zoom-level-badge { min-width: 46px; }
+}
+
+/* --- Cabecera en celular: el título cede espacio y el ✕ nunca se sale de la ventana (cero desborde a 360 px) --- */
+@media (max-width: 520px) {
+  .image-editor-modal-backdrop { padding: 0.5rem; }
+  .image-editor-header { padding: 0.7rem 0.9rem; gap: 8px; }
+  .editor-header-info { min-width: 0; }
+  .editor-title { font-size: 0.98rem; }
+  .editor-header-actions { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
+  .image-editor-modal-backdrop .btn-editor-tour { width: 36px; height: 36px; padding: 0 !important; overflow: hidden; font-size: 0 !important; white-space: nowrap; }
+  .btn-editor-tour::before { content: "💡"; font-size: 1rem; }
+  .editor-close-btn { width: 36px; height: 36px; }
+}
+
+/* --- Rendimiento móvil (NODE-010 v2.12.0): sin desenfoque a pantalla completa, que consume el fill-rate de la GPU --- */
+@media (max-width: 768px), (pointer: coarse) {
+  .image-editor-modal-backdrop {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: rgba(3, 5, 8, 0.96) !important;
+  }
+  .editor-viewport-nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* --- Mientras el tour está abierto en móvil: espacio al pie para que el dock no tape el contenido --- */
+@media (max-width: 768px) {
+  .image-editor-modal-backdrop.tour-dock-open .image-editor-body { padding-bottom: 260px; }
+}
+
+[data-theme="light"] .touch-confirm-bar { background: rgba(255, 255, 255, 0.94); border-color: #22d3ee; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28); }
+[data-theme="light"] .touch-confirm-cancel { background: #e2e8f0; color: #0f172a; }
+[data-theme="light"] .btn-touch-mode.active { background: #cffafe; border-color: #0891b2; color: #0e7490; }

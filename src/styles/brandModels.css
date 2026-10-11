@@ -1,0 +1,214 @@
+/**
+ * Estilos de Modelos de Identidad & Header (NODE-015)
+ * Modelos 1 al 6: variantes tipográficas y visuales Cyber-Luxury
+ */
+
+/* --- MODELO 1: Minimal Monolith (Editorial High Fashion) --- */
+.brand-m1 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.brand-m1 .logo-icon {
+  width: 26px; height: 26px; object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(255, 87, 34, 0.3));
+  transition: transform 0.3s ease;
+}
+.brand-m1:hover .logo-icon { transform: scale(1.1) rotate(-5deg); }
+.brand-m1 .brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--bp-text);
+}
+.brand-m1 .brand-sep {
+  color: var(--bp-primary);
+  font-weight: 300;
+  margin: 0 1px;
+}
+.brand-m1 .brand-lab {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--bp-text-muted);
+  font-size: 0.88rem;
+}
+.brand-m1 .badge-super {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--bp-primary);
+  vertical-align: super;
+  margin-left: 2px;
+}
+
+/* --- MODELO 2: Techwear Minimalist (Acronym / Off-White) --- */
+.brand-m2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.brand-m2 .logo-icon { width: 25px; height: 25px; object-fit: contain; }
+.brand-m2 .brand-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--bp-text);
+}
+.brand-m2 .tech-slash {
+  color: var(--bp-primary);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+.brand-m2 .tech-lab {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--bp-text);
+}
+.brand-m2 .badge-atelier {
+  font-family: var(--bp-font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(255, 87, 34, 0.12);
+  border: 1px solid rgba(255, 87, 34, 0.35);
+  color: var(--bp-primary);
+}
+
+/* --- MODELO 3: Glassmorphic Capsule (Sculpted Pill) --- */
+.brand-m3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+[data-theme="light"] .brand-m3 {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+.brand-m3:hover {
+  background: rgba(255, 87, 34, 0.1);
+  border-color: var(--bp-primary);
+  transform: translateY(-1px);
+}
+.brand-m3 .logo-icon { width: 22px; height: 22px; object-fit: contain; }
+.brand-m3 .brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--bp-text);
+}
+.brand-m3 .brand-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: var(--bp-primary);
+  padding: 2px 6px;
+  border-radius: 9999px;
+}
+
+/* --- MODELO 4: Cyberpunk Kinetic Text (Tokyo Glow) --- */
+.brand-m4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.brand-m4 .logo-icon {
+  width: 26px; height: 26px; object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.45));
+}
+.brand-m4 .brand-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, #ffffff 40%, var(--bp-primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 87, 34, 0.3));
+}
+[data-theme="light"] .brand-m4 .brand-title {
+  background: linear-gradient(135deg, #0f172a 40%, #ea580c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.brand-m4 .bracket-lab {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--bp-cyan);
+}
+
+/* --- MODELO 5: Architectural Stack (Paris Atelier Style) --- */
+.brand-m5 {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.brand-m5 .logo-icon { width: 30px; height: 30px; object-fit: contain; }
+.brand-m5 .stack-col { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-m5 .brand-main {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--bp-text);
+}
+.brand-m5 .brand-sub {
+  font-family: var(--bp-font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--bp-text-muted);
+}
+
+/* --- MODELO 6: Pure Emblem & Wordmark (NikeLab / Essentials) --- */
+.brand-m6 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.brand-m6 .logo-icon { width: 28px; height: 28px; object-fit: contain; }
+.brand-m6 .brand-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--bp-text);
+}
+.brand-m6 .brand-lab-sub {
+  font-weight: 400;
+  color: var(--bp-text-muted);
+}
+.brand-m6 .brand-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--bp-primary);
+  box-shadow: 0 0 8px var(--bp-primary);
+  display: inline-block;
+  margin-left: 2px;
+}

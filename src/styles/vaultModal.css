@@ -1,0 +1,138 @@
+@import './checkoutTokens.css';
+
+/**
+ * Atelier Safe Vault (NODE-026). Tokens `--ck-*` (oscuro/claro) de checkoutTokens.css.
+ */
+.modal-overlay .vault-modal-card {
+  max-width: 880px;
+  max-height: 90vh;
+  background: var(--ck-surface);
+  border-color: var(--ck-bd);
+}
+.vault-modal-card .modal-header { border-color: var(--ck-bd); }
+.vault-modal-card .modal-badge { color: var(--ck-accent-text); }
+.vault-modal-card .modal-title { color: var(--ck-t1); }
+.vault-modal-card .btn-close-modal { background: var(--ck-surface-2); color: var(--ck-t2); border: 1px solid var(--ck-bd); }
+.vault-modal-card .btn-close-modal:hover { color: var(--ck-t1); border-color: var(--ck-bd-hi); }
+
+/* ---------- Cupo ---------- */
+.vt-quota { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 24px 4px; }
+.vt-quota-text { flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 2px; font-size: 0.78rem; color: var(--ck-t2); }
+.vt-quota-text strong { font-size: 0.86rem; color: var(--ck-t1); }
+.vt-pips { display: flex; gap: 5px; }
+.vt-pips i { width: 22px; height: 8px; border-radius: 999px; background: var(--ck-bd-hi); }
+.vt-pips i.is-used { background: var(--ck-grad); box-shadow: 0 0 10px -2px var(--ck-glow); }
+.vt-upload {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: #ffffff; font-size: 0.82rem; font-weight: 800;
+  background: var(--ck-grad);
+  box-shadow: 0 10px 24px -10px var(--ck-glow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) ease;
+}
+.vt-upload:hover { transform: translateY(-2px); }
+.vt-upload.is-disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; box-shadow: none; }
+.vt-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.vt-file:focus-visible + .vt-note, .vt-upload:focus-within { outline: 3px solid var(--ck-glow); }
+.vt-note { margin: 0; padding: 0 24px 10px; font-size: 0.74rem; color: var(--ck-t3); }
+
+/* ---------- Cuadrícula y tarjetas ---------- */
+.vt-body { padding: 8px 24px 20px; overflow-x: hidden; }
+.vt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.vt-card {
+  display: flex; flex-direction: column; gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 16px;
+  background: var(--ck-surface-2);
+  border: 1px solid var(--ck-bd);
+  transition: transform var(--dur-micro) var(--ease-out), border-color var(--dur-micro) ease;
+}
+.vt-card:hover { transform: translateY(-2px); border-color: var(--ck-bd-hi); }
+.vt-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--ck-bd);
+  background: conic-gradient(rgba(148, 163, 184, 0.16) 25%, transparent 0 50%, rgba(148, 163, 184, 0.16) 0 75%, transparent 0) 0 0 / 16px 16px;
+}
+.vt-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.vt-badge {
+  position: absolute; top: 8px; left: 8px;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.03em;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.vt-badge.is-printed { background: linear-gradient(135deg, #15803d, #166534); }
+.vt-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.vt-name { margin: 0; font-size: 0.86rem; font-weight: 700; color: var(--ck-t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vt-date { font-size: 0.7rem; color: var(--ck-t3); }
+
+/* ---------- Interruptor de privacidad ---------- */
+.vt-privacy {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ck-bd-hi);
+  background: transparent;
+  color: var(--ck-t2);
+  font-size: 0.76rem; font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--dur-micro) ease, background var(--dur-micro) ease, color var(--dur-micro) ease;
+}
+.vt-privacy:hover { border-color: var(--ck-accent); }
+.vt-privacy.is-public { color: var(--ck-ok); border-color: color-mix(in srgb, var(--ck-ok) 45%, transparent); background: color-mix(in srgb, var(--ck-ok) 9%, transparent); }
+.vt-privacy span { flex: 1; text-align: left; }
+.vt-switch { position: relative; width: 30px; height: 17px; border-radius: 999px; background: var(--ck-bd-hi); transition: background var(--dur-micro) ease; }
+.vt-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #ffffff; transition: transform var(--dur-micro) var(--ease-out); }
+.vt-privacy.is-public .vt-switch { background: var(--ck-ok); }
+.vt-privacy.is-public .vt-switch::after { transform: translateX(13px); }
+
+/* ---------- Acciones ---------- */
+.vt-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.vt-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--ck-bd-hi);
+  background: transparent;
+  color: var(--ck-t1);
+  font-size: 0.74rem; font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-micro) var(--ease-out), border-color var(--dur-micro) ease, background var(--dur-micro) ease;
+}
+.vt-btn:hover { transform: translateY(-2px); border-color: var(--ck-accent); }
+.vt-btn:focus-visible, .vt-privacy:focus-visible { outline: 3px solid var(--ck-glow); outline-offset: 2px; }
+.vt-btn-primary { grid-column: 1 / -1; padding: 10px; color: #ffffff; border-color: transparent; background: var(--ck-grad); box-shadow: 0 8px 20px -10px var(--ck-glow); }
+.vt-btn:only-child { grid-column: 1 / -1; }
+.vt-btn-ghost-danger { grid-column: 1 / -1; color: var(--ck-danger); border-color: color-mix(in srgb, var(--ck-danger) 32%, transparent); }
+.vt-btn-ghost-danger:hover, .vt-btn-danger:hover { border-color: var(--ck-danger); background: color-mix(in srgb, var(--ck-danger) 9%, transparent); }
+.vt-btn-danger { color: var(--ck-danger); border-color: color-mix(in srgb, var(--ck-danger) 45%, transparent); }
+.vt-confirm { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.vt-confirm > span { grid-column: 1 / -1; font-size: 0.74rem; font-weight: 700; color: var(--ck-danger); text-align: center; }
+
+/* ---------- Vacío ---------- */
+.vt-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 36px 16px; text-align: center; color: var(--ck-t3); }
+.vt-empty h4 { margin: 4px 0 0; font-size: 1rem; color: var(--ck-t1); }
+.vt-empty p { margin: 0; max-width: 360px; font-size: 0.8rem; line-height: 1.5; color: var(--ck-t2); }
+
+@media (max-width: 560px) {
+  .vt-quota { padding: 12px 16px 4px; }
+  .vt-note { padding: 0 16px 8px; }
+  .vt-body { padding: 8px 16px 16px; }
+  .vt-grid { gap: 12px; }
+  .vt-upload { width: 100%; justify-content: center; }
+}
+@media (max-width: 480px) { .vt-grid { grid-template-columns: minmax(0, 1fr); } } /* 2 columnas apretarían los botones */
+
+/* Alias del autor y especificación del archivo máster */
+.vt-author { font-family: var(--font-mono, monospace); font-weight: 700; color: var(--ck-accent-text); }
+.vt-spec { display: block; font-size: 0.68rem; font-weight: 600; color: var(--ck-t2); font-family: var(--font-mono, monospace); }

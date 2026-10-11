@@ -1,0 +1,227 @@
+/* ==========================================================================
+   ESTILOS DE ATELIER STUDIO & EFECTOS (<260 Líneas)
+   ========================================================================== */
+
+.atelier-studio-layout {
+  display: flex; width: 100%; height: 100%; position: relative;
+  overflow: hidden; background: #090c14;
+}
+
+/* 1. Barra de Herramientas Izquierda */
+.atelier-tools-sidebar {
+  width: 72px; background: rgba(14, 18, 28, 0.98);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1rem 0; gap: 12px; z-index: 10; flex-shrink: 0;
+}
+
+.tool-tab-btn {
+  width: 52px; height: 52px; background: transparent; border: 1px solid transparent;
+  border-radius: 12px; color: #94a3b8; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px; cursor: pointer;
+  transition: all 0.2s ease; font-size: 0.62rem; font-weight: 600;
+}
+.tool-tab-btn svg { width: 18px; height: 18px; }
+.tool-tab-btn:hover { background: rgba(255, 255, 255, 0.06); color: #ffffff; }
+.tool-tab-btn.active {
+  background: rgba(255, 87, 34, 0.15); border-color: rgba(255, 87, 34, 0.4); color: #ff5722;
+}
+
+/* 2. Cajón Desplegable */
+.atelier-drawer {
+  width: 270px; background: rgba(16, 20, 32, 0.98);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex; flex-direction: column; padding: 1.25rem;
+  overflow-y: auto; gap: 16px; z-index: 9; flex-shrink: 0;
+}
+
+.drawer-title {
+  font-size: 0.85rem; font-weight: 700; color: #ffffff;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+}
+.drawer-section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.drawer-label { font-size: 0.72rem; font-weight: 600; color: #94a3b8; }
+
+.btn-atelier-primary {
+  width: 100%; background: #ff5722; color: #fff; border: none;
+  padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; text-align: center;
+}
+.btn-atelier-primary:hover { background: #f4511e; box-shadow: 0 4px 16px rgba(255, 87, 34, 0.35); }
+
+/* Herramientas de Extracción de Fondo Directas */
+.bg-cleaner-box {
+  background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 10px; border-radius: 8px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;
+}
+.quick-clean-buttons { display: flex; flex-direction: column; gap: 6px; }
+.btn-clean-action {
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff; padding: 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; text-align: center;
+}
+.btn-clean-action:hover { background: rgba(0, 240, 255, 0.15); border-color: #00f0ff; color: #00f0ff; }
+.btn-green-chroma {
+  background: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.45); color: #34d399;
+}
+.btn-green-chroma:hover {
+  background: #10b981; border-color: #10b981; color: #000; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+.btn-restore-img {
+  background: transparent; border: 1px dashed rgba(255, 255, 255, 0.15); color: #94a3b8;
+  padding: 5px; border-radius: 6px; font-size: 0.68rem; cursor: pointer; text-align: center; margin-top: 4px;
+}
+.btn-restore-img:hover { color: #fff; border-color: #fff; }
+
+.btn-sharpen-hd {
+  width: 100%; background: rgba(255, 87, 34, 0.12); border: 1px solid rgba(255, 87, 34, 0.3);
+  color: #ff7043; padding: 7px; border-radius: 6px; font-size: 0.74rem; font-weight: 700;
+  cursor: pointer; margin-bottom: 6px;
+}
+.btn-sharpen-hd:hover { background: #ff5722; color: #fff; }
+
+/* Efectos Streetwear */
+.effects-filter-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.btn-fx-tab {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8; padding: 4px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 600; cursor: pointer;
+}
+.btn-fx-tab.active { background: #ff5722; border-color: #ff5722; color: #ffffff; }
+
+.effects-grid-mount {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 380px; overflow-y: auto;
+}
+.fx-card-item {
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px; padding: 8px; display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.fx-card-item:hover {
+  background: rgba(255, 87, 34, 0.12); border-color: #ff5722; transform: translateY(-2px);
+}
+.fx-preview-box { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+.fx-preview-box svg { width: 100%; height: 100%; object-fit: contain; }
+.fx-name { font-size: 0.68rem; color: #cbd5e1; margin-top: 4px; text-align: center; }
+
+/* 3. Escenario Central */
+.atelier-canvas-stage {
+  flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; position: relative;
+  background: radial-gradient(circle at center, #151924 0%, #080a10 100%);
+  overflow: hidden; padding: 1.5rem 1.5rem 5rem 1.5rem; box-sizing: border-box;
+}
+
+.canvas-shadow-frame {
+  position: relative; box-shadow: 0 16px 50px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; overflow: hidden;
+  background-color: transparent;
+  background-image: linear-gradient(45deg, #181b24 25%, transparent 25%),
+                    linear-gradient(-45deg, #181b24 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, #181b24 75%),
+                    linear-gradient(-45deg, transparent 75%, #181b24 75%);
+  background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; max-width: 520px; aspect-ratio: 6 / 7; max-height: calc(100vh - 200px);
+}
+.canvas-shadow-frame canvas {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+
+/* Barra Inferior de Transformación Centrada */
+.stage-transform-bar {
+  position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px);
+  padding: 8px 20px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 30; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); white-space: nowrap;
+}
+
+.trans-group { display: flex; align-items: center; gap: 8px; }
+.trans-label { font-size: 0.72rem; font-weight: 700; color: #94a3b8; }
+.trans-val { font-size: 0.74rem; font-weight: 700; color: #ff5722; min-width: 38px; }
+
+.btn-scale-step {
+  width: 24px; height: 24px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px; color: #fff; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-scale-step:hover { background: rgba(255, 255, 255, 0.15); }
+
+.trans-group-actions {
+  display: flex; align-items: center; gap: 6px; border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding-left: 10px;
+}
+.btn-trans-act {
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px; width: 28px; height: 28px; font-size: 0.8rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.btn-trans-act:hover { background: rgba(255, 255, 255, 0.15); }
+.btn-trans-act.btn-danger:hover { background: rgba(239, 68, 68, 0.3); border-color: #ef4444; }
+
+/* 4. Inspector de Capas */
+.atelier-layers-sidebar {
+  width: 240px; background: rgba(14, 18, 28, 0.98);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex; flex-direction: column; padding: 1.25rem;
+  z-index: 10; flex-shrink: 0; justify-content: space-between;
+}
+
+.layers-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.layers-title { font-size: 0.8rem; font-weight: 700; color: #fff; }
+.layers-list { display: flex; flex-direction: column; gap: 6px; flex: 1; overflow-y: auto; }
+
+.layer-item {
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 10px; border-radius: 6px; display: flex; align-items: center;
+  justify-content: space-between; font-size: 0.75rem; cursor: pointer; transition: all 0.18s;
+}
+.layer-item:hover { background: rgba(255, 255, 255, 0.08); }
+.layer-item.selected { border-color: #ff5722; background: rgba(255, 87, 34, 0.12); color: #ff7043; }
+.layer-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+
+.btn-layer-sub {
+  background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 0.75rem;
+}
+.btn-layer-sub:hover { color: #fff; }
+
+.layers-footer-action { margin-top: 1rem; }
+.btn-send-to-shirt {
+  width: 100%; background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+  color: #fff; border: none; padding: 12px 14px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 800; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 20px rgba(255, 87, 34, 0.4); transition: all 0.2s;
+}
+.btn-send-to-shirt:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255, 87, 34, 0.55); }
+
+/* Inputs y Selects */
+.input-field-atelier {
+  width: 100%; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px; color: #ffffff; padding: 8px 10px; font-size: 0.8rem;
+  font-family: inherit; outline: none; box-sizing: border-box;
+}
+.input-field-atelier:focus { border-color: #ff5722; }
+
+.range-slider-atelier {
+  width: 100%; accent-color: #ff5722; height: 4px; cursor: pointer;
+}
+.slider-field-row {
+  display: flex; flex-direction: column; gap: 4px; font-size: 0.72rem; color: #94a3b8; margin-top: 6px;
+}
+
+.color-palette-compact { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.color-swatch-sm {
+  width: 24px; height: 24px; border-radius: 6px; cursor: pointer; border: 2px solid transparent;
+}
+.color-swatch-sm.active { border-color: #ff5722; transform: scale(1.1); }
+
+.btn-bg-option {
+  width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff; padding: 8px; border-radius: 6px; font-size: 0.75rem; text-align: left;
+  cursor: pointer; margin-bottom: 6px;
+}
+.btn-bg-option.active { border-color: #ff5722; background: rgba(255, 87, 34, 0.15); color: #ff5722; }
