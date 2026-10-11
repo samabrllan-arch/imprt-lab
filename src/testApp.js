@@ -20,10 +20,12 @@ const coords = {
   }
 };
 
+import { getAssetPath } from './config/paths.js';
+
 const MODEL_URLS = {
-  woman_seam: '/models/shirt_woman_seam_draco.glb?v=4',
-  woman_old: '/models/shirt_woman_draco.glb?v=17',
-  man: '/models/shirt_clo_draco.glb?v=17'
+  get woman_seam() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=4'); },
+  get woman_old() { return getAssetPath('models/shirt_woman_draco.glb?v=17'); },
+  get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); }
 };
 
 const MODEL_LABELS = {
@@ -111,7 +113,7 @@ const shirtMaterial = new THREE.MeshStandardMaterial({
 
 // Loader GLTF con Draco
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath('/draco/');
+dracoLoader.setDecoderPath(getAssetPath('draco/'));
 dracoLoader.setDecoderConfig({ type: 'js' });
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);

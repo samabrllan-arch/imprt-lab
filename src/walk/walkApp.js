@@ -6,19 +6,20 @@ import { createTextureRenderer } from './textureRenderer.js';
 import { attachWalkShader } from './walkShader.js';
 import { WalkKinematics } from './walkKinematics.js';
 import { FABRIC_COLORS } from '../config/colors.js';
+import { getAssetPath } from '../config/paths.js';
 
 const MODEL_URLS = {
-  woman: '/models/shirt_woman_seam_draco.glb?v=4',
-  man: '/models/shirt_clo_draco.glb?v=17'
+  get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=4'); },
+  get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); }
 };
 
 const DROPS = [
-  { id: 'goku', name: 'Son Goku SSJ', path: '/assets/drops/goku.png' },
-  { id: 'rick', name: 'Rick & Morty', path: '/assets/drops/rick.png' },
-  { id: 'oni', name: 'Cyber Oni', path: '/assets/drops/oni.png' },
-  { id: 'bone', name: 'Bone Savage', path: '/assets/drops/bone.png' },
-  { id: 'wolf', name: 'Gentleman Wolf', path: '/assets/drops/wolf.png' },
-  { id: 'iron', name: 'Iron Man Arc', path: '/assets/drops/iron.png' }
+  { id: 'goku', name: 'Son Goku SSJ', path: getAssetPath('assets/drops/drop_goku.png') },
+  { id: 'rick', name: 'Rick & Morty', path: getAssetPath('assets/drops/drop_rick_morty.png') },
+  { id: 'oni', name: 'Cyber Oni', path: getAssetPath('assets/drops/drop_oni.png') },
+  { id: 'bone', name: 'Bone Savage', path: getAssetPath('assets/drops/drop_skeleton.png') },
+  { id: 'wolf', name: 'Gentleman Wolf', path: getAssetPath('assets/drops/drop_vintage_wolf.png') },
+  { id: 'iron', name: 'Iron Man Arc', path: getAssetPath('assets/drops/drop_ironman.png') }
 ];
 
 export function initWalkStudio() {
@@ -45,7 +46,7 @@ export function initWalkStudio() {
 
   // Loader GLTF con Draco
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
+  dracoLoader.setDecoderPath(getAssetPath('draco/'));
   dracoLoader.setDecoderConfig({ type: 'js' });
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);

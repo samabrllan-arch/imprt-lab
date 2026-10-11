@@ -1,3 +1,5 @@
+import { getAssetPath } from './paths.js';
+
 /**
  * Contenido de la vista #conocenos (NODE-028). Textos estáticos y de confianza (sin datos de usuario),
  * por eso las descripciones pueden llevar <strong>. Las ilustraciones viven en /public/assets/about/.
@@ -17,21 +19,21 @@ export const ABOUT_CARDS = [
     desc: 'Somos un laboratorio colombiano de manufactura textil bajo demanda y prototipado 3D en tiempo real. Eliminamos la incertidumbre de la ' +
       'estampación tradicional permitiendo a cualquier creador o marca visualizar sus prendas en 360° antes de cortar una sola yarda de tela.',
     chips: ['Algodón Heavyweight 240 GSM', 'Corte Boxy Streetwear', 'Desde 1 Unidad'],
-    img: { src: '/assets/about/about_identity.webp', alt: 'Identidad IMPRNT [LAB]' }
+    img: { src: getAssetPath('assets/about/about_identity.webp'), alt: 'Identidad IMPRNT [LAB]' }
   },
   {
     id: 'mision', icon: '🎯', tag: 'MISIÓN', title: 'Nuestra Misión',
     desc: 'Democratizar la moda de autor y el streetwear de lujo accesible. Ponemos herramientas de diseño industrial y estampación textil DTF Ultra HD ' +
       'sin tacto plástico (+60 lavadas) en manos de artistas, marcas emergentes y apasionados de la moda, sin pedidos mínimos y con cero desperdicio textil.',
     chips: ['Cero Tacto Plástico', '300 DPI de Alta Fidelidad', '+60 Lavadas Garantizadas'],
-    img: { src: '/assets/about/about_mision.webp', alt: 'Misión IMPRNT [LAB]' }
+    img: { src: getAssetPath('assets/about/about_mision.webp'), alt: 'Misión IMPRNT [LAB]' }
   },
   {
     id: 'vision', icon: '🚀', tag: 'VISIÓN', title: 'Nuestra Visión',
     desc: 'Consolidarnos como el atelier digital y micro-factoría inteligente de referencia en Latinoamérica. Visualizamos un ecosistema donde la inteligencia ' +
       'artificial y la computación en el navegador potencian la creatividad humana con confección local, ética y trazable.',
     chips: ['Atelier Digital 2026', 'IA + Confección Local', 'Envíos a Todo el País'],
-    img: { src: '/assets/about/about_vision.webp', alt: 'Visión IMPRNT [LAB]' }
+    img: { src: getAssetPath('assets/about/about_vision.webp'), alt: 'Visión IMPRNT [LAB]' }
   },
   {
     id: 'licencia', icon: '⚖️', tag: 'CUMPLIMIENTO & LICENCIAS', title: 'Transparencia y Derechos de Autor', legal: true,
@@ -39,6 +41,6 @@ export const ABOUT_CARDS = [
       'con asistencia de IA en <strong>Meshy.ai</strong> (modalidad gratuita). Su topología tridimensional, retopología, alineación de costuras, mapeo UV ' +
       'y optimización de renderizado fueron modelados y calibrados por nuestro equipo técnico para ejecución fluida en WebGL a 60 FPS. 100% transparente y legal.',
     chips: ['Generador 3D Meshy.ai', 'Topología & UV Calibrados', '100% Transparente & Legal'],
-    img: { src: '/assets/about/about_licencia.webp', alt: 'Transparencia Silueta 3D Meshy.ai y Calibración UV' }
+    img: { src: getAssetPath('assets/about/about_licencia.webp'), alt: 'Transparencia Silueta 3D Meshy.ai y Calibración UV' }
   }
 ];

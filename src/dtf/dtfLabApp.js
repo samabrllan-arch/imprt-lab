@@ -3,13 +3,15 @@ import { createDtf3DViewer } from './dtf3dViewer.js';
 import { auditDtfPrintQuality } from './dtfCoreAlgorithms.js';
 import { FABRIC_COLORS } from '../config/colors.js';
 
+import { getAssetPath } from '../config/paths.js';
+
 const DROPS = [
-  { id: 'goku', name: 'Son Goku SSJ', path: '/assets/drops/goku.png' },
-  { id: 'rick', name: 'Rick & Morty', path: '/assets/drops/rick.png' },
-  { id: 'oni', name: 'Cyber Oni', path: '/assets/drops/oni.png' },
-  { id: 'bone', name: 'Bone Savage', path: '/assets/drops/bone.png' },
-  { id: 'wolf', name: 'Gentleman Wolf', path: '/assets/drops/wolf.png' },
-  { id: 'iron', name: 'Iron Man Arc', path: '/assets/drops/iron.png' }
+  { id: 'goku', name: 'Son Goku SSJ', path: getAssetPath('assets/drops/drop_goku.png') },
+  { id: 'rick', name: 'Rick & Morty', path: getAssetPath('assets/drops/drop_rick_morty.png') },
+  { id: 'oni', name: 'Cyber Oni', path: getAssetPath('assets/drops/drop_oni.png') },
+  { id: 'bone', name: 'Bone Savage', path: getAssetPath('assets/drops/drop_skeleton.png') },
+  { id: 'wolf', name: 'Gentleman Wolf', path: getAssetPath('assets/drops/drop_vintage_wolf.png') },
+  { id: 'iron', name: 'Iron Man Arc', path: getAssetPath('assets/drops/drop_ironman.png') }
 ];
 
 export function initDtfLab() {

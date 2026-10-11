@@ -5,14 +5,15 @@
  */
 import { applyTheme } from './themeToggle.js';
 import { ABOUT_CARDS, ABOUT_LEAD, ABOUT_TITLE_LEAD, ABOUT_TITLE_GLOW } from '../config/aboutContent.js';
+import { getAssetPath } from '../config/paths.js';
 
-const LOGO_SRC = '/assets/new_brand_logo_nav.webp';
+const LOGO_SRC = getAssetPath('assets/new_brand_logo_nav.webp');
 const PENDING_LABEL = 'Ilustración en camino';
 
 /** Las imágenes pasan siempre por estos dos manejadores: `onload` apaga el shimmer y `onerror` deja el placeholder. */
 const imageBox = ({ src, alt }) => `
   <div class="about-card-image-box" data-label="${PENDING_LABEL}">
-    <img src="${src}" alt="${alt}" class="about-card-img" loading="lazy" decoding="async"
+    <img src="${getAssetPath(src)}" alt="${alt}" class="about-card-img" loading="lazy" decoding="async"
       onload="this.parentElement.classList.add('is-ready')"
       onerror="this.parentElement.classList.add('is-loading')" />
   </div>`;

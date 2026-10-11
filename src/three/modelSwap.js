@@ -1,11 +1,13 @@
+import { getAssetPath } from '../config/paths.js';
+
 /**
  * Controlador de transición y precarga de siluetas 3D (Hombre Boxy Fit <-> Mujer Slim Fit).
  * Evita cruce visual o UVs desplazadas con un overlay cyber-luxury suave y cache en memoria.
  */
 
 export const MODEL_URLS = {
-  man: '/models/shirt_clo_draco.glb?v=17',
-  woman: '/models/shirt_woman_seam_draco.glb?v=1'
+  get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); },
+  get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=1'); }
 };
 
 export const MODEL_LABELS = {

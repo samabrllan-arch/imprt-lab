@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { getAssetPath } from '../../config/paths.js';
 
 export class ShirtPreview3D {
   constructor(mountContainer) {
@@ -68,13 +69,13 @@ export class ShirtPreview3D {
 
   loadModel() {
     const draco = new DRACOLoader();
-    draco.setDecoderPath('/draco/');
+    draco.setDecoderPath(getAssetPath('draco/'));
     draco.setDecoderConfig({ type: 'js' });
     const loader = new GLTFLoader();
     loader.setDRACOLoader(draco);
 
     loader.load(
-      '/models/shirt_clo_draco.glb?v=20',
+      getAssetPath('models/shirt_clo_draco.glb?v=20'),
       (gltf) => {
         console.log('[Shirt3D] GLTF loaded successfully!');
         this.model = gltf.scene;

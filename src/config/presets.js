@@ -1,15 +1,22 @@
+import { getAssetPath } from './paths.js';
+
 /**
  * Diseños vectoriales y estampados de alta definición listos para usar
  */
+const brandLogoPath = getAssetPath('assets/new_brand_logo.png');
+
 export const DECAL_PRESETS = [
   {
     id: 'brand-logo',
     name: 'IMPRNT [LAB] Official',
     category: 'Brand',
-    src: '/assets/new_brand_logo.png',
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
-      <image href="/assets/new_brand_logo.png" x="10" y="10" width="480" height="480" preserveAspectRatio="xMidYMid meet" />
-    </svg>`
+    get src() { return getAssetPath('assets/new_brand_logo.png'); },
+    get svg() {
+      const p = getAssetPath('assets/new_brand_logo.png');
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+      <image href="${p}" x="10" y="10" width="480" height="480" preserveAspectRatio="xMidYMid meet" />
+    </svg>`;
+    }
   },
   {
     id: 'cyber-tiger',

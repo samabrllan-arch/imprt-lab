@@ -50,7 +50,7 @@ export function renderLookbookCard(item) {
   const title = escapeHtml(creditTitle(item));
   const hidden = isHidden(item.id);
   const reported = !!getReport(item.id);
-  const thumbSrc = item.thumb || (item.imageSrc && item.imageSrc.startsWith('/assets/drops/') ? item.imageSrc.replace('/assets/drops/', '/assets/drops/thumbs/').replace('.png', '.webp') : item.imageSrc);
+  const thumbSrc = item.thumb || (item.imageSrc && item.imageSrc.includes('/assets/drops/') ? item.imageSrc.replace('/assets/drops/', '/assets/drops/thumbs/').replace('.png', '.webp') : item.imageSrc);
   const art = item.imageSrc
     ? `<img src="${escapeHtml(thumbSrc)}" alt="${title}" class="card-artwork-png" width="155" height="155" loading="lazy" decoding="async" />`
     : (preset ? `<div class="card-artwork-svg">${preset.svg}</div>` : '');

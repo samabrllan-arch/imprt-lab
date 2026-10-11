@@ -1,3 +1,5 @@
+import { getAssetPath } from '../config/paths.js';
+
 /**
  * Sección "Tecnología & Materiales Textiles" (NODE-014/NODE-015)
  * Tarjetas fotográficas con macrografías generadas por IA, badges técnicos
@@ -10,7 +12,7 @@ export function initFeaturesSection(container) {
     {
       id: 'cotton',
       badge: '240 GSM Heavyweight',
-      image: '/assets/features/feature_cotton.webp',
+      image: getAssetPath('assets/features/feature_cotton.webp'),
       alt: 'Macro fotografía de tejido cerrado de algodón 240g',
       icon: '🧵',
       title: 'Algodón 100% Peinado',
@@ -20,7 +22,7 @@ export function initFeaturesSection(container) {
     {
       id: 'microfiber',
       badge: 'Dry-Fit Performance',
-      image: '/assets/features/feature_microfiber.webp',
+      image: getAssetPath('assets/features/feature_microfiber.webp'),
       alt: 'Deportista en carrera con camiseta de microfibra dry-fit transpirable',
       icon: '⚡',
       title: 'Poliéster Dry-Fit (120g/180g)',
@@ -30,7 +32,7 @@ export function initFeaturesSection(container) {
     {
       id: 'dtf_drops',
       badge: 'Microgotas 1200 DPI',
-      image: '/assets/features/feature_dtf_drops.webp',
+      image: getAssetPath('assets/features/feature_dtf_drops.webp'),
       alt: 'Cabezal de impresión DTF proyectando microgotas de tinta textil',
       icon: '🎨',
       title: 'Cero Límite de Colores',
@@ -40,7 +42,7 @@ export function initFeaturesSection(container) {
     {
       id: 'durability',
       badge: 'Curado Térmico 160°C',
-      image: '/assets/features/feature_durability.webp',
+      image: getAssetPath('assets/features/feature_durability.webp'),
       alt: 'Prueba de elasticidad y termocurado de poliamida DTF',
       icon: '🛡️',
       title: '+60 Lavados Intactos',

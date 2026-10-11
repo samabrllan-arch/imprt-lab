@@ -3,9 +3,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
+import { getAssetPath } from '../config/paths.js';
+
 const MODEL_URLS = {
-  woman: '/models/shirt_woman_seam_draco.glb?v=4',
-  man: '/models/shirt_clo_draco.glb?v=17'
+  get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=4'); },
+  get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); }
 };
 
 export function createDtf3DViewer(containerEl, masterCanvas) {
@@ -52,7 +54,7 @@ export function createDtf3DViewer(containerEl, masterCanvas) {
   });
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
+  dracoLoader.setDecoderPath(getAssetPath('draco/'));
   dracoLoader.setDecoderConfig({ type: 'js' });
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);

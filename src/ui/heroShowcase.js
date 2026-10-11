@@ -1,6 +1,7 @@
 import { DECAL_PRESETS } from '../config/presets.js';
 import { FABRIC_COLORS } from '../config/colors.js';
 import { setColor } from '../state/actions.js';
+import { getAssetPath } from '../config/paths.js';
 
 /**
  * Showcase Interactivo del Hero con Render 3D de Camiseta Masculina (Boxy Fit)
@@ -23,7 +24,7 @@ export function initHeroShowcase(container) {
   const heroPreset = DECAL_PRESETS[0]; // brand-logo oficial
 
   function getImagePath(gender, colorKey) {
-    return `/assets/showcase/shirt_${gender}_${colorKey}.webp`;
+    return getAssetPath(`assets/showcase/shirt_${gender}_${colorKey}.webp`);
   }
 
   function getBadgeText() {

@@ -5,7 +5,7 @@ import { GltfShirtLoader } from './gltfShirtLoader.js';
 import { TextureComposer } from '../textures/textureComposer.js';
 import { AmbientParticleSystem } from './particles.js';
 import { CanvasDragController } from './canvasDragController.js';
-import { ModelSwapController } from './modelSwap.js';
+import { ModelSwapController, MODEL_URLS } from './modelSwap.js';
 import { store } from '../state/store.js';
 import { particleCount } from './deviceProfile.js';
 
@@ -31,7 +31,7 @@ export class ShirtEngine {
     // 5. Cargar modelo masculino original CLO3D con compresión Draco y controlador de intercambio
     this.gltfLoader = new GltfShirtLoader();
     this.modelSwap = new ModelSwapController(this, container);
-    this.loadCloModel('/models/shirt_clo_draco.glb?v=17');
+    this.loadCloModel(MODEL_URLS.man);
 
     // 5. Conectar loop de animación con partículas y oscilación armónica
     let elapsed = 0;

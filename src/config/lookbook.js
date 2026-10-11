@@ -1,7 +1,9 @@
+import { getAssetPath } from './paths.js';
+
 /**
  * Catálogo de Trabajos Realizados y Colecciones Lookbook DTF
  */
-export const LOOKBOOK_ITEMS = [
+const RAW_LOOKBOOK_ITEMS = [
   {
     id: 'skeleton-savage',
     title: 'Bone Savage • Muscle Skull',
@@ -147,6 +149,11 @@ export const LOOKBOOK_ITEMS = [
     description: 'Astronauta retro con visor de cristal cian y traje de exploración profunda.'
   }
 ];
+
+export const LOOKBOOK_ITEMS = RAW_LOOKBOOK_ITEMS.map((item) => ({
+  ...item,
+  imageSrc: getAssetPath(item.imageSrc)
+}));
 
 export const CLIENT_REVIEWS = [
   {

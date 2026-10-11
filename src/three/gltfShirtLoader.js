@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { getAssetPath } from '../config/paths.js';
 
 /**
  * Cargador de modelos GLTF/GLB optimizados con compresión Draco y UVs preservadas
@@ -9,7 +10,7 @@ export class GltfShirtLoader {
   constructor() {
     this.dracoLoader = new DRACOLoader();
     // Decodificador Draco local servido desde public/draco/
-    this.dracoLoader.setDecoderPath('/draco/');
+    this.dracoLoader.setDecoderPath(getAssetPath('draco/'));
     this.dracoLoader.setDecoderConfig({ type: 'js' });
 
     this.gltfLoader = new GLTFLoader();
@@ -20,9 +21,10 @@ export class GltfShirtLoader {
    * Carga y centra el modelo de camiseta CLO3D
    */
   async loadModel(url, canvasTexture) {
+    const targetUrl = getAssetPath(url);
     return new Promise((resolve, reject) => {
       this.gltfLoader.load(
-        url,
+        targetUrl,
         (gltf) => {
           const rawModel = gltf.scene;
 
