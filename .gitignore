@@ -25,3 +25,5 @@ Dockerfile
 .dockerignore
 ARQUITECTURA_MOVIMIENTO_Y_CORTE.md
 Abrir_Tienda_3D.bat
+src/graphify-out/
+graphify-out/
