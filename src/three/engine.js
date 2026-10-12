@@ -100,6 +100,7 @@ export class ShirtEngine {
       }
     } catch (err) {
       console.error('[ShirtEngine] Error al cargar modelo CLO3D:', err);
+      if (this.modelSwap) this.modelSwap.hideOverlay();
     }
   }
 

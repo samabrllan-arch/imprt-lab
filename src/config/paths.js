@@ -9,8 +9,10 @@ export function getAssetPath(path) {
   if (!path) return '';
   if (/^(https?:|data:|blob:)/i.test(path)) return path;
 
-  // Limpiar prefijo '/' o './'
-  const cleanPath = path.replace(/^\.?\//, '');
+  // Limpiar prefijo '/', './' o '/imprt-lab/' previo para que getAssetPath sea 100% idempotente
+  const cleanPath = path
+    .replace(/^(\.\/|\/)+/, '')
+    .replace(/^imprt-lab\/+/i, '');
 
   if (typeof window !== 'undefined') {
     const isGhPages = window.location.pathname.startsWith('/imprt-lab') ||

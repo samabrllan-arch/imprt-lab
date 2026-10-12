@@ -103,23 +103,47 @@
   .landing-nav .btn-cta-text-mobile { display: inline-flex !important; }
 }
 
-@media (max-width: 560px) {
-  .landing-nav .landing-nav-inner { padding: 0 1rem; }
-  .landing-nav .nav-cta-group { gap: 0.4rem; }
-  .landing-nav .brand-title { font-size: 0.92rem; letter-spacing: 0.1em; }
-  .landing-nav .btn-nav-login { width: 36px; padding: 0; justify-content: center; }
-  .landing-nav .nav-login-label, .landing-nav .nav-user-name { display: none; }
-  .landing-nav .btn-nav-glow { padding: 0 0.9rem; }
+@media (max-width: 640px) {
+  .landing-nav .landing-nav-inner {
+    padding-left: max(env(safe-area-inset-left, 0px), 0.75rem);
+    padding-right: max(env(safe-area-inset-right, 0px), 0.75rem);
+    gap: 0.4rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .landing-nav .brand-box { gap: 6px; min-width: 0; flex-shrink: 1; }
+  .landing-nav .brand-logo-frame { width: 26px; height: 26px; flex-shrink: 0; }
+  .landing-nav .brand-logo-img { width: 24px; height: 24px; }
+  .landing-nav .brand-text-stack { gap: 4px; }
+  .landing-nav .brand-title { font-size: 0.86rem; letter-spacing: 0.06em; }
+  .landing-nav .brand-lab-cyan { font-size: 0.7rem; letter-spacing: 0.05em; }
+  .landing-nav .nav-cta-group { gap: 0.35rem; flex-shrink: 0; }
+  .landing-nav :is(.btn-nav-login, .btn-theme-toggle, .btn-mobile-menu) {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+  .landing-nav .nav-user-chip { height: 32px; padding: 0 6px 0 3px; gap: 4px; }
+  .landing-nav .nav-user-avatar { width: 24px; height: 24px; font-size: 0.7rem; }
+  .landing-nav .nav-login-label,
+  .landing-nav .nav-user-name,
+  .landing-nav .nav-user-alias { display: none !important; }
+  .landing-nav .btn-nav-glow {
+    height: 32px;
+    padding: 0 0.65rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .landing-nav .btn-cta-text-mobile { gap: 3px; align-items: center; line-height: 1; }
+  .landing-nav .btn-cta-text-mobile .cta-arrow { width: 12px; height: 12px; }
 }
 
-@media (max-width: 400px) {
-  .landing-nav .brand-box { gap: 6px; }
-  .landing-nav .brand-logo-img { width: 22px; height: 22px; }
-  .landing-nav .brand-title { font-size: 0.84rem; letter-spacing: 0.06em; }
-  .landing-nav .brand-lab-cyan { font-size: 0.72rem; }
-  .landing-nav .nav-cta-group { gap: 0.3rem; }
-  .landing-nav :is(.btn-nav-login, .btn-theme-toggle, .btn-mobile-menu) { width: 32px; height: 32px; }
-  .landing-nav .btn-nav-glow { height: 34px; padding: 0 0.75rem; }
+@media (max-width: 370px) {
+  .landing-nav .brand-lab-cyan { display: none; }
+  .landing-nav .nav-cta-group { gap: 0.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
