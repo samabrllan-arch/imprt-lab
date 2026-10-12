@@ -44,13 +44,25 @@ function reportedVeil(id) {
     </div>`;
 }
 
+function resolveThumbUrl(item) {
+  if (item.thumb) return item.thumb;
+  const src = item.imageSrc || '';
+  if (src.includes('lh3.googleusercontent.com/d/') && !src.includes('=s')) {
+    return `${src}=s220-rw`;
+  }
+  if (src.includes('/assets/drops/')) {
+    return src.replace('/assets/drops/', '/assets/drops/thumbs/').replace('.png', '.webp');
+  }
+  return src;
+}
+
 export function renderLookbookCard(item) {
   const preset = DECAL_PRESETS.find((p) => p.id === item.decalPresetId);
   const id = escapeHtml(item.id);
   const title = escapeHtml(creditTitle(item));
   const hidden = isHidden(item.id);
   const reported = !!getReport(item.id);
-  const thumbSrc = item.thumb || (item.imageSrc && item.imageSrc.includes('/assets/drops/') ? item.imageSrc.replace('/assets/drops/', '/assets/drops/thumbs/').replace('.png', '.webp') : item.imageSrc);
+  const thumbSrc = resolveThumbUrl(item);
   const art = item.imageSrc
     ? `<img src="${escapeHtml(thumbSrc)}" alt="${title}" class="card-artwork-png" width="155" height="155" loading="lazy" decoding="async" />`
     : (preset ? `<div class="card-artwork-svg">${preset.svg}</div>` : '');

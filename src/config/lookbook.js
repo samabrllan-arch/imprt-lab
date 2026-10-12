@@ -1,6 +1,8 @@
 /**
  * Catálogo de Trabajos Realizados y Colecciones Lookbook DTF
  * Conectado con Google Drive Cloud Storage (Carpeta: 1ZJqQF6EbzBWZXBEOk6U66H9EfJ2atTzN)
+ * - `thumb`: Miniatura WebP ligera (~40 KB) servida por Google Drive CDN (`=s220-rw`) para el preview de tarjetas.
+ * - `imageSrc`: Arte Master 300 DPI completo (~4 MB) que solo se descarga al pulsar "Probar en Estudio 3D".
  */
 export const LOOKBOOK_ITEMS = [
   {
@@ -10,6 +12,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'DROP DESTACADO',
     tagColor: '#ea580c',
+    thumb: 'https://lh3.googleusercontent.com/d/15nQGYKZFfLBV6lHtJFrQFVKIHXkrrevM=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/15nQGYKZFfLBV6lHtJFrQFVKIHXkrrevM',
     driveFileId: '15nQGYKZFfLBV6lHtJFrQFVKIHXkrrevM',
     author: '@skull_atelier',
@@ -23,6 +26,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#874438',
     badge: 'ANIME SPECIAL',
     tagColor: '#eab308',
+    thumb: 'https://lh3.googleusercontent.com/d/1IN07QjaMZNDkYD6Gvapuz6o8M_xPfz2N=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1IN07QjaMZNDkYD6Gvapuz6o8M_xPfz2N',
     driveFileId: '1IN07QjaMZNDkYD6Gvapuz6o8M_xPfz2N',
     author: '@dbz_crew',
@@ -36,6 +40,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'CULT DROP',
     tagColor: '#22c55e',
+    thumb: 'https://lh3.googleusercontent.com/d/15R9LqVE4bGMq_cCDkDmLHIsQOMu_tbqv=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/15R9LqVE4bGMq_cCDkDmLHIsQOMu_tbqv',
     driveFileId: '15R9LqVE4bGMq_cCDkDmLHIsQOMu_tbqv',
     author: '@portal_lab',
@@ -49,6 +54,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#3d434f',
     badge: 'CYBER SPECIAL',
     tagColor: '#f43f5e',
+    thumb: 'https://lh3.googleusercontent.com/d/13C2axodIDclMhEbkw5LRdXtE5zs2NncK=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/13C2axodIDclMhEbkw5LRdXtE5zs2NncK',
     driveFileId: '13C2axodIDclMhEbkw5LRdXtE5zs2NncK',
     author: '@tokyo_forge',
@@ -62,6 +68,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#874438',
     badge: 'VINTAGE DROP',
     tagColor: '#a855f7',
+    thumb: 'https://lh3.googleusercontent.com/d/1iz1wslhD_wU3mTwD-BcTxGZuTgOAEYYb=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1iz1wslhD_wU3mTwD-BcTxGZuTgOAEYYb',
     driveFileId: '1iz1wslhD_wU3mTwD-BcTxGZuTgOAEYYb',
     author: '@lupus_tailor',
@@ -75,6 +82,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'DARK FANTASY',
     tagColor: '#38bdf8',
+    thumb: 'https://lh3.googleusercontent.com/d/1WVP0Z4YqUTzYcS1UccQiTprPNqRJxZgk=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1WVP0Z4YqUTzYcS1UccQiTprPNqRJxZgk',
     driveFileId: '1WVP0Z4YqUTzYcS1UccQiTprPNqRJxZgk',
     author: '@arcane_roots',
@@ -88,6 +96,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'RONIN SPECIAL',
     tagColor: '#ef4444',
+    thumb: 'https://lh3.googleusercontent.com/d/1l-bt9KgnlKoei8DrDovaLOMajC656IyF=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1l-bt9KgnlKoei8DrDovaLOMajC656IyF',
     driveFileId: '1l-bt9KgnlKoei8DrDovaLOMajC656IyF',
     author: '@kyoto_rebel',
@@ -101,6 +110,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#874438',
     badge: 'ANIME ICON',
     tagColor: '#f97316',
+    thumb: 'https://lh3.googleusercontent.com/d/1LphRsriTTPelA-wXkW7LmAaZwyqqBQl0=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1LphRsriTTPelA-wXkW7LmAaZwyqqBQl0',
     driveFileId: '1LphRsriTTPelA-wXkW7LmAaZwyqqBQl0',
     author: '@shogun_draw',
@@ -114,6 +124,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#3d434f',
     badge: 'HERO DROP',
     tagColor: '#0ea5e9',
+    thumb: 'https://lh3.googleusercontent.com/d/1w8MZ6bV-OTbNj2DLJVn6uqckSIItHaBU=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1w8MZ6bV-OTbNj2DLJVn6uqckSIItHaBU',
     driveFileId: '1w8MZ6bV-OTbNj2DLJVn6uqckSIItHaBU',
     author: '@queens_vault',
@@ -127,6 +138,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'MECHA HERO',
     tagColor: '#eab308',
+    thumb: 'https://lh3.googleusercontent.com/d/1jxdj8FY0VMQJIKTFw5WQFmZcWBMvYO1Z=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1jxdj8FY0VMQJIKTFw5WQFmZcWBMvYO1Z',
     driveFileId: '1jxdj8FY0VMQJIKTFw5WQFmZcWBMvYO1Z',
     author: '@stark_lab',
@@ -140,6 +152,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#ede9e0',
     badge: 'INK ART',
     tagColor: '#64748b',
+    thumb: 'https://lh3.googleusercontent.com/d/16HUimWYBaa5CUnblbpikOrtZOaZvMJrU=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/16HUimWYBaa5CUnblbpikOrtZOaZvMJrU',
     driveFileId: '16HUimWYBaa5CUnblbpikOrtZOaZvMJrU',
     author: '@vagabond_ink',
@@ -153,6 +166,7 @@ export const LOOKBOOK_ITEMS = [
     shirtColor: '#111215',
     badge: 'COSMIC VIBE',
     tagColor: '#06b6d4',
+    thumb: 'https://lh3.googleusercontent.com/d/1dKJXvpMOgE6izwuU7fI3dckyUYmIFHzg=s220-rw',
     imageSrc: 'https://lh3.googleusercontent.com/d/1dKJXvpMOgE6izwuU7fI3dckyUYmIFHzg',
     driveFileId: '1dKJXvpMOgE6izwuU7fI3dckyUYmIFHzg',
     author: '@orbit_studios',
