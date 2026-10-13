@@ -70,16 +70,9 @@ export class ShirtEngine {
       }
       const result = await this.gltfLoader.loadModel(url, this.textureComposer.getTexture());
       if (result && result.scene) {
-        if (this.activeMeshGroup) {
-          this.sceneManager.scene.remove(this.activeMeshGroup);
-        }
-        this.activeMeshGroup = result.scene;
-        this.sceneManager.scene.add(this.activeMeshGroup);
-        this.cloModelInstance = result;
         if (this.modelSwap) {
           this.modelSwap.cache.set(url, result);
           this.modelSwap.schedulePreloadOther('man');
-          setTimeout(() => this.modelSwap.hideOverlay(), 250);
         }
 
         // Ocultar indicador de carga suavemente
@@ -87,6 +80,21 @@ export class ShirtEngine {
         if (loader) {
           loader.classList.add('fade-out');
           setTimeout(() => loader.remove(), 400);
+        }
+
+        // Si el usuario ya cambió a Mujer o Taza mientras cargaba, no sobreescribir la escena
+        if (store.getState().selectedSilhouette !== 'man') {
+          return;
+        }
+
+        if (this.activeMeshGroup) {
+          this.sceneManager.scene.remove(this.activeMeshGroup);
+        }
+        this.activeMeshGroup = result.scene;
+        this.sceneManager.scene.add(this.activeMeshGroup);
+        this.cloModelInstance = result;
+        if (this.modelSwap) {
+          setTimeout(() => this.modelSwap.hideOverlay(), 250);
         }
 
         // Sincronizar el color base de la tela interior
