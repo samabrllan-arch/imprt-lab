@@ -1,6 +1,6 @@
 import { store } from '../state/store.js';
 import { SIZES } from '../config/colors.js';
-import { setSize, setMaterial, setGrammage } from '../state/actions.js';
+import { setSize, setMaterial, setGrammage, setMagicMug } from '../state/actions.js';
 import { downloadImage } from '../services/exporter.js';
 import { authService } from '../services/authService.js';
 import { buildOrderDraft } from '../services/orderDraft.js';
@@ -31,7 +31,10 @@ export function openOrderModal(screenshotDataUrl) {
 
   function renderModal() {
     const state = store.getState();
-    const activeDecals = Object.entries(state.customizations).filter(([, z]) => z.hasDecal);
+    const activeDecals = Object.entries(state.customizations).filter(([zoneId, z]) => {
+      if (!z.hasDecal) return false;
+      return state.selectedSilhouette === 'mug' ? zoneId === 'front' : true;
+    });
 
     overlay.innerHTML = renderCheckoutModalHtml({
       orderId,
@@ -115,8 +118,13 @@ export function openOrderModal(screenshotDataUrl) {
       if (found) setSize(found);
     });
 
+    // 1b. Acabado Cerámico Mug 11 Oz (Clásico vs Mágico Termosensible)
+    bindOption('.btn-checkout-mug-mode', 'data-magic-mug', (val) => {
+      setMagicMug(val === 'true');
+    });
+
     // 2. Material (ajusta el gramaje por defecto si el actual no existe en el nuevo material)
-    bindOption('.btn-checkout-mat', 'data-mat-id', (matId) => {
+    bindOption('.btn-checkout-mat:not(.btn-checkout-mug-mode)', 'data-mat-id', (matId) => {
       setMaterial(matId);
       const gram = store.getState().selectedGrammage;
       if ((matId === 'algodon' && gram === '120') || (matId === 'poliester' && gram === '240')) setGrammage('180');
@@ -127,7 +135,8 @@ export function openOrderModal(screenshotDataUrl) {
 
     // 4. Descargas
     overlay.querySelector('#btn-download-preview')?.addEventListener('click', () => {
-      downloadImage(screenshotDataUrl, `camiseta-3d-${Date.now()}.png`);
+      const isMug = store.getState().selectedSilhouette === 'mug';
+      downloadImage(screenshotDataUrl, `${isMug ? 'mug-11oz' : 'camiseta-3d'}-${Date.now()}.png`);
     });
 
     const btn300Dpi = overlay.querySelector('#btn-download-300dpi');

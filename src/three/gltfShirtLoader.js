@@ -22,65 +22,105 @@ export class GltfShirtLoader {
    */
   async loadModel(url, canvasTexture) {
     const targetUrl = getAssetPath(url);
+    const isMug = targetUrl.includes('mug_11oz');
     return new Promise((resolve, reject) => {
       this.gltfLoader.load(
         targetUrl,
         (gltf) => {
           const rawModel = gltf.scene;
 
-          // 1. Material PBR de tela de algodón conectado al compositor UV
+          // 1. Material PBR (Tela de algodón mate o Cerámica esmaltada brillante para Vaso 11 Oz)
           const fabricMaterial = new THREE.MeshStandardMaterial({
             map: canvasTexture,
-            roughness: 0.88,
-            metalness: 0.02,
+            roughness: isMug ? 0.16 : 0.88,
+            metalness: isMug ? 0.04 : 0.02,
             side: THREE.DoubleSide
           });
 
-          // Uniforme para sincronizar el color base de la tela interior
+          // Uniformes reactivos para color base y efecto Mug Mágico Termosensible
           fabricMaterial.userData.uBaseFabricColor = { value: new THREE.Color(0xffffff) };
+          fabricMaterial.userData.uIsMug = { value: isMug ? 1.0 : 0.0 };
+          fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
+          fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          // Identificador de cache para garantizar compilación única del shader en Three.js
-          fabricMaterial.customProgramCacheKey = () => 'clo_fabric_material_v6';
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v1' : 'clo_fabric_material_v7');
 
-          // Inyección de shader: Aísla exclusivamente el interior de la prenda
-          // Por dentro NUNCA se ven estampados, solo el color de tela uniforme
+          // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
             shader.uniforms.uBaseFabricColor = fabricMaterial.userData.uBaseFabricColor;
+            shader.uniforms.uIsMug = fabricMaterial.userData.uIsMug;
+            shader.uniforms.uIsMagicMug = fabricMaterial.userData.uIsMagicMug;
+            shader.uniforms.uHeatLevel = fabricMaterial.userData.uHeatLevel;
 
             shader.vertexShader = shader.vertexShader.replace(
               '#include <common>',
               `#include <common>
-              varying float vIsInnerLining;`
+              varying float vIsInnerLining;
+              varying float vLocalHeight;`
             );
 
             shader.vertexShader = shader.vertexShader.replace(
               '#include <begin_vertex>',
               `#include <begin_vertex>
               float isInner = 0.0;
-              // Cavidad interior del cuello en CLO3D
               if (position.y > 0.50 && length(position.xz) < 0.11) {
                 if (dot(normal.xz, position.xz) < 0.0) {
                   isInner = 1.0;
                 }
               }
-              vIsInnerLining = isInner;`
+              vIsInnerLining = isInner;
+              vLocalHeight = position.y;`
             );
 
             shader.fragmentShader = shader.fragmentShader.replace(
               '#include <common>',
               `#include <common>
               uniform vec3 uBaseFabricColor;
-              varying float vIsInnerLining;`
+              uniform float uIsMug;
+              uniform float uIsMagicMug;
+              uniform float uHeatLevel;
+              varying float vIsInnerLining;
+              varying float vLocalHeight;`
             );
 
             shader.fragmentShader = shader.fragmentShader.replace(
               '#include <map_fragment>',
               `#ifdef USE_MAP
-                if (!gl_FrontFacing || vIsInnerLining > 0.5) {
-                  // Interior de la prenda: tela limpia sin que se traspase el estampado
+                if (uIsMug > 0.5) {
+                  vec4 texelColor = texture2D( map, vMapUv );
+                  bool isMugInner = (vMapUv.x < 0.015);
+                  bool isMugHandleOrRim = (vMapUv.x >= 0.015 && vMapUv.x < 0.035);
+                  if (uIsMagicMug > 0.5) {
+                    vec3 magicBlack = vec3(0.055, 0.06, 0.075);
+                    if (isMugInner) {
+                      // Interior de porcelana blanca limpia en Mug Mágico
+                      diffuseColor.rgb *= vec3(0.96, 0.96, 0.98);
+                    } else if (isMugHandleOrRim) {
+                      // Asa y borde exterior con recubrimiento negro termocrómico
+                      diffuseColor.rgb *= magicBlack;
+                    } else {
+                      // Pared exterior imprimible: onda térmica ascendente con calor (uHeatLevel: 0 frío -> 1 caliente)
+                      float hNorm = clamp((vMapUv.y - 0.32) / 0.36, 0.0, 1.0);
+                      float wave = sin(vMapUv.x * 26.0 + uHeatLevel * 9.0) * 0.018 + cos(vMapUv.x * 13.0 - uHeatLevel * 6.0) * 0.01;
+                      float front = uHeatLevel * 1.18 - 0.09 + wave;
+                      float reveal = 1.0 - smoothstep(front - 0.05, front + 0.05, hNorm);
+                      float edgeGlow = smoothstep(0.0, 0.5, reveal) * smoothstep(1.0, 0.5, reveal) * 4.0;
+                      float activeHeat = step(0.01, uHeatLevel) * step(uHeatLevel, 0.99);
+                      vec3 coldPreview = mix(magicBlack, texelColor.rgb, 0.05);
+                      vec3 reacted = mix(coldPreview, texelColor.rgb, reveal);
+                      reacted += vec3(1.0, 0.30, 0.06) * edgeGlow * activeHeat * 0.45;
+                      diffuseColor.rgb *= reacted;
+                    }
+                  } else {
+                    if (isMugInner) {
+                      diffuseColor.rgb *= uBaseFabricColor * 0.95;
+                    } else {
+                      diffuseColor *= texelColor;
+                    }
+                  }
+                } else if (!gl_FrontFacing || vIsInnerLining > 0.5) {
                   diffuseColor.rgb = uBaseFabricColor * 0.88;
                 } else {
-                  // Todo el exterior de la prenda
                   vec4 sampledDiffuseColor = texture2D( map, vMapUv );
                   diffuseColor *= sampledDiffuseColor;
                 }
@@ -99,12 +139,12 @@ export class GltfShirtLoader {
           const center = new THREE.Vector3();
           bbox.getCenter(center);
 
-          // Escalar para que mida 1.05 unidades de altura visible
-          const targetHeight = 1.05;
+          // Escalar (1.05 para camisetas, 0.78 para Vaso 11 Oz para encuadre de estudio ideal)
+          const targetHeight = isMug ? 0.78 : 1.05;
           const scaleFactor = targetHeight / (size.y || 1);
 
-          // Centrar modelo dentro de su pivote
-          rawModel.position.x = -center.x;
+          // En el vaso, el origen X ya está en el eje del cilindro; compensamos solo 35% del asa
+          rawModel.position.x = isMug ? -center.x * 0.35 : -center.x;
           rawModel.position.y = -center.y;
           rawModel.position.z = -center.z;
 

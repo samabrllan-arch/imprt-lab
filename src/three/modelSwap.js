@@ -7,12 +7,14 @@ import { getAssetPath } from '../config/paths.js';
 
 export const MODEL_URLS = {
   get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); },
-  get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=1'); }
+  get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=1'); },
+  get mug() { return getAssetPath('models/mug_11oz_draco.glb?v=1'); }
 };
 
 export const MODEL_LABELS = {
   man: 'Cargando silueta masculina • Boxy Fit...',
-  woman: 'Cargando silueta femenina • Slim Fit...'
+  woman: 'Cargando silueta femenina • Slim Fit...',
+  mug: 'Cargando Vaso Cerámico • Mug 11 Oz...'
 };
 
 export class ModelSwapController {
@@ -112,10 +114,17 @@ export class ModelSwapController {
         this.engine.sceneManager.scene.add(result.scene);
         this.currentKey = targetKey;
 
-        // 3. Sincronizar color interior de la tela
+        // 3. Sincronizar color interior de la tela y estado termocrómico del vaso
         const currentColor = state.selectedColor;
-        if (result.material?.userData?.uBaseFabricColor && currentColor?.hex) {
-          result.material.userData.uBaseFabricColor.value.set(currentColor.hex);
+        const ud = result.material?.userData;
+        if (ud?.uBaseFabricColor && currentColor?.hex) {
+          ud.uBaseFabricColor.value.set(currentColor.hex);
+        }
+        if (ud?.uIsMagicMug) {
+          ud.uIsMagicMug.value = state.isMagicMug ? 1.0 : 0.0;
+        }
+        if (ud?.uHeatLevel) {
+          ud.uHeatLevel.value = state.mugHeatLevel ?? 0.0;
         }
 
         // 4. Componer textura UV sincronizada con la nueva silueta

@@ -1,0 +1,157 @@
+/**
+ * Estilos del Panel de Vaso 11 Oz & Efecto Mug Mágico Termosensible (NODE-008 / NODE-009)
+ */
+.magic-mug-card {
+  border: 1px solid rgba(255, 87, 34, 0.28);
+  background: linear-gradient(145deg, rgba(255, 87, 34, 0.07) 0%, rgba(15, 18, 28, 0.95) 100%);
+  margin-bottom: 12px;
+}
+
+[data-theme="light"] .magic-mug-card {
+  background: linear-gradient(145deg, rgba(255, 87, 34, 0.08) 0%, #faf8f5 100%);
+  border-color: rgba(194, 65, 12, 0.28);
+}
+
+.mug-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-mug-type {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 10px 11px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary, #f8fafc);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-mug-type:hover {
+  border-color: rgba(255, 87, 34, 0.5);
+  background: rgba(255, 87, 34, 0.08);
+}
+
+.btn-mug-type.active {
+  border-color: #ff5722;
+  background: linear-gradient(135deg, rgba(255, 87, 34, 0.22) 0%, rgba(255, 0, 127, 0.14) 100%);
+  box-shadow: 0 4px 16px -4px rgba(255, 87, 34, 0.4);
+}
+
+[data-theme="light"] .btn-mug-type {
+  border-color: #dcd7cc;
+  background: #ffffff;
+  color: #1a1c22;
+}
+
+[data-theme="light"] .btn-mug-type.active {
+  border-color: #c2410c;
+  background: rgba(255, 87, 34, 0.12);
+}
+
+.mug-type-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.mug-type-price {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ff8a65;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-theme="light"] .mug-type-price {
+  color: #c2410c;
+}
+
+.mug-type-desc {
+  font-size: 0.69rem;
+  line-height: 1.3;
+  color: var(--text-secondary, #94a3b8);
+}
+
+/* Simulador de Temperatura (Calor -> Revela Diseño) */
+.mug-heat-simulator {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="light"] .mug-heat-simulator {
+  border-top-color: #dcd7cc;
+}
+
+.btn-pour-hot {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff5722 0%, #e11d48 55%, #7c3aed 100%);
+  box-shadow: 0 6px 18px -4px rgba(255, 87, 34, 0.55);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-pour-hot:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.btn-pour-hot.is-hot {
+  background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%);
+  box-shadow: 0 6px 18px -4px rgba(2, 132, 199, 0.5);
+}
+
+.mug-temp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.mug-temp-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 87, 34, 0.18);
+  color: #ff8a65;
+  border: 1px solid rgba(255, 87, 34, 0.4);
+}
+
+[data-theme="light"] .mug-temp-badge {
+  color: #c2410c;
+  background: rgba(255, 87, 34, 0.12);
+}
+
+.mug-temp-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.66rem;
+  color: var(--text-muted, #64748b);
+}

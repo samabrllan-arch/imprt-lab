@@ -22,6 +22,25 @@ function receiptRow(label, amount, extraClass = '') {
 }
 
 function renderReceipt({ orderId, state, selectedSize, selectedGrammage, extraZones, sizeAddon, basePrice, grammageModifier }) {
+  const isMug = state.selectedSilhouette === 'mug';
+  if (isMug) {
+    return `
+      <div class="atelier-receipt" role="group" aria-label="Desglose de precio">
+        <div class="receipt-head">
+          <span class="receipt-title">Atelier Receipt</span>
+          <span class="receipt-id">#${escapeHtml(orderId)}</span>
+        </div>
+        ${receiptRow('Vaso Cerámico 11 Oz · Sublimación HD', formatCurrency(PRICING_CONFIG.baseMugPrice || 28000))}
+        ${state.isMagicMug ? receiptRow('Acabado Mágico Termosensible (Calor)', `+${formatCurrency(PRICING_CONFIG.magicMugAddon || 10000)}`) : ''}
+        <div class="receipt-tear" aria-hidden="true"></div>
+        <div class="receipt-total">
+          <span class="receipt-total-label">Total a pagar</span>
+          <strong class="checkout-total-val" id="checkout-total-val">${formatCurrency(state.pricing.total)}</strong>
+        </div>
+        <p class="receipt-note">Pagas por Nequi o Bancolombia después de confirmar.</p>
+      </div>`;
+  }
+
   const zoneRows = extraZones.map(([zoneId, price]) => receiptRow(`Estampado · ${getZoneName(zoneId)}`, `+${formatCurrency(price)}`)).join('');
   return `
     <div class="atelier-receipt" role="group" aria-label="Desglose de precio">
@@ -42,8 +61,11 @@ function renderReceipt({ orderId, state, selectedSize, selectedGrammage, extraZo
 }
 
 export function renderCheckoutModalHtml({ orderId, state, screenshotDataUrl, activeDecals, authUser }) {
-  const { selectedColor, selectedSize, selectedSilhouette, selectedMaterial, selectedGrammage, pricing } = state;
-  const silName = selectedSilhouette === 'woman' ? 'Mujer (Slim Fit)' : 'Hombre (Boxy Fit)';
+  const { selectedColor, selectedSize, selectedSilhouette, selectedMaterial, selectedGrammage, pricing, isMagicMug } = state;
+  const isMug = selectedSilhouette === 'mug';
+  const silName = isMug
+    ? (isMagicMug ? 'Mug Mágico 11 Oz ✨' : 'Vaso Cerámico 11 Oz ☕')
+    : (selectedSilhouette === 'woman' ? 'Mujer (Slim Fit)' : 'Hombre (Boxy Fit)');
 
   // Gramajes permitidos según el material seleccionado
   const availableGrammages = selectedMaterial === 'algodon'
@@ -62,6 +84,81 @@ export function renderCheckoutModalHtml({ orderId, state, screenshotDataUrl, act
     ? `Pedido a nombre de <strong>${escapeHtml(authUser.email)}</strong>`
     : 'Al confirmar te pediremos iniciar sesión o registrarte. Tu diseño queda guardado.';
 
+  const configSectionsHtml = isMug ? `
+    <div class="checkout-field-section">
+      <div class="section-label-row">
+        <span class="checkout-field-title">1. Tipo de Acabado Cerámico (11 Oz · 325 ml)</span>
+        <span class="checkout-field-hint">Alto 9.5 cm • Diámetro 8.2 cm</span>
+      </div>
+      <div class="checkout-materials-row">
+        <button type="button" class="btn-checkout-mat btn-checkout-mug-mode ${!isMagicMug ? 'active' : ''}" aria-pressed="${!isMagicMug}" data-magic-mug="false">
+          <span class="mat-icon">☕</span>
+          <div class="mat-info-text">
+            <strong class="mat-name">Cerámica Clásica AAA</strong>
+            <small class="mat-desc">Sublimación HD siempre visible (${formatCurrency(PRICING_CONFIG.baseMugPrice || 28000)})</small>
+          </div>
+        </button>
+        <button type="button" class="btn-checkout-mat btn-checkout-mug-mode ${isMagicMug ? 'active' : ''}" aria-pressed="${isMagicMug}" data-magic-mug="true">
+          <span class="mat-icon">✨</span>
+          <div class="mat-info-text">
+            <strong class="mat-name">Mug Mágico Termosensible</strong>
+            <small class="mat-desc">Negro en frío · Revela con calor (+${formatCurrency(PRICING_CONFIG.magicMugAddon || 10000)})</small>
+          </div>
+        </button>
+      </div>
+    </div>
+  ` : `
+    <div class="checkout-field-section">
+      <div class="section-label-row">
+        <span class="checkout-field-title">1. Elige tu Talla</span>
+        <span class="checkout-field-hint" id="size-dimensions-hint">Largo ${selectedSize.lengthCm} cm • Pecho ${selectedSize.widthCm} cm</span>
+      </div>
+      <div class="checkout-sizes-grid">
+        ${SIZES.map((s) => {
+          const isSelected = s.id === selectedSize.id;
+          const addon = PRICING_CONFIG.sizeAddons[s.id] || 0;
+          return `
+            <button type="button" class="btn-checkout-size ${isSelected ? 'active' : ''}" aria-pressed="${isSelected}" data-size-id="${s.id}">
+              <span class="size-letter">${s.label}</span>
+              <span class="size-sub">${s.lengthCm}x${s.widthCm}cm</span>
+              ${addon > 0 ? `<span class="size-addon-badge">+${formatCurrency(addon)}</span>` : ''}
+            </button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="checkout-field-section">
+      <span class="checkout-field-title">2. Tipo de Material Textil</span>
+      <div class="checkout-materials-row">
+        ${FABRIC_MATERIALS.map((m) => `
+          <button type="button" class="btn-checkout-mat ${m.id === selectedMaterial ? 'active' : ''}" aria-pressed="${m.id === selectedMaterial}" data-mat-id="${m.id}">
+            <span class="mat-icon">${m.icon}</span>
+            <div class="mat-info-text">
+              <strong class="mat-name">${m.name}</strong>
+              <small class="mat-desc">${m.badge}</small>
+            </div>
+          </button>`).join('')}
+      </div>
+    </div>
+
+    <div class="checkout-field-section">
+      <span class="checkout-field-title">3. Gramaje del Tejido</span>
+      <div class="checkout-grammages-row">
+        ${availableGrammages.map((g) => {
+          const isSelected = g.id === selectedGrammage;
+          const modText = g.priceModifier > 0
+            ? `(+${formatCurrency(g.priceModifier)})`
+            : (g.priceModifier < 0 ? `(${formatCurrency(g.priceModifier)})` : '(Incluido)');
+          return `
+            <button type="button" class="btn-checkout-gram ${isSelected ? 'active' : ''}" aria-pressed="${isSelected}" data-gram-id="${g.id}">
+              <strong class="gram-title">${g.label} • ${g.title}</strong>
+              <span class="gram-mod">${modText}</span>
+            </button>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
   return `
     <div class="modal-card checkout-modal-card">
       <div class="modal-header">
@@ -76,7 +173,7 @@ export function renderCheckoutModalHtml({ orderId, state, screenshotDataUrl, act
         <!-- Columna Izquierda: Vista Previa y Descargas -->
         <div class="checkout-preview-col">
           <div class="modal-preview-box">
-            <img src="${screenshotDataUrl}" alt="Prenda 3D Personalizada" class="modal-preview-img" />
+            <img src="${screenshotDataUrl}" alt="Producto 3D Personalizado" class="modal-preview-img" />
             <div class="checkout-preview-actions">
               <button type="button" id="btn-download-preview" class="btn-download-tag">📥 Mockup 3D</button>
               ${activeDecals.length > 0 ? `
@@ -87,11 +184,11 @@ export function renderCheckoutModalHtml({ orderId, state, screenshotDataUrl, act
           </div>
 
           <div class="checkout-garment-summary">
-            <div class="summary-chip-item"><span class="chip-label">Silueta</span><strong>${silName}</strong></div>
+            <div class="summary-chip-item"><span class="chip-label">Producto</span><strong>${silName}</strong></div>
             <div class="summary-chip-item">
               <span class="chip-label">Color</span>
-              <span class="color-dot-inline" style="background:${selectedColor.hex};"></span>
-              <strong>${selectedColor.name}</strong>
+              <span class="color-dot-inline" style="background:${isMug && isMagicMug ? '#121318' : selectedColor.hex};"></span>
+              <strong>${isMug && isMagicMug ? 'Negro Termosensible' : selectedColor.name}</strong>
             </div>
             <div class="summary-chip-item">
               <span class="chip-label">Estampados</span>
@@ -102,60 +199,12 @@ export function renderCheckoutModalHtml({ orderId, state, screenshotDataUrl, act
 
         <!-- Columna Derecha: Configuración de Prenda & Validación de Precio -->
         <div class="checkout-config-col">
-          <div class="checkout-field-section">
-            <div class="section-label-row">
-              <span class="checkout-field-title">1. Elige tu Talla</span>
-              <span class="checkout-field-hint" id="size-dimensions-hint">Largo ${selectedSize.lengthCm} cm • Pecho ${selectedSize.widthCm} cm</span>
-            </div>
-            <div class="checkout-sizes-grid">
-              ${SIZES.map((s) => {
-                const isSelected = s.id === selectedSize.id;
-                const addon = PRICING_CONFIG.sizeAddons[s.id] || 0;
-                return `
-                  <button type="button" class="btn-checkout-size ${isSelected ? 'active' : ''}" aria-pressed="${isSelected}" data-size-id="${s.id}">
-                    <span class="size-letter">${s.label}</span>
-                    <span class="size-sub">${s.lengthCm}x${s.widthCm}cm</span>
-                    ${addon > 0 ? `<span class="size-addon-badge">+${formatCurrency(addon)}</span>` : ''}
-                  </button>`;
-              }).join('')}
-            </div>
-          </div>
-
-          <div class="checkout-field-section">
-            <span class="checkout-field-title">2. Tipo de Material Textil</span>
-            <div class="checkout-materials-row">
-              ${FABRIC_MATERIALS.map((m) => `
-                <button type="button" class="btn-checkout-mat ${m.id === selectedMaterial ? 'active' : ''}" aria-pressed="${m.id === selectedMaterial}" data-mat-id="${m.id}">
-                  <span class="mat-icon">${m.icon}</span>
-                  <div class="mat-info-text">
-                    <strong class="mat-name">${m.name}</strong>
-                    <small class="mat-desc">${m.badge}</small>
-                  </div>
-                </button>`).join('')}
-            </div>
-          </div>
-
-          <div class="checkout-field-section">
-            <span class="checkout-field-title">3. Gramaje del Tejido</span>
-            <div class="checkout-grammages-row">
-              ${availableGrammages.map((g) => {
-                const isSelected = g.id === selectedGrammage;
-                const modText = g.priceModifier > 0
-                  ? `(+${formatCurrency(g.priceModifier)})`
-                  : (g.priceModifier < 0 ? `(${formatCurrency(g.priceModifier)})` : '(Incluido)');
-                return `
-                  <button type="button" class="btn-checkout-gram ${isSelected ? 'active' : ''}" aria-pressed="${isSelected}" data-gram-id="${g.id}">
-                    <strong class="gram-title">${g.label} • ${g.title}</strong>
-                    <span class="gram-mod">${modText}</span>
-                  </button>`;
-              }).join('')}
-            </div>
-          </div>
+          ${configSectionsHtml}
 
           ${renderReceipt({ orderId, state, selectedSize, selectedGrammage, extraZones, sizeAddon, basePrice, grammageModifier })}
 
           <div class="checkout-field-section">
-            <span class="checkout-field-title">4. Datos de Entrega</span>
+            <span class="checkout-field-title">${isMug ? '2.' : '4.'} Datos de Entrega</span>
             <div class="checkout-contact-grid">
               <div class="input-field">
                 <label for="cust-name">Nombre y Apellido</label>

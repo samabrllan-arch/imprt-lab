@@ -192,6 +192,12 @@ export function setSilhouette(silhouette) {
   if (state.selectedSilhouette === silhouette) return;
   state.selectedSilhouette = silhouette;
 
+  // En modo Vaso/Mug solo existe una zona frontal/envolvente única
+  if (silhouette === 'mug' && state.activeZone !== 'front') {
+    state.activeZone = 'front';
+    store.notify('activeZone');
+  }
+
   // Al cambiar de silueta, reajustar los estampados existentes a la nueva isla UV.
   let changed = false;
   for (const [zoneId, zone] of Object.entries(state.customizations || {})) {
@@ -206,6 +212,23 @@ export function setSilhouette(silhouette) {
 
   store.notify('silhouette');
   if (changed && state.activeZone) store.notify(`transform:${state.activeZone}`);
+}
+
+export function setMagicMug(enabled) {
+  const state = store.getState();
+  const next = !!enabled;
+  if (state.isMagicMug === next) return;
+  state.isMagicMug = next;
+  if (!next) state.mugHeatLevel = 0.0;
+  store.notify('magicMug');
+}
+
+export function setMugHeatLevel(level) {
+  const state = store.getState();
+  const clamped = Math.max(0, Math.min(1, Number(level) || 0));
+  if (Math.abs(state.mugHeatLevel - clamped) < 1e-4) return;
+  state.mugHeatLevel = clamped;
+  store.notify('mugHeat');
 }
 
 export function setMaterial(materialId) {

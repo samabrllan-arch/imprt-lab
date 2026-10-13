@@ -19,6 +19,10 @@ export const ZONES = {
       woman: {
         x: 570, y: 990, width: 380, height: 380,
         bounds: { minX: 330, maxX: 810, minY: 500, maxY: 1230 }
+      },
+      mug: {
+        x: 1540, y: 1024, width: 520, height: 520,
+        bounds: { minX: 240, maxX: 1860, minY: 560, maxY: 1488 }
       }
     },
     limits: { minScale: 0.2, maxScale: 2.2, minOffset: -2.5, maxOffset: 2.2 }

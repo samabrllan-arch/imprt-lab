@@ -137,6 +137,21 @@ export class ShirtEngine {
       }
     }
 
+    if (changeKey === 'magicMug') {
+      const ud = this.cloModelInstance?.material?.userData;
+      if (ud?.uIsMagicMug) ud.uIsMagicMug.value = state.isMagicMug ? 1.0 : 0.0;
+      if (ud?.uHeatLevel) ud.uHeatLevel.value = state.mugHeatLevel ?? 0.0;
+      if (this.cloModelInstance?.material) {
+        this.cloModelInstance.material.roughness = state.isMagicMug ? 0.36 : 0.16;
+      }
+      this.scheduleCompose();
+    }
+
+    if (changeKey === 'mugHeat') {
+      const ud = this.cloModelInstance?.material?.userData;
+      if (ud?.uHeatLevel) ud.uHeatLevel.value = state.mugHeatLevel ?? 0.0;
+    }
+
     if (changeKey === 'color' || changeKey === 'size' || (changeKey && (changeKey.startsWith('decal:') || changeKey.startsWith('transform:')))) {
       this.scheduleCompose();
     }

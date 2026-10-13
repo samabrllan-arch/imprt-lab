@@ -28,12 +28,19 @@ export function getPrimaryDecal(state) {
 }
 
 export function buildOrderDraft({ orderId, state, screenshot, customer }) {
-  const { selectedColor, selectedSize, selectedSilhouette, selectedMaterial, selectedGrammage, pricing } = state;
+  const { selectedColor, selectedSize, selectedSilhouette, selectedMaterial, selectedGrammage, pricing, isMagicMug } = state;
+  const isMug = selectedSilhouette === 'mug';
   const decals = Object.entries(state.customizations)
-    .filter(([, z]) => z.hasDecal)
+    .filter(([zoneId, z]) => z.hasDecal && (!isMug || zoneId === 'front'))
     .map(([zoneId, z]) => {
       const dims = getDecalDimensionsCm(z, zoneId, selectedSize);
-      return { zone: zoneId, zoneName: getZoneName(zoneId), name: z.name, widthCm: dims.widthCm, heightCm: dims.heightCm };
+      return {
+        zone: zoneId,
+        zoneName: isMug ? 'Vaso 11 Oz (Frontal / Envolvente)' : getZoneName(zoneId),
+        name: z.name,
+        widthCm: isMug ? +(9.5 * (z.scale || 1)).toFixed(1) : dims.widthCm,
+        heightCm: isMug ? +(8.5 * (z.scale || 1)).toFixed(1) : dims.heightCm
+      };
     });
 
   return {
@@ -41,7 +48,16 @@ export function buildOrderDraft({ orderId, state, screenshot, customer }) {
     id: orderId,
     createdAt: new Date().toISOString(),
     customer: { name: customer.name, city: customer.city },
-    garment: {
+    garment: isMug ? {
+      silhouette: isMagicMug ? 'Mug Mágico 11 Oz Termosensible' : 'Vaso Cerámico 11 Oz',
+      size: '11 Oz',
+      sizeName: 'Capacidad 325 ml',
+      dimensionsCm: '9.5x8.2',
+      color: isMagicMug ? 'Negro Termosensible (Revela con calor)' : selectedColor.name,
+      colorHex: isMagicMug ? '#121318' : selectedColor.hex,
+      material: isMagicMug ? 'Cerámica Termosensible Mágica' : 'Cerámica AAA Sublimación HD',
+      grammage: '325 ml'
+    } : {
       silhouette: selectedSilhouette === 'woman' ? 'Mujer (Slim Fit)' : 'Hombre (Boxy Fit)',
       size: selectedSize.label,
       sizeName: selectedSize.name,

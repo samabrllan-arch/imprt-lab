@@ -39,46 +39,52 @@ export class TextureComposer {
     return this.canvas;
   }
 
-  /** Regenera la capa base solo si cambió el color de la tela. */
-  ensureBaseLayer(hex) {
-    if (this.baseKey === hex) return;
+  /** Regenera la capa base solo si cambió el color o el tipo de superficie (tela vs cerámica). */
+  ensureBaseLayer(hex, isMug = false, isMagicMug = false) {
+    const effectiveHex = (isMug && isMagicMug) ? '#f8fafc' : hex;
+    const key = `${effectiveHex}_${isMug ? 'mug' : 'shirt'}`;
+    if (this.baseKey === key) return;
     const { baseCtx: ctx, size } = this;
 
-    // 1. Color base de la camiseta
+    // 1. Color base de la prenda o cerámica
     ctx.clearRect(0, 0, size, size);
-    ctx.fillStyle = hex;
+    ctx.fillStyle = effectiveHex;
     ctx.fillRect(0, 0, size, size);
 
-    // 2. Trama de algodón sutil
-    ctx.save();
-    ctx.globalCompositeOperation = 'multiply';
-    ctx.globalAlpha = 0.22;
-    ctx.fillStyle = ctx.createPattern(this.patternCanvas, 'repeat');
-    ctx.fillRect(0, 0, size, size);
-    ctx.restore();
+    if (!isMug) {
+      // 2. Trama de algodón sutil (solo para camisetas)
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = ctx.createPattern(this.patternCanvas, 'repeat');
+      ctx.fillRect(0, 0, size, size);
+      ctx.restore();
 
-    // 3. Sombreado de volumen y costuras
-    drawFabricShading(ctx, size, size);
-    this.baseKey = hex;
+      // 3. Sombreado de volumen y costuras textiles
+      drawFabricShading(ctx, size, size);
+    }
+    this.baseKey = key;
   }
 
   /**
-   * Renderiza la textura completa de la prenda en el canvas
+   * Renderiza la textura completa de la prenda o vaso en el canvas
    */
   compose(state) {
     const { ctx, size } = this;
     const { selectedColor, customizations } = state;
+    const silhouette = state.selectedSilhouette || 'man';
+    const isMug = silhouette === 'mug';
 
-    // 1-3. Capa base cacheada
-    this.ensureBaseLayer(selectedColor.hex);
+    // 1-3. Capa base cacheada (tela con trama o cerámica lisa)
+    this.ensureBaseLayer(selectedColor.hex, isMug, !!state.isMagicMug);
     ctx.clearRect(0, 0, size, size);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(this.baseCanvas, 0, 0);
 
-    // 4. Renderizar estampados en cada zona activa según la silueta (Hombre vs Mujer)
-    const silhouette = state.selectedSilhouette || 'man';
+    // 4. Renderizar estampados en cada zona activa según la silueta (Hombre, Mujer o Vaso 11 Oz)
     for (const [zoneId, zoneConfig] of Object.entries(ZONES)) {
+      if (isMug && zoneId !== 'front') continue;
       const decal = customizations[zoneId];
       if (decal && decal.hasDecal && decal.imageElement) {
         const area = (zoneConfig.canvasAreaBySilhouette && zoneConfig.canvasAreaBySilhouette[silhouette])
@@ -102,14 +108,18 @@ export class TextureComposer {
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // Delimitar al área de la pieza con margen vertical amplio para no cortar cuello ni axilas
+    // Delimitar al área imprimible (en vaso 11 Oz respeta el borde superior e inferior cerámico y el asa)
     ctx.beginPath();
-    ctx.rect(
-      area.x - area.width * 0.90,
-      area.y - area.height * 2.20,
-      area.width * 1.80,
-      area.height * 4.40
-    );
+    if (silhouette === 'mug') {
+      ctx.rect(140, 390, 1800, 1268);
+    } else {
+      ctx.rect(
+        area.x - area.width * 0.90,
+        area.y - area.height * 2.20,
+        area.width * 1.80,
+        area.height * 4.40
+      );
+    }
     ctx.clip();
 
     // Dimensiones proporcionales manteniendo el aspect ratio original o medidas libres

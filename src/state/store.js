@@ -7,7 +7,9 @@ import { FABRIC_GRAMMAGES } from '../config/materials.js';
  */
 const initialState = {
   selectedColor: FABRIC_COLORS[0], // Washed Terracotta por defecto (#874438)
-  selectedSilhouette: 'man',       // 'man' (Boxy Fit) o 'woman' (Slim Fit)
+  selectedSilhouette: 'man',       // 'man' (Boxy Fit), 'woman' (Slim Fit) o 'mug' (Vaso 11 Oz)
+  isMagicMug: false,               // true = Mug Mágico Termosensible (negro en frío, revela con calor)
+  mugHeatLevel: 0.0,               // 0.0 (Frío 20°C) a 1.0 (Caliente 85°C, revelado total)
   selectedMaterial: 'algodon',     // 'algodon' (100% Peinado) o 'poliester' (Dry-Fit)
   selectedGrammage: '240',         // '120', '180' o '240' GSM
   selectedSize: SIZES[2],          // L por defecto
@@ -97,6 +99,16 @@ class Store {
   }
 
   calculatePricing() {
+    if (this.state.selectedSilhouette === 'mug') {
+      const base = PRICING_CONFIG.baseMugPrice || 28000;
+      const addons = this.state.isMagicMug ? (PRICING_CONFIG.magicMugAddon || 10000) : 0;
+      this.state.pricing.basePrice = base;
+      this.state.pricing.addonsTotal = addons;
+      this.state.pricing.total = base + addons;
+      return;
+    }
+
+    this.state.pricing.basePrice = PRICING_CONFIG.baseShirtPrice;
     let addons = 0;
     const c = this.state.customizations;
     for (const [zoneId, decal] of Object.entries(c)) {
