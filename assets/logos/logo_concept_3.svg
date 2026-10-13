@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <defs>
+    <linearGradient id="c3_gMain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5722" />
+      <stop offset="100%" stop-color="#ff007f" />
+    </linearGradient>
+    <linearGradient id="c3_gCube" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7928ca" />
+      <stop offset="100%" stop-color="#00f0ff" />
+    </linearGradient>
+    <filter id="c3_glow">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#ff5722" flood-opacity="0.35" />
+    </filter>
+  </defs>
+  <!-- Concepto 3: Haute Minimal Precision S3D (Cortes Geométricos Suizos) -->
+  <g filter="url(#c3_glow)">
+    <path d="M32 20 L86 20 L76 38 L48 38 L48 48 L78 52 C 92 54, 96 66, 94 76 L86 98 L30 98 L40 80 L76 80 L76 70 L46 66 C 32 64, 28 50, 30 38 Z" 
+          fill="url(#c3_gMain)" />
+    <polygon points="96,24 110,32 110,48 96,40" fill="url(#c3_gCube)" opacity="0.9" />
+    <polygon points="82,32 96,24 110,32 96,40" fill="#ffffff" opacity="0.45" />
+    <polygon points="82,32 96,40 96,56 82,48" fill="url(#c3_gCube)" />
+  </g>
+</svg>

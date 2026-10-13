@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laboratorio 3D • Modo Caminata (Catwalk Studio)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="./assets/caminata-DVaaoL6j.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="./assets/paths-Bzv2z2i0.js">
+  <link rel="modulepreload" crossorigin href="./assets/colors-xns7KFWE.js">
+  <link rel="stylesheet" crossorigin href="./assets/caminata-Cb9mYD_Q.css">
+</head>
+<body>
+  <div id="walk-app">
+    <!-- Viewport 3D -->
+    <main id="viewport-3d">
+      <div id="badge-loading" class="badge-status">Cargando pasarela 3D...</div>
+      
+      <!-- Top Bar HUD -->
+      <header class="hud-top-bar">
+        <a href="/" class="btn-back">← Volver a la Tienda</a>
+        <div class="hud-title">
+          <span class="pill-live">RUNWAY 3D</span>
+          <h1>Modo Caminata • Simulador Textil</h1>
+        </div>
+        <div class="camera-pill-group">
+          <button class="btn-cam active" data-cam="front">Frente</button>
+          <button class="btn-cam" data-cam="diag">3/4</button>
+          <button class="btn-cam" data-cam="side">Perfil</button>
+          <button class="btn-cam" data-cam="back">Espalda</button>
+        </div>
+      </header>
+
+      <!-- Bottom HUD Quick Toggles -->
+      <footer class="hud-bottom-bar">
+        <button id="btn-toggle-walk" class="btn-action-primary active">⏸️ Pausar Marcha</button>
+        <div class="hud-hint">🖱️ Arrastra para orbitar 360° • Rueda para zoom • Clic derecho para desplazar</div>
+      </footer>
+    </main>
+
+    <!-- Panel Lateral de Ajustes de Movimiento -->
+    <aside id="walk-sidebar">
+      <div class="sidebar-header">
+        <h2>Control de Pasarela</h2>
+        <span class="badge-tag">PBR & Vertex Shaders</span>
+      </div>
+
+      <!-- 1. Silueta -->
+      <section class="control-block">
+        <label class="block-title">Silueta de Prenda</label>
+        <div class="btn-row">
+          <button class="btn-sil active" data-sil="woman">👗 Mujer (Slim Fit)</button>
+          <button class="btn-sil" data-sil="man">👕 Hombre (Boxy Fit)</button>
+        </div>
+      </section>
+
+      <!-- 2. Presets de Estilo de Caminata -->
+      <section class="control-block">
+        <label class="block-title">Estilo de Caminata</label>
+        <div class="presets-grid">
+          <button class="btn-preset active" data-preset="catwalk">
+            <span class="preset-icon">✨</span>
+            <span class="preset-name">Pasarela Alta Costura</span>
+          </button>
+          <button class="btn-preset" data-preset="street">
+            <span class="preset-icon">🚶</span>
+            <span class="preset-name">Paseo Urbano Streetwear</span>
+          </button>
+          <button class="btn-preset" data-preset="brisk">
+            <span class="preset-icon">🏃</span>
+            <span class="preset-name">Paso Rápido Dinámico</span>
+          </button>
+          <button class="btn-preset" data-preset="paused">
+            <span class="preset-icon">🧘</span>
+            <span class="preset-name">Estático / Showroom</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Parámetros Físicos de Marcha -->
+      <section class="control-block">
+        <label class="block-title">Ajuste Fino de Dinámicas</label>
+        
+        <div class="slider-field">
+          <div class="slider-header">
+            <span>Cadencia de Pasos</span>
+            <span id="v-cadence" class="val-num">104 BPM</span>
+          </div>
+          <input type="range" id="sl-cadence" min="60" max="160" step="2" value="104" />
+        </div>
+
+        <div class="slider-field">
+          <div class="slider-header">
+            <span>Bamboleo Pélvico / Torso (Sway)</span>
+            <span id="v-sway" class="val-num">0.038</span>
+          </div>
+          <input type="range" id="sl-sway" min="0" max="0.08" step="0.002" value="0.038" />
+        </div>
+
+        <div class="slider-field">
+          <div class="slider-header">
+            <span>Rebote Vertical (Bobbing)</span>
+            <span id="v-bob" class="val-num">0.024</span>
+          </div>
+          <input type="range" id="sl-bob" min="0" max="0.08" step="0.002" value="0.024" />
+        </div>
+
+        <div class="slider-field">
+          <div class="slider-header">
+            <span>Inercia y Caída de Tela</span>
+            <span id="v-wave" class="val-num">0.022</span>
+          </div>
+          <input type="range" id="sl-wave" min="0" max="0.06" step="0.002" value="0.022" />
+        </div>
+
+        <div class="slider-field">
+          <div class="slider-header">
+            <span>Viento y Micro-pliegues</span>
+            <span id="v-wind" class="val-num">0.009</span>
+          </div>
+          <input type="range" id="sl-wind" min="0" max="0.03" step="0.001" value="0.009" />
+        </div>
+      </section>
+
+      <!-- 4. Color de la Camiseta -->
+      <section class="control-block">
+        <label class="block-title">Color de Tela (Tonalidad por Defecto: Washed Terracotta)</label>
+        <div id="color-swatches" class="swatches-container"></div>
+      </section>
+
+      <!-- 5. Diseño / Estampado -->
+      <section class="control-block">
+        <div class="flex-between">
+          <label class="block-title">Estampado en Movimiento</label>
+          <label class="btn-upload-label">
+            📁 Subir Arte
+            <input type="file" id="input-custom-art" accept="image/*" style="display: none;" />
+          </label>
+        </div>
+        <div class="btn-row" style="margin-bottom: 8px;">
+          <button id="btn-zone-both" class="btn-zone active">Pecho + Espalda</button>
+          <button id="btn-zone-front" class="btn-zone">Solo Pecho</button>
+          <button id="btn-zone-back" class="btn-zone">Solo Espalda</button>
+        </div>
+        <div id="drops-grid" class="drops-mini-grid"></div>
+      </section>
+    </aside>
+  </div>
+
+</body>
+</html>

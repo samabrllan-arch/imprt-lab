@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Calibración Siluetas 3D - Hombre & Mujer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #0f1117; color: #fff; display: flex; height: 100vh; overflow: hidden; }
+    #viewport-container { flex: 1; position: relative; height: 100%; }
+    #canvas3d { width: 100%; height: 100%; display: block; }
+    #controls-panel {
+      width: 360px; background: rgba(20, 24, 33, 0.95); border-left: 1px solid rgba(255,255,255,0.1);
+      padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; z-index: 10;
+    }
+    h2 { font-size: 1.1rem; color: #ff5722; text-transform: uppercase; letter-spacing: 1px; }
+    .btn-row { display: flex; gap: 8px; }
+    .btn {
+      flex: 1; padding: 10px; background: #232936; color: #fff; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s;
+    }
+    .btn.active { background: #ff5722; border-color: #ff5722; color: #fff; }
+    .btn:hover:not(.active) { background: #2f3747; }
+    .control-group { background: #181d28; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
+    .control-group label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #aaa; margin-bottom: 6px; }
+    .control-group span.val { color: #00f0ff; font-weight: bold; }
+    input[type="range"] { width: 100%; accent-color: #ff5722; }
+    .status-box { background: rgba(0,240,255,0.1); border: 1px solid #00f0ff; padding: 10px; border-radius: 6px; font-size: 0.8rem; color: #00f0ff; }
+    .code-box { background: #000; padding: 10px; border-radius: 6px; font-family: monospace; font-size: 0.75rem; color: #4ade80; white-space: pre-wrap; }
+    #badge-loading { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.8); border: 1px solid #ff5722; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: #ff5722; pointer-events: none; }
+  </style>
+  <script type="module" crossorigin src="./assets/test-DPQ_rINA.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="modulepreload" crossorigin href="./assets/paths-Bzv2z2i0.js">
+  <link rel="modulepreload" crossorigin href="./assets/presets-CiY3Ovxi.js">
+</head>
+<body>
+  <div id="viewport-container">
+    <div id="badge-loading">Cargando modelo 3D...</div>
+    <div id="canvas3d"></div>
+  </div>
+
+  <div id="controls-panel">
+    <h2>Calibrador UV 3D</h2>
+    
+    <div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:6px;">SILUETA PARA COMPARAR</div>
+      <div class="btn-row" style="flex-direction: column; gap: 6px;">
+        <button id="btn-woman-seam" class="btn active" style="border-color:#10b981;">✨ Mujer Opción 2 (Seam Unwrap - Por Costuras)</button>
+        <button id="btn-woman-old" class="btn">⚠️ Mujer Anterior (Meshy - Con Efecto Láser)</button>
+        <button id="btn-man" class="btn">👕 Hombre (Boxy CLO3D)</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:6px;">IMAGEN DE PRUEBA</div>
+      <div class="btn-row">
+        <label class="btn" style="text-align: center; cursor: pointer; background: #2563eb; border-color: #3b82f6;">
+          📁 Subir mi Imagen
+          <input type="file" id="input-test-img" accept="image/*" style="display: none;" />
+        </label>
+        <button id="btn-preset-default" class="btn">Logo Oficial</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:6px;">COLOR DE CAMISETA</div>
+      <div class="btn-row">
+        <button class="btn btn-shirt-color active" data-color="#111215" style="background:#111215; border:1px solid #444;">Negro</button>
+        <button class="btn btn-shirt-color" data-color="#8b1e1e" style="background:#8b1e1e;">Vinotinto</button>
+        <button class="btn btn-shirt-color" data-color="#ffffff" style="background:#ffffff; color:#000;">Blanco</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:6px;">VISTA CÁMARA</div>
+      <div class="btn-row">
+        <button id="btn-view-front" class="btn active">Frente</button>
+        <button id="btn-view-back" class="btn">Espalda</button>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.75rem; color:#888; margin-bottom:6px;">ZONA ACTIVA</div>
+      <div class="btn-row">
+        <button id="btn-zone-chest" class="btn active">Pecho</button>
+        <button id="btn-zone-back" class="btn">Espalda</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label>Posición X: <span id="val-x" class="val">548</span></label>
+      <input type="range" id="slider-x" min="100" max="1900" step="2" value="548" />
+    </div>
+
+    <div class="control-group">
+      <label>Posición Y: <span id="val-y" class="val">540</span></label>
+      <input type="range" id="slider-y" min="100" max="1900" step="2" value="540" />
+    </div>
+
+    <div class="control-group">
+      <label>Escala: <span id="val-scale" class="val">1.0</span></label>
+      <input type="range" id="slider-scale" min="0.2" max="2.5" step="0.05" value="1.0" />
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-apply-both" class="btn" style="background:#059669; border-color:#059669;">Mostrar Pecho y Espalda a la vez</button>
+    </div>
+
+    <div class="status-box" id="info-status">Ajusta los sliders para calibrar la posición exacta del logo.</div>
+
+    <div style="font-size:0.75rem; color:#aaa;">CONFIGURACIÓN RESULTANTE (para copiar a zones.js):</div>
+    <div class="code-box" id="code-output"></div>
+  </div>
+
+</body>
+</html>

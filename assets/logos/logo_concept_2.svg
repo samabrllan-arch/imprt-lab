@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <defs>
+    <linearGradient id="c2_g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff5722" />
+      <stop offset="50%" stop-color="#ff007f" />
+      <stop offset="100%" stop-color="#7928ca" />
+    </linearGradient>
+    <linearGradient id="c2_g2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#ff5722" />
+    </linearGradient>
+    <filter id="c2_glow">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#ff007f" flood-opacity="0.38" />
+    </filter>
+  </defs>
+  <!-- Concepto 2: Infinity Atelier (Bucle Infinito Möbius Haute Couture) -->
+  <g filter="url(#c2_glow)">
+    <path d="M34 60 C 18 42, 18 24, 38 24 C 54 24, 66 46, 82 76 C 94 96, 108 92, 106 74 C 104 56, 88 40, 74 46" 
+          stroke="url(#c2_g1)" stroke-width="11" stroke-linecap="round" />
+    <path d="M86 60 C 102 78, 102 96, 82 96 C 66 96, 54 74, 38 44 C 26 24, 12 28, 14 46 C 16 64, 32 80, 46 74" 
+          stroke="url(#c2_g2)" stroke-width="11" stroke-linecap="round" opacity="0.92" />
+  </g>
+</svg>
