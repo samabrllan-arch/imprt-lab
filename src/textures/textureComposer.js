@@ -111,7 +111,7 @@ export class TextureComposer {
     // Delimitar al área imprimible (en vaso 11 Oz respeta el borde superior e inferior cerámico y el asa)
     ctx.beginPath();
     if (silhouette === 'mug') {
-      ctx.rect(140, 390, 1800, 1268);
+      ctx.rect(204, 684, 1680, 680);
     } else {
       ctx.rect(
         area.x - area.width * 0.90,

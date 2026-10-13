@@ -33,7 +33,8 @@ export function bindSizePanel(wrapper, zoneId) {
   };
 
   const applyHeight = (cm) => {
-    if (isLocked()) {
+    const isMug = store.getState().selectedSilhouette === 'mug';
+    if (isLocked() && !isMug) {
       applyWidth(cm * aspect());
     } else {
       updateDecalTransform(zoneId, { heightCm: cm, widthCm: currentWidth() });

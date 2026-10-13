@@ -75,6 +75,7 @@ export function toggleAutoRotate() {
 
 export function setDecal(zoneId, { name, src, imageElement }) {
   const state = store.getState();
+  if (typeof window !== 'undefined') window.__STORE_SILHOUETTE__ = state.selectedSilhouette;
   const zone = state.customizations[zoneId];
   if (!zone) return;
 
@@ -84,6 +85,11 @@ export function setDecal(zoneId, { name, src, imageElement }) {
   zone.imageElement = imageElement;
   zone.lockAspect = true;
   zone.customAspect = null;
+  zone.widthCm = null;
+  zone.heightCm = null;
+  zone.offsetX = 0;
+  zone.offsetY = 0;
+  zone.scale = 1.0;
   // La proporción de la nueva imagen cambia el área ocupada: re-limitar y fijar los cm reales.
   zone.scale = clampScale(zone.scale, zoneId, state.selectedSize, imageElement);
   syncIntentWidth(zone, zoneId, state.selectedSize);
@@ -108,6 +114,7 @@ export function removeDecal(zoneId) {
 
 export function toggleLockAspect(zoneId) {
   const state = store.getState();
+  if (typeof window !== 'undefined') window.__STORE_SILHOUETTE__ = state.selectedSilhouette;
   const zone = state.customizations[zoneId];
   if (!zone) return;
   const newLock = zone.lockAspect === false;
@@ -127,6 +134,7 @@ export function toggleLockAspect(zoneId) {
  */
 export function updateDecalTransform(zoneId, { scale, widthCm, heightCm, lockAspect, offsetX, offsetY, rotation }) {
   const state = store.getState();
+  if (typeof window !== 'undefined') window.__STORE_SILHOUETTE__ = state.selectedSilhouette;
   const zone = state.customizations[zoneId];
   if (!zone) return;
 
@@ -135,8 +143,9 @@ export function updateDecalTransform(zoneId, { scale, widthCm, heightCm, lockAsp
   }
 
   const isLocked = zone.lockAspect !== false;
+  const isMug = state.selectedSilhouette === 'mug';
   const naturalAspect = getImageAspect(zone.imageElement);
-  const currentAspect = zone.customAspect || naturalAspect;
+  const currentAspect = (isLocked && isMug) ? naturalAspect : (zone.customAspect || naturalAspect);
 
   if (widthCm !== undefined && heightCm !== undefined) {
     zone.widthCm = widthCm;
@@ -191,10 +200,13 @@ export function setViewMode(mode) {
 export function setSilhouette(silhouette) {
   const state = store.getState();
   if (state.selectedSilhouette === silhouette) return;
+  const wasMug = state.selectedSilhouette === 'mug';
+  const isMug = silhouette === 'mug';
   state.selectedSilhouette = silhouette;
+  if (typeof window !== 'undefined') window.__STORE_SILHOUETTE__ = silhouette;
 
   // En modo Vaso/Mug solo existe una zona frontal/envolvente única y por defecto inicia en cerámica blanca
-  if (silhouette === 'mug') {
+  if (isMug) {
     if (state.activeZone !== 'front') {
       state.activeZone = 'front';
       store.notify('activeZone');
@@ -208,10 +220,20 @@ export function setSilhouette(silhouette) {
     }
   }
 
-  // Al cambiar de silueta, reajustar los estampados existentes a la nueva isla UV.
+  // Al cambiar entre prenda y vaso (o entre siluetas), recalibrar escala y centrar en el punto de inicio
   let changed = false;
   for (const [zoneId, zone] of Object.entries(state.customizations || {})) {
     if (!zone || !zone.hasDecal) continue;
+    if (wasMug !== isMug) {
+      zone.scale = 1.0;
+      zone.offsetX = 0;
+      zone.offsetY = 0;
+      zone.widthCm = null;
+      zone.heightCm = null;
+      zone.customAspect = null;
+      syncIntentWidth(zone, zoneId, state.selectedSize);
+      changed = true;
+    }
     const fitted = constrainOffsets(zoneId, silhouette, zone);
     if (Math.abs(fitted.offsetX - (zone.offsetX || 0)) > 1e-6 || Math.abs(fitted.offsetY - (zone.offsetY || 0)) > 1e-6) {
       zone.offsetX = fitted.offsetX;

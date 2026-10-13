@@ -128,13 +128,13 @@ export function renderSizePanel(state, zoneId) {
       <div class="size-sliders">
         <div class="slider-field" id="width-slider-field">
           <div class="slider-field-head">
-            <span id="width-slider-label">${vm.isLocked ? 'Escala (proporcional)' : 'Barra de Ancho'}</span>
+            <span id="width-slider-label">${vm.isLocked && !isMug ? 'Escala (proporcional)' : 'Barra de Ancho'}</span>
             <span class="slider-field-val" id="width-slider-val">${fmtCm(dims.widthCm)} cm</span>
           </div>
           <input type="range" id="width-cm-slider" class="range-slider" min="${range.min}" max="${range.max}" step="0.1" value="${dims.widthCm}" aria-label="Ancho del estampado en centímetros" />
         </div>
 
-        <div class="slider-field ${vm.isLocked ? 'is-hidden' : ''}" id="height-slider-field">
+        <div class="slider-field ${vm.isLocked && !isMug ? 'is-hidden' : ''}" id="height-slider-field">
           <div class="slider-field-head">
             <span>Barra de Alto</span>
             <span class="slider-field-val" id="height-slider-val">${fmtCm(dims.heightCm)} cm</span>
@@ -204,11 +204,11 @@ export function refreshSizePanel(root, state, zoneId, force = false) {
 
   const wSliderLabel = q('#width-slider-label');
   if (wSliderLabel) {
-    wSliderLabel.textContent = vm.isLocked ? 'Escala (proporcional)' : 'Barra de Ancho';
+    wSliderLabel.textContent = vm.isLocked && !isMug ? 'Escala (proporcional)' : 'Barra de Ancho';
   }
   const hSliderField = q('#height-slider-field');
   if (hSliderField) {
-    hSliderField.classList.toggle('is-hidden', vm.isLocked);
+    hSliderField.classList.toggle('is-hidden', vm.isLocked && !isMug);
   }
 
   const wIn = q('#width-cm-input');

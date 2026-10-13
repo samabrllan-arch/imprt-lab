@@ -71,6 +71,9 @@ export function initViewSwitcher(container) {
   modeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const mode = btn.getAttribute('data-mode');
+      if (mode === 'flat' && store.getState().selectedSilhouette === 'mug') {
+        setActiveView('front');
+      }
       setViewMode(mode);
     });
   });
@@ -92,7 +95,26 @@ export function initViewSwitcher(container) {
     }
   });
 
+  const viewGroup = container.querySelector('.view-buttons-group');
+  const dividers = container.querySelectorAll('.hud-divider');
+  const mode3dText = container.querySelector('.mode-btn[data-mode="3d"] .mode-text');
+
+  function syncSilhouetteHud(silhouette) {
+    const isMug = silhouette === 'mug';
+    if (viewGroup) viewGroup.style.display = isMug ? 'none' : '';
+    dividers.forEach(d => { d.style.display = isMug ? 'none' : ''; });
+    if (particlesBtn) particlesBtn.style.display = isMug ? 'none' : '';
+    if (autoRotateBtn) autoRotateBtn.style.display = isMug ? 'none' : '';
+    if (mode3dText) mode3dText.textContent = isMug ? '360°' : '3D';
+  }
+
+  syncSilhouetteHud(store.getState().selectedSilhouette);
+
   store.subscribe((state, changeKey) => {
+    if (changeKey === 'silhouette') {
+      syncSilhouetteHud(state.selectedSilhouette);
+    }
+
     if (changeKey === 'view') {
       viewBtns.forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-view-id') === state.activeView);

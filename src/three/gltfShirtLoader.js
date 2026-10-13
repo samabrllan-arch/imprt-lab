@@ -43,7 +43,7 @@ export class GltfShirtLoader {
           fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
           fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v3' : 'clo_fabric_material_v7');
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v4' : 'clo_fabric_material_v7');
 
           // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
@@ -88,31 +88,23 @@ export class GltfShirtLoader {
               `#ifdef USE_MAP
                 if (uIsMug > 0.5) {
                   vec4 texelColor = texture2D( map, vMapUv );
-                  bool isMugInner = (vMapUv.x < 0.015);
+                  // Máscara 3D cilíndrica suave: paredes internas + fondo interno + borde superior circular perfecto en blanco porcelana
+                  float rCyl = length(vLocalPos.xz);
+                  float innerMask = (1.0 - smoothstep(0.428, 0.434, rCyl)) * smoothstep(-0.445, -0.415, vLocalPos.y);
                   vec3 porcelainWhite = vec3(0.97, 0.97, 0.99);
                   if (uIsMagicMug > 0.5) {
                     vec3 magicBlack = vec3(0.055, 0.06, 0.075);
-                    if (isMugInner) {
-                      // Interior siempre porcelana blanca pura
-                      diffuseColor.rgb *= porcelainWhite;
-                    } else {
-                      // Exterior completo: en frío (uHeatLevel=0) 100% negro opaco (no se ve la imagen); con calor revela porcelana blanca + imagen
-                      float hNorm = clamp(vLocalPos.y + 0.5, 0.0, 1.0);
-                      float wave = sin(vLocalPos.x * 16.0 + uHeatLevel * 9.0) * 0.018 + cos(vLocalPos.z * 16.0 - uHeatLevel * 6.0) * 0.012;
-                      float front = uHeatLevel * 1.22 - 0.11 + wave;
-                      float reveal = step(0.005, uHeatLevel) * (1.0 - smoothstep(front - 0.05, front + 0.05, hNorm));
-                      float edgeGlow = smoothstep(0.0, 0.5, reveal) * smoothstep(1.0, 0.5, reveal) * 4.0;
-                      float activeHeat = step(0.01, uHeatLevel) * step(uHeatLevel, 0.99);
-                      vec3 reacted = mix(magicBlack, texelColor.rgb, reveal);
-                      reacted += vec3(1.0, 0.30, 0.06) * edgeGlow * activeHeat * 0.45;
-                      diffuseColor.rgb *= reacted;
-                    }
+                    float hNorm = clamp(vLocalPos.y + 0.5, 0.0, 1.0);
+                    float wave = sin(vLocalPos.x * 16.0 + uHeatLevel * 9.0) * 0.018 + cos(vLocalPos.z * 16.0 - uHeatLevel * 6.0) * 0.012;
+                    float front = uHeatLevel * 1.22 - 0.11 + wave;
+                    float reveal = step(0.005, uHeatLevel) * (1.0 - smoothstep(front - 0.05, front + 0.05, hNorm));
+                    float edgeGlow = smoothstep(0.0, 0.5, reveal) * smoothstep(1.0, 0.5, reveal) * 4.0;
+                    float activeHeat = step(0.01, uHeatLevel) * step(uHeatLevel, 0.99);
+                    vec3 reacted = mix(magicBlack, texelColor.rgb, reveal);
+                    reacted += vec3(1.0, 0.30, 0.06) * edgeGlow * activeHeat * 0.45;
+                    diffuseColor.rgb *= mix(reacted, porcelainWhite, innerMask);
                   } else {
-                    if (isMugInner) {
-                      diffuseColor.rgb *= porcelainWhite;
-                    } else {
-                      diffuseColor *= texelColor;
-                    }
+                    diffuseColor.rgb *= mix(texelColor.rgb, porcelainWhite, innerMask);
                   }
                 } else if (!gl_FrontFacing || vIsInnerLining > 0.5) {
                   diffuseColor.rgb = uBaseFabricColor * 0.88;
@@ -128,6 +120,11 @@ export class GltfShirtLoader {
             );
           };
 
+          // Orientar el vaso para que el lado opuesto al asa (donde inicia la imagen, x=1044) mire al frente (+Z)
+          if (isMug) {
+            rawModel.rotation.y = Math.PI * 0.5;
+          }
+
           // 2. Calcular caja delimitadora y centrar el modelo en (0, 0, 0)
           const bbox = new THREE.Box3().setFromObject(rawModel);
           const size = new THREE.Vector3();
@@ -139,10 +136,10 @@ export class GltfShirtLoader {
           const targetHeight = isMug ? 0.78 : 1.05;
           const scaleFactor = targetHeight / (size.y || 1);
 
-          // En el vaso, el origen X ya está en el eje del cilindro; compensamos solo 35% del asa
-          rawModel.position.x = isMug ? -center.x * 0.35 : -center.x;
+          // En el vaso el eje del cilindro ya está en (0,0) local; mantenemos su eje centrado al rotar
+          rawModel.position.x = isMug ? 0 : -center.x;
           rawModel.position.y = -center.y;
-          rawModel.position.z = -center.z;
+          rawModel.position.z = isMug ? 0 : -center.z;
 
           // Wrapper contenedor para escala y transformaciones uniformes
           const wrapper = new THREE.Group();

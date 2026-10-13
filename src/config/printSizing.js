@@ -20,6 +20,11 @@ export const SIZE_MODES = { FIXED: 'fixed', PROPORTIONAL: 'proportional' };
 const DEFAULT_MAX_SCALE = 2.2;
 const TALL_ASPECT_LIMIT = 1.3; // misma regla que computeDecalSize (px)
 const FALLBACK_BASE_CM = 28;
+const MUG_BASE_CM = 8.0;
+const MUG_MAX_W_CM = 21.0;
+const MUG_MAX_H_CM = 8.5;
+
+const isMugActive = () => typeof window !== 'undefined' && window.__STORE_SILHOUETTE__ === 'mug';
 
 /** Ancho (cm) del estampado a escala 1.0 en talla de referencia y límites propios de zona. */
 export const ZONE_PRINT = {
@@ -32,7 +37,8 @@ export const ZONE_PRINT = {
 export const ZONE_PRESET_WIDTHS_CM = {
   front: [10, 15, 21, 28],
   frontPocket: [5, 8, 10],
-  back: [10, 15, 21, 28]
+  back: [10, 15, 21, 28],
+  mug: [6, 10, 15]
 };
 
 const round1 = (n) => Math.round(n * 10) / 10;
@@ -42,6 +48,7 @@ export function getDefaultScale(zoneId) {
 }
 
 export function getSizeRatio(size) {
+  if (isMugActive()) return 1;
   return (size?.widthCm || REFERENCE_WIDTH_CM) / REFERENCE_WIDTH_CM;
 }
 
@@ -54,6 +61,11 @@ export function getImageAspect(img) {
 
 /** Medidas en cm (sin redondear) para una escala dada. */
 export function computeDimsCm(scale, zoneId, size, aspect = 1) {
+  if (isMugActive()) {
+    const w = Math.min(MUG_BASE_CM * scale, MUG_MAX_W_CM);
+    const h = Math.min(w / (aspect || 1), MUG_MAX_H_CM);
+    return { w, h };
+  }
   const base = (ZONE_PRINT[zoneId]?.baseCm ?? FALLBACK_BASE_CM) * getSizeRatio(size) * scale;
   let w = base;
   let h = w / aspect;
@@ -66,6 +78,9 @@ export function computeDimsCm(scale, zoneId, size, aspect = 1) {
 
 /** Área máxima imprimible (cm) para la zona y talla. */
 export function getPrintLimits(zoneId, size) {
+  if (isMugActive()) {
+    return { maxW: MUG_MAX_W_CM, maxH: MUG_MAX_H_CM };
+  }
   const zone = ZONE_PRINT[zoneId] || {};
   const ratio = getSizeRatio(size);
   return {
@@ -76,6 +91,9 @@ export function getPrintLimits(zoneId, size) {
 
 /** Escala máxima para que ni ancho ni alto superen el área imprimible. */
 export function getMaxScale(zoneId, size, aspect = 1) {
+  if (isMugActive()) {
+    return MUG_MAX_W_CM / MUG_BASE_CM;
+  }
   const { maxW, maxH } = getPrintLimits(zoneId, size);
   const unit = computeDimsCm(1, zoneId, size, aspect);
   const zoneMax = ZONES[zoneId]?.limits?.maxScale ?? DEFAULT_MAX_SCALE;
@@ -88,12 +106,18 @@ export function clampScale(scale, zoneId, size, img) {
 }
 
 export function scaleFromWidthCm(widthCm, zoneId, size, img) {
+  if (isMugActive()) {
+    return widthCm / MUG_BASE_CM;
+  }
   const unit = computeDimsCm(1, zoneId, size, getImageAspect(img));
   return widthCm / unit.w;
 }
 
 /** Rango de ancho (cm) permitido por el control para la zona/talla/imagen actuales. */
 export function getWidthRangeCm(zoneId, size, img) {
+  if (isMugActive()) {
+    return { min: 2.0, max: MUG_MAX_W_CM };
+  }
   const aspect = getImageAspect(img);
   const unit = computeDimsCm(1, zoneId, size, aspect);
   return { min: round1(unit.w * MIN_SCALE), max: Math.floor(unit.w * getMaxScale(zoneId, size, aspect) * 10) / 10 };
@@ -102,7 +126,7 @@ export function getWidthRangeCm(zoneId, size, img) {
 /** Rango de alto (cm) imprimible permitido para la zona y talla. */
 export function getHeightRangeCm(zoneId, size) {
   const { maxH } = getPrintLimits(zoneId, size);
-  return { min: 4, max: round1(maxH) };
+  return { min: isMugActive() ? 2.0 : 4, max: round1(maxH) };
 }
 
 /** Medidas redondeadas + uso del área máxima de impresión. */
@@ -113,14 +137,14 @@ export function getDecalDimensionsCm(decal, zoneId, size) {
 
   const isLocked = decal.lockAspect !== false;
   let w, h;
-  if (!isLocked && decal.widthCm && decal.heightCm) {
+  if ((!isLocked || isMugActive()) && decal.widthCm && decal.heightCm) {
     w = Math.min(decal.widthCm, maxW);
     h = Math.min(decal.heightCm, maxH);
   } else {
     const aspect = decal.customAspect || getImageAspect(decal.imageElement);
     const dims = computeDimsCm(decal.scale ?? 1, zoneId, size, aspect);
-    w = dims.w;
-    h = dims.h;
+    w = Math.min(dims.w, maxW);
+    h = Math.min(dims.h, maxH);
   }
 
   const usage = Math.max(w / maxW, h / maxH);
@@ -136,7 +160,10 @@ export function getDecalDimensionsCm(decal, zoneId, size) {
 
 /** Guarda el ancho y alto real (intención de diseño) a partir de la escala vigente. */
 export function syncIntentWidth(decal, zoneId, size) {
-  if (decal.lockAspect === false && decal.widthCm && decal.heightCm) {
+  if ((decal.lockAspect === false || isMugActive()) && decal.widthCm && decal.heightCm) {
+    const { maxW, maxH } = getPrintLimits(zoneId, size);
+    decal.widthCm = Math.min(Math.max(decal.widthCm, 2.0), maxW);
+    decal.heightCm = Math.min(Math.max(decal.heightCm, 2.0), maxH);
     decal.customAspect = decal.widthCm / (decal.heightCm || 1);
     return;
   }
@@ -198,6 +225,7 @@ export function buildSizeTable(decal, zoneId, sizes, mode, currentSize) {
 
 /** Atajos en cm válidos para el rango actual (incluye "Máx"). */
 export function buildPresetWidths(zoneId, range) {
-  const list = (ZONE_PRESET_WIDTHS_CM[zoneId] || []).filter((cm) => cm >= range.min && cm <= range.max - 0.8);
+  const key = isMugActive() ? 'mug' : zoneId;
+  const list = (ZONE_PRESET_WIDTHS_CM[key] || []).filter((cm) => cm >= range.min && cm <= range.max - 0.8);
   return [...list.map((cm) => ({ cm, label: `${cm}` })), { cm: range.max, label: 'Máx', isMax: true }];
 }

@@ -24,11 +24,14 @@ export function getVertSign(silhouette = 'man') {
 
 /** Tamaño dibujado del estampado en px de canvas (misma fórmula que el composer). */
 export function computeDecalSize(img, area, scale = 1, decal = null) {
-  if (decal && decal.lockAspect === false && decal.widthCm && decal.heightCm) {
-    const pxPerCm = (area.width || 440) / 28;
+  const baseCm = area.baseCm || 28;
+  const pxPerCm = (area.width || 440) / baseCm;
+  if (decal && (decal.lockAspect === false || area.baseCm === 8) && decal.widthCm && decal.heightCm) {
+    const maxW = area.bounds?.strict ? (area.bounds.maxX - area.bounds.minX) : Infinity;
+    const maxH = area.bounds?.strict ? (area.bounds.maxY - area.bounds.minY) : Infinity;
     return {
-      w: decal.widthCm * pxPerCm,
-      h: decal.heightCm * pxPerCm
+      w: Math.min(decal.widthCm * pxPerCm, maxW),
+      h: Math.min(decal.heightCm * pxPerCm, maxH)
     };
   }
 
@@ -38,8 +41,13 @@ export function computeDecalSize(img, area, scale = 1, decal = null) {
 
   let w = area.width * scale;
   let h = w / imgAspect;
-  // Permitimos altura extendida hasta 1.8 veces el área para estampados largos hacia abajo
-  if (h > area.height * scale * 1.8) {
+  if (area.bounds?.strict) {
+    const maxW = area.bounds.maxX - area.bounds.minX;
+    const maxH = area.bounds.maxY - area.bounds.minY;
+    w = Math.min(w, maxW);
+    h = Math.min(h, maxH);
+  } else if (h > area.height * scale * 1.8) {
+    // Permitimos altura extendida hasta 1.8 veces el área para estampados largos hacia abajo
     h = area.height * scale * 1.8;
     w = h * imgAspect;
   }
@@ -75,19 +83,26 @@ export function centerToOffsets(area, silhouette, cx, cy) {
   };
 }
 
-/** Limita el centro para que el estampado se mantenga dentro de la zona útil de la prenda sin colapsar. */
+/** Limita el centro para que el estampado se mantenga dentro de la zona útil de la prenda o vaso sin colapsar. */
 export function clampCenterToBounds(center, half, bounds) {
   if (!bounds) return center;
-  // bounds define el marco de referencia imprimible de la prenda.
-  // Permitimos libertad de movimiento amplio tanto vertical (pecho alto/medio/bajo)
-  // como horizontal para centrado perfecto, evitando colapsar el rango a un punto único.
+  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+  if (bounds.strict) {
+    const loX = bounds.minX + half.w;
+    const hiX = bounds.maxX - half.w;
+    const loY = bounds.minY + half.h;
+    const hiY = bounds.maxY - half.h;
+    return {
+      x: loX <= hiX ? clamp(center.x, loX, hiX) : (bounds.minX + bounds.maxX) * 0.5,
+      y: loY <= hiY ? clamp(center.y, loY, hiY) : (bounds.minY + bounds.maxY) * 0.5
+    };
+  }
   const marginX = (bounds.maxX - bounds.minX) * 0.35;
   const marginY = (bounds.maxY - bounds.minY) * 0.60;
   const minX = bounds.minX - marginX;
   const maxX = bounds.maxX + marginX;
   const minY = bounds.minY - marginY;
   const maxY = bounds.maxY + marginY;
-  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   return {
     x: clamp(center.x, minX, maxX),
     y: clamp(center.y, minY, maxY)

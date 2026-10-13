@@ -21,11 +21,11 @@ export const ZONES = {
         bounds: { minX: 330, maxX: 810, minY: 500, maxY: 1230 }
       },
       mug: {
-        x: 1540, y: 1024, width: 520, height: 520,
-        bounds: { minX: 240, maxX: 1860, minY: 560, maxY: 1488 }
+        x: 1044, y: 1024, width: 640, height: 640, baseCm: 8,
+        bounds: { minX: 204, maxX: 1884, minY: 684, maxY: 1364, strict: true }
       }
     },
-    limits: { minScale: 0.2, maxScale: 2.2, minOffset: -2.5, maxOffset: 2.2 }
+    limits: { minScale: 0.2, maxScale: 2.65, minOffset: -2.5, maxOffset: 2.2 }
   },
   frontPocket: {
     id: 'frontPocket',
