@@ -34,7 +34,7 @@ export class GltfShirtLoader {
             map: canvasTexture,
             roughness: isMug ? 0.16 : 0.88,
             metalness: isMug ? 0.04 : 0.02,
-            side: THREE.DoubleSide
+            side: isMug ? THREE.FrontSide : THREE.DoubleSide
           });
 
           // Uniformes reactivos para color base y efecto Mug Mágico Termosensible
@@ -43,7 +43,7 @@ export class GltfShirtLoader {
           fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
           fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v4' : 'clo_fabric_material_v7');
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v5' : 'clo_fabric_material_v7');
 
           // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
@@ -55,8 +55,22 @@ export class GltfShirtLoader {
             shader.vertexShader = shader.vertexShader.replace(
               '#include <common>',
               `#include <common>
+              uniform float uIsMug;
               varying float vIsInnerLining;
               varying vec3 vLocalPos;`
+            );
+
+            shader.vertexShader = shader.vertexShader.replace(
+              '#include <beginnormal_vertex>',
+              `#include <beginnormal_vertex>
+              if (uIsMug > 0.5) {
+                float rWall = length(position.xz);
+                float outerWallMask = smoothstep(0.433, 0.440, rWall) * (1.0 - smoothstep(0.456, 0.464, rWall))
+                                    * (1.0 - smoothstep(0.39, 0.44, abs(position.y)))
+                                    * (1.0 - smoothstep(0.35, 0.41, position.x));
+                vec3 idealCylNormal = normalize(vec3(position.x, 0.0, position.z));
+                objectNormal = normalize(mix(objectNormal, idealCylNormal, outerWallMask));
+              }`
             );
 
             shader.vertexShader = shader.vertexShader.replace(
