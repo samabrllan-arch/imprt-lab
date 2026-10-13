@@ -43,7 +43,7 @@ export class GltfShirtLoader {
           fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
           fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v1' : 'clo_fabric_material_v7');
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v2' : 'clo_fabric_material_v7');
 
           // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
@@ -56,7 +56,7 @@ export class GltfShirtLoader {
               '#include <common>',
               `#include <common>
               varying float vIsInnerLining;
-              varying float vLocalHeight;`
+              varying vec3 vLocalPos;`
             );
 
             shader.vertexShader = shader.vertexShader.replace(
@@ -69,7 +69,7 @@ export class GltfShirtLoader {
                 }
               }
               vIsInnerLining = isInner;
-              vLocalHeight = position.y;`
+              vLocalPos = position;`
             );
 
             shader.fragmentShader = shader.fragmentShader.replace(
@@ -80,7 +80,7 @@ export class GltfShirtLoader {
               uniform float uIsMagicMug;
               uniform float uHeatLevel;
               varying float vIsInnerLining;
-              varying float vLocalHeight;`
+              varying vec3 vLocalPos;`
             );
 
             shader.fragmentShader = shader.fragmentShader.replace(
@@ -89,24 +89,20 @@ export class GltfShirtLoader {
                 if (uIsMug > 0.5) {
                   vec4 texelColor = texture2D( map, vMapUv );
                   bool isMugInner = (vMapUv.x < 0.015);
-                  bool isMugHandleOrRim = (vMapUv.x >= 0.015 && vMapUv.x < 0.035);
                   if (uIsMagicMug > 0.5) {
                     vec3 magicBlack = vec3(0.055, 0.06, 0.075);
                     if (isMugInner) {
-                      // Interior de porcelana blanca limpia en Mug Mágico
-                      diffuseColor.rgb *= vec3(0.96, 0.96, 0.98);
-                    } else if (isMugHandleOrRim) {
-                      // Asa y borde exterior con recubrimiento negro termocrómico
-                      diffuseColor.rgb *= magicBlack;
+                      // Interior de cerámica limpia en el color base elegido
+                      diffuseColor.rgb *= uBaseFabricColor * 0.96;
                     } else {
-                      // Pared exterior imprimible: onda térmica ascendente con calor (uHeatLevel: 0 frío -> 1 caliente)
-                      float hNorm = clamp((vMapUv.y - 0.32) / 0.36, 0.0, 1.0);
-                      float wave = sin(vMapUv.x * 26.0 + uHeatLevel * 9.0) * 0.018 + cos(vMapUv.x * 13.0 - uHeatLevel * 6.0) * 0.01;
+                      // Exterior completo (cuerpo, unión trasera, oreja/asa y bordes): onda térmica 3D continua
+                      float hNorm = clamp(vLocalPos.y + 0.5, 0.0, 1.0);
+                      float wave = sin(vLocalPos.x * 16.0 + uHeatLevel * 9.0) * 0.018 + cos(vLocalPos.z * 16.0 - uHeatLevel * 6.0) * 0.012;
                       float front = uHeatLevel * 1.18 - 0.09 + wave;
                       float reveal = 1.0 - smoothstep(front - 0.05, front + 0.05, hNorm);
                       float edgeGlow = smoothstep(0.0, 0.5, reveal) * smoothstep(1.0, 0.5, reveal) * 4.0;
                       float activeHeat = step(0.01, uHeatLevel) * step(uHeatLevel, 0.99);
-                      vec3 coldPreview = mix(magicBlack, texelColor.rgb, 0.05);
+                      vec3 coldPreview = mix(magicBlack, texelColor.rgb, 0.04);
                       vec3 reacted = mix(coldPreview, texelColor.rgb, reveal);
                       reacted += vec3(1.0, 0.30, 0.06) * edgeGlow * activeHeat * 0.45;
                       diffuseColor.rgb *= reacted;

@@ -40,15 +40,14 @@ export class TextureComposer {
   }
 
   /** Regenera la capa base solo si cambió el color o el tipo de superficie (tela vs cerámica). */
-  ensureBaseLayer(hex, isMug = false, isMagicMug = false) {
-    const effectiveHex = (isMug && isMagicMug) ? '#f8fafc' : hex;
-    const key = `${effectiveHex}_${isMug ? 'mug' : 'shirt'}`;
+  ensureBaseLayer(hex, isMug = false) {
+    const key = `${hex}_${isMug ? 'mug' : 'shirt'}`;
     if (this.baseKey === key) return;
     const { baseCtx: ctx, size } = this;
 
     // 1. Color base de la prenda o cerámica
     ctx.clearRect(0, 0, size, size);
-    ctx.fillStyle = effectiveHex;
+    ctx.fillStyle = hex;
     ctx.fillRect(0, 0, size, size);
 
     if (!isMug) {
@@ -75,8 +74,8 @@ export class TextureComposer {
     const silhouette = state.selectedSilhouette || 'man';
     const isMug = silhouette === 'mug';
 
-    // 1-3. Capa base cacheada (tela con trama o cerámica lisa)
-    this.ensureBaseLayer(selectedColor.hex, isMug, !!state.isMagicMug);
+    // 1-3. Capa base cacheada (tela con trama o cerámica lisa del color elegido)
+    this.ensureBaseLayer(selectedColor.hex, isMug);
     ctx.clearRect(0, 0, size, size);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';

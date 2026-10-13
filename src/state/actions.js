@@ -1,4 +1,5 @@
 import { store } from './store.js';
+import { FABRIC_COLORS } from '../config/colors.js';
 import { constrainOffsets } from '../config/decalLayout.js';
 import {
   SIZE_MODES, clampScale, scaleFromWidthCm, syncIntentWidth, resolveScaleForSize,
@@ -192,10 +193,19 @@ export function setSilhouette(silhouette) {
   if (state.selectedSilhouette === silhouette) return;
   state.selectedSilhouette = silhouette;
 
-  // En modo Vaso/Mug solo existe una zona frontal/envolvente única
-  if (silhouette === 'mug' && state.activeZone !== 'front') {
-    state.activeZone = 'front';
-    store.notify('activeZone');
+  // En modo Vaso/Mug solo existe una zona frontal/envolvente única y por defecto inicia en cerámica blanca
+  if (silhouette === 'mug') {
+    if (state.activeZone !== 'front') {
+      state.activeZone = 'front';
+      store.notify('activeZone');
+    }
+    if (state.selectedColor?.id === 'terracotta') {
+      const white = FABRIC_COLORS.find(c => c.id === 'chalk-white');
+      if (white) {
+        state.selectedColor = white;
+        store.notify('color');
+      }
+    }
   }
 
   // Al cambiar de silueta, reajustar los estampados existentes a la nueva isla UV.
