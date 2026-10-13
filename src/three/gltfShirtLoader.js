@@ -34,7 +34,7 @@ export class GltfShirtLoader {
             map: canvasTexture,
             roughness: isMug ? 0.16 : 0.88,
             metalness: isMug ? 0.04 : 0.02,
-            side: isMug ? THREE.FrontSide : THREE.DoubleSide
+            side: THREE.DoubleSide
           });
 
           // Uniformes reactivos para color base y efecto Mug Mágico Termosensible
@@ -43,7 +43,7 @@ export class GltfShirtLoader {
           fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
           fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v5' : 'clo_fabric_material_v7');
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v7' : 'clo_fabric_material_v7');
 
           // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
@@ -70,6 +70,10 @@ export class GltfShirtLoader {
                                     * (1.0 - smoothstep(0.35, 0.41, position.x));
                 vec3 idealCylNormal = normalize(vec3(position.x, 0.0, position.z));
                 objectNormal = normalize(mix(objectNormal, idealCylNormal, outerWallMask));
+                float innerFloorMask = (1.0 - smoothstep(0.38, 0.415, rWall))
+                                     * smoothstep(-0.475, -0.465, position.y)
+                                     * (1.0 - smoothstep(-0.450, -0.435, position.y));
+                objectNormal = normalize(mix(objectNormal, vec3(0.0, 1.0, 0.0), innerFloorMask));
               }`
             );
 
@@ -102,10 +106,10 @@ export class GltfShirtLoader {
               `#ifdef USE_MAP
                 if (uIsMug > 0.5) {
                   vec4 texelColor = texture2D( map, vMapUv );
-                  // Máscara 3D cilíndrica suave: paredes internas + fondo interno + borde superior circular perfecto en blanco porcelana
+                  // Máscara 3D cilíndrica suave: paredes internas + fondo interno (y=-0.4615) + borde superior en blanco porcelana puro
                   float rCyl = length(vLocalPos.xz);
-                  float innerMask = (1.0 - smoothstep(0.428, 0.434, rCyl)) * smoothstep(-0.445, -0.415, vLocalPos.y);
-                  vec3 porcelainWhite = vec3(0.97, 0.97, 0.99);
+                  float innerMask = (1.0 - smoothstep(0.428, 0.434, rCyl)) * smoothstep(-0.485, -0.468, vLocalPos.y);
+                  vec3 porcelainWhite = vec3(0.98, 0.98, 1.0);
                   if (uIsMagicMug > 0.5) {
                     vec3 magicBlack = vec3(0.055, 0.06, 0.075);
                     float hNorm = clamp(vLocalPos.y + 0.5, 0.0, 1.0);
@@ -189,7 +193,7 @@ export class GltfShirtLoader {
             if (child.isMesh) {
               meshCount++;
               child.castShadow = true;
-              child.receiveShadow = true;
+              child.receiveShadow = !isMug;
               if (canvasTexture) {
                 child.material = fabricMaterial;
               }
