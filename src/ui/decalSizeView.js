@@ -78,12 +78,13 @@ export function renderSizePanel(state, zoneId) {
   const vm = buildSizeViewModel(state, zoneId);
   if (!vm) return '';
   const { dims, range, mode } = vm;
+  const isMug = state.selectedSilhouette === 'mug';
   return `
     <section class="size-panel" aria-label="Medida real de impresión">
       <div class="size-panel-head">
         <span class="card-eyebrow">MEDIDA REAL DE IMPRESIÓN</span>
         <div class="size-badge-cluster">
-          <span class="size-badge" id="size-badge">Talla ${vm.size.label}</span>
+          <span class="size-badge" id="size-badge">${isMug ? 'Vaso 11 Oz' : `Talla ${vm.size.label}`}</span>
           <span class="dpi-badge ${vm.dpiQuality.badgeClass}" id="dpi-badge" title="${vm.dpiQuality.summary}">
             ${vm.dpiQuality.icon} <span id="dpi-badge-label">${vm.dpiQuality.label}</span>
           </span>
@@ -109,7 +110,7 @@ export function renderSizePanel(state, zoneId) {
             </div>
           </div>
           <button type="button" class="btn-lock-aspect ${vm.isLocked ? 'is-locked' : 'is-unlocked'}" id="btn-lock-aspect"
-            title="${vm.isLocked ? 'Proporción vinculada (clic para desbloquear y poner medidas libres)' : 'Proporción libre (clic para vincular)'}"
+            title="${vm.isLocked ? 'Proporción vinculada (clic para desbloquear y estirar libremente)' : 'Proporción libre (clic para vincular)'}"
             aria-label="${vm.isLocked ? 'Desbloquear proporción' : 'Vincular proporción'}">
             ${vm.isLocked ? '🔗' : '🔓'}
           </button>
@@ -143,19 +144,21 @@ export function renderSizePanel(state, zoneId) {
       </div>
       <div class="size-presets" id="size-presets">${presetsHtml(vm)}</div>
 
-      <div class="size-mode" role="radiogroup" aria-label="Cómo escalar el estampado entre tallas">
-        <button type="button" class="size-mode-btn ${mode === SIZE_MODES.FIXED ? 'active' : ''}" data-mode="${SIZE_MODES.FIXED}" role="radio" aria-checked="${mode === SIZE_MODES.FIXED}">📏 Medida fija</button>
-        <button type="button" class="size-mode-btn ${mode === SIZE_MODES.PROPORTIONAL ? 'active' : ''}" data-mode="${SIZE_MODES.PROPORTIONAL}" role="radio" aria-checked="${mode === SIZE_MODES.PROPORTIONAL}">↔ Proporcional</button>
-      </div>
-      <p class="size-mode-hint" id="size-mode-hint">${MODE_HINTS[mode]}</p>
+      ${!isMug ? `
+        <div class="size-mode" role="radiogroup" aria-label="Cómo escalar el estampado entre tallas">
+          <button type="button" class="size-mode-btn ${mode === SIZE_MODES.FIXED ? 'active' : ''}" data-mode="${SIZE_MODES.FIXED}" role="radio" aria-checked="${mode === SIZE_MODES.FIXED}">📏 Medida fija</button>
+          <button type="button" class="size-mode-btn ${mode === SIZE_MODES.PROPORTIONAL ? 'active' : ''}" data-mode="${SIZE_MODES.PROPORTIONAL}" role="radio" aria-checked="${mode === SIZE_MODES.PROPORTIONAL}">↔ Proporcional</button>
+        </div>
+        <p class="size-mode-hint" id="size-mode-hint">${MODE_HINTS[mode]}</p>
 
-      <div class="size-table-head">
-        <span>Tu diseño en cada talla</span>
-        <small>ancho × alto (cm)</small>
-      </div>
-      <div class="size-table" id="size-table" role="list">
-        ${tableHtml(vm)}
-      </div>
+        <div class="size-table-head">
+          <span>Tu diseño en cada talla</span>
+          <small>ancho × alto (cm)</small>
+        </div>
+        <div class="size-table" id="size-table" role="list">
+          ${tableHtml(vm)}
+        </div>
+      ` : ''}
     </section>`;
 }
 
@@ -168,12 +171,13 @@ export function refreshSizePanel(root, state, zoneId, force = false) {
   const panel = root.querySelector('.size-panel');
   if (!vm || !panel) return;
   const { dims, range } = vm;
+  const isMug = state.selectedSilhouette === 'mug';
   const q = (sel) => panel.querySelector(sel);
   const editable = (el) => el && (force || document.activeElement !== el);
 
   q('#decal-cm-val').textContent = `${fmtCm(dims.widthCm)} × ${fmtCm(dims.heightCm)}`;
   const sizeBadge = q('#size-badge');
-  if (sizeBadge) sizeBadge.textContent = `Talla ${vm.size.label}`;
+  if (sizeBadge) sizeBadge.textContent = isMug ? 'Vaso 11 Oz' : `Talla ${vm.size.label}`;
 
   const dpiBadge = q('#dpi-badge');
   if (dpiBadge) {
@@ -233,7 +237,8 @@ export function refreshSizePanel(root, state, zoneId, force = false) {
   setHtml(q('#size-presets'), presetsHtml(vm));
   const tableEl = q('#size-table');
   if (tableEl) setHtml(tableEl, tableHtml(vm));
-  q('#size-mode-hint').textContent = MODE_HINTS[vm.mode];
+  const modeHintEl = q('#size-mode-hint');
+  if (modeHintEl) modeHintEl.textContent = MODE_HINTS[vm.mode];
   panel.querySelectorAll('.size-mode-btn').forEach((b) => {
     const on = b.dataset.mode === vm.mode;
     b.classList.toggle('active', on);

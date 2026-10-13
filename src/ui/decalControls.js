@@ -107,7 +107,7 @@ export function initDecalControls(container) {
   render();
 
   store.subscribe((state, changeKey) => {
-    if (changeKey === 'activeZone' || (changeKey && changeKey.startsWith('decal:'))) {
+    if (changeKey === 'activeZone' || changeKey === 'silhouette' || (changeKey && changeKey.startsWith('decal:'))) {
       render();
     } else if (changeKey === 'size' || changeKey === 'sizeMode' || changeKey === `transform:${state.activeZone}`) {
       syncControls(state);

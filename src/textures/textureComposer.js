@@ -39,15 +39,16 @@ export class TextureComposer {
     return this.canvas;
   }
 
-  /** Regenera la capa base solo si cambió el color o el tipo de superficie (tela vs cerámica). */
+  /** Regenera la capa base solo si cambió el color o el tipo de superficie (tela vs cerámica blanca). */
   ensureBaseLayer(hex, isMug = false) {
-    const key = `${hex}_${isMug ? 'mug' : 'shirt'}`;
+    const effectiveHex = isMug ? '#ffffff' : hex;
+    const key = `${effectiveHex}_${isMug ? 'mug' : 'shirt'}`;
     if (this.baseKey === key) return;
     const { baseCtx: ctx, size } = this;
 
-    // 1. Color base de la prenda o cerámica
+    // 1. Color base de la prenda o cerámica blanca pura
     ctx.clearRect(0, 0, size, size);
-    ctx.fillStyle = hex;
+    ctx.fillStyle = effectiveHex;
     ctx.fillRect(0, 0, size, size);
 
     if (!isMug) {

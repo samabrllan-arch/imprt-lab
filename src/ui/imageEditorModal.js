@@ -93,10 +93,13 @@ function setupEditorLogic(backdrop) {
 
   function setStageBg(mode) {
     const shirt = mode === 'shirt';
+    const st = store.getState();
+    const isMug = st.selectedSilhouette === 'mug';
     btnBgShirt?.classList.toggle('active', shirt);
     btnBgCheckers?.classList.toggle('active', !shirt);
+    if (btnBgShirt) btnBgShirt.innerHTML = isMug ? '☕ Vaso' : '👕 Prenda';
     viewportEl.setAttribute('data-stage-bg', mode);
-    viewportEl.style.backgroundColor = shirt ? (store.getState().selectedColor?.hex || '#1a1a24') : '';
+    viewportEl.style.backgroundColor = shirt ? (isMug ? '#f8fafc' : (st.selectedColor?.hex || '#1a1a24')) : '';
   }
   btnBgShirt?.addEventListener('click', () => setStageBg('shirt'));
   btnBgCheckers?.addEventListener('click', () => setStageBg('checkers'));
@@ -161,6 +164,9 @@ function setupEditorLogic(backdrop) {
       originalFileName = fileName;
       applyCallback = onApply;
       sourceCtx = ctx || {};
+      const isMug = store.getState().selectedSilhouette === 'mug';
+      const applyBtn = q('#btn-apply-editor');
+      if (applyBtn) applyBtn.textContent = isMug ? 'Aplicar al Vaso →' : 'Aplicar a Camiseta →';
       saveActions.refresh();
       adjust.reset();
       engine.setRawImage(clampToPrintDpi(imageElement, store.getState().activeZone).source);

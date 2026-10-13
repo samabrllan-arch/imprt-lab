@@ -9,14 +9,13 @@ export function initColorPicker(container) {
     const state = store.getState();
     const current = state.selectedColor;
     const isMug = state.selectedSilhouette === 'mug';
-    const isMagic = isMug && state.isMagicMug;
 
-    const html = `
-      ${renderMagicMugCard(state)}
-      ${!isMagic ? `
+    const html = isMug
+      ? renderMagicMugCard(state)
+      : `
         <div class="control-card color-picker-card">
           <div class="card-header-clean">
-            <span class="card-eyebrow">${isMug ? 'TONO CERÁMICO DEL VASO' : 'TONO DE LA PRENDA'}</span>
+            <span class="card-eyebrow">TONO DE LA PRENDA</span>
             <div class="selected-color-meta">
               <span class="color-dot-live" id="color-dot-indicator" style="background-color: ${current.hex};"></span>
               <span id="selected-color-name" class="color-pill-tag">${current.name}</span>
@@ -47,8 +46,7 @@ export function initColorPicker(container) {
             </label>
           </div>
         </div>
-      ` : ''}
-    `;
+      `;
 
     container.innerHTML = html;
     bindMagicMugEvents(container);

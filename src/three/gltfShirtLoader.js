@@ -43,7 +43,7 @@ export class GltfShirtLoader {
           fabricMaterial.userData.uIsMagicMug = { value: 0.0 };
           fabricMaterial.userData.uHeatLevel = { value: 0.0 };
 
-          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v2' : 'clo_fabric_material_v7');
+          fabricMaterial.customProgramCacheKey = () => (isMug ? 'mug_thermochromic_v3' : 'clo_fabric_material_v7');
 
           // Inyección de shader: Aísla interior y simula recubrimiento termocrómico (Mug Mágico)
           fabricMaterial.onBeforeCompile = (shader) => {
@@ -89,27 +89,27 @@ export class GltfShirtLoader {
                 if (uIsMug > 0.5) {
                   vec4 texelColor = texture2D( map, vMapUv );
                   bool isMugInner = (vMapUv.x < 0.015);
+                  vec3 porcelainWhite = vec3(0.97, 0.97, 0.99);
                   if (uIsMagicMug > 0.5) {
                     vec3 magicBlack = vec3(0.055, 0.06, 0.075);
                     if (isMugInner) {
-                      // Interior de cerámica limpia en el color base elegido
-                      diffuseColor.rgb *= uBaseFabricColor * 0.96;
+                      // Interior siempre porcelana blanca pura
+                      diffuseColor.rgb *= porcelainWhite;
                     } else {
-                      // Exterior completo (cuerpo, unión trasera, oreja/asa y bordes): onda térmica 3D continua
+                      // Exterior completo: en frío (uHeatLevel=0) 100% negro opaco (no se ve la imagen); con calor revela porcelana blanca + imagen
                       float hNorm = clamp(vLocalPos.y + 0.5, 0.0, 1.0);
                       float wave = sin(vLocalPos.x * 16.0 + uHeatLevel * 9.0) * 0.018 + cos(vLocalPos.z * 16.0 - uHeatLevel * 6.0) * 0.012;
-                      float front = uHeatLevel * 1.18 - 0.09 + wave;
-                      float reveal = 1.0 - smoothstep(front - 0.05, front + 0.05, hNorm);
+                      float front = uHeatLevel * 1.22 - 0.11 + wave;
+                      float reveal = step(0.005, uHeatLevel) * (1.0 - smoothstep(front - 0.05, front + 0.05, hNorm));
                       float edgeGlow = smoothstep(0.0, 0.5, reveal) * smoothstep(1.0, 0.5, reveal) * 4.0;
                       float activeHeat = step(0.01, uHeatLevel) * step(uHeatLevel, 0.99);
-                      vec3 coldPreview = mix(magicBlack, texelColor.rgb, 0.04);
-                      vec3 reacted = mix(coldPreview, texelColor.rgb, reveal);
+                      vec3 reacted = mix(magicBlack, texelColor.rgb, reveal);
                       reacted += vec3(1.0, 0.30, 0.06) * edgeGlow * activeHeat * 0.45;
                       diffuseColor.rgb *= reacted;
                     }
                   } else {
                     if (isMugInner) {
-                      diffuseColor.rgb *= uBaseFabricColor * 0.95;
+                      diffuseColor.rgb *= porcelainWhite;
                     } else {
                       diffuseColor *= texelColor;
                     }
