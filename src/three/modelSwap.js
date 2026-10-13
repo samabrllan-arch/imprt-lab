@@ -8,7 +8,7 @@ import { getAssetPath } from '../config/paths.js';
 export const MODEL_URLS = {
   get man() { return getAssetPath('models/shirt_clo_draco.glb?v=17'); },
   get woman() { return getAssetPath('models/shirt_woman_seam_draco.glb?v=1'); },
-  get mug() { return getAssetPath('models/mug_11oz_draco.glb?v=3'); }
+  get mug() { return getAssetPath('models/mug_11oz_draco.glb?v=4'); }
 };
 
 export const MODEL_LABELS = {
